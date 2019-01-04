@@ -16,4 +16,5 @@ export default function loginData(state = initialState || emptyState, action) {
         localStorage["appState"] = JSON.stringify(emptyState);
         return emptyState;
     }
+    return state;
 }

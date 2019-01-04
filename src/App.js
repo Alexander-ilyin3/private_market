@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { connect } from 'react-redux';
+
+import Sign from './components/sign';
+import MainFrame from './components/mainFrame';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          
-        </header>
-      </div>
-    );
-  }
+	render() {
+		const { isLoggedIn, user, isLoad } = this.props.loginData;
+		if (isLoggedIn) {
+			user.token && (axios.defaults.headers.common['Authorization'] = `Token ${user.token}`);
+			return (
+
+				<MainFrame role={user.role} isLoad={isLoad} />
+
+			);
+		} else {
+			return (
+				<Sign />
+			);
+		}
+	}
 }
 
-export default App;
+export default connect(
+	state => ({
+		loginData: state.loginData,
+	}),
+)(App);
