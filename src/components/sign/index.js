@@ -8,7 +8,7 @@ export default function () {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path='/signup' render={() => <SignUp />} />
+                <Route exact path='/register' render={() => <SignUp />} />
                 <Route path='/' render={() => <SignIn />} />
             </Switch>
         </BrowserRouter>

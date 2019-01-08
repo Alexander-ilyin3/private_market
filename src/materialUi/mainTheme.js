@@ -4,7 +4,7 @@ import red from '@material-ui/core/colors/red';
 
 export default createMuiTheme({
     palette:{
-        primary: {main: '#5c6bc0'},
+        primary: {main: '#4a5ab9'},
         secondary: {main: '#18c5a9'},
         warning: '#f39c12',
         error:  {main: red[600]},
@@ -12,5 +12,26 @@ export default createMuiTheme({
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },
-    typography: { useNextVariants: true },
+    typography: {
+        useNextVariants: true,
+        
+    },
+    overrides: {
+        MuiButton: {
+            raised: {
+                fontWeight: 400,
+            },
+            
+            // outlinedPrimary: {
+            //     borderColor: '#fff',
+            //     borderWidth: 2,
+            //     color: '#fff',
+            // },
+          },
+        MuiOutlinedInput: {
+            input:{
+                padding: '0.65rem 1.25rem;',
+            },
+        },
+    },
 });
