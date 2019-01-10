@@ -118,11 +118,11 @@ class SignIn extends Component {
         });
     }
     handleSign = (e) => {
-        const { email, password, remember, isValid } = this.state;
+        const { email, password, remember } = this.state;
         e.preventDefault();
         this.setState({ isChecked: true });
         this.validateForm();
-        if (isValid) {
+        if (this.state.isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
             axios.post(apiPath + 'login', {
                 email: email,
                 password: password,
@@ -234,7 +234,7 @@ class SignIn extends Component {
                                             type='submit'
                                         >
                                             Войти
-                                    </Button>
+                                        </Button>
                                     </CardContent>
                                 </form>
                             </Card>
