@@ -18,7 +18,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom'
 
-import apiPath from '../../services/apiPath';
+import {apiBaseURL} from '../../config';
 
 const styles = theme => ({
     login: {
@@ -123,7 +123,7 @@ class SignIn extends Component {
         this.setState({ isChecked: true });
         this.validateForm();
         if (this.state.isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-            axios.post(apiPath + 'login', {
+            axios.post(apiBaseURL + 'login', {
                 email: email,
                 password: password,
                 remember: remember,

@@ -1,3 +1,5 @@
+import {getStorageItem, removeStorageItem, setStorageItem} from '../services/storage';
+
 const emptyState = {
     isLoggedIn: false,
     user: {},
@@ -5,15 +7,15 @@ const emptyState = {
 
 let initialState;
 
-localStorage['appState'] && (initialState = JSON.parse(localStorage['appState']));
+getStorageItem('appState') && (initialState = getStorageItem('appState'));
 
 export default function loginData(state = initialState || emptyState, action) {
     if(action.type === 'LOG_IN'){
-        localStorage["appState"] = JSON.stringify(action.payload);
+        setStorageItem("appState", action.payload);
         return action.payload;
     }
     if(action.type === 'LOG_OUT'){
-        localStorage["appState"] = JSON.stringify(emptyState);
+        setStorageItem("appState", emptyState);
         return emptyState;
     }
     return state;

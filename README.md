@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Path to aicroservice
+
+set REACT_APP_API_BASE_URL=<path to api> at .env
+
 ## Available Scripts
 
 In the project directory, you can run:

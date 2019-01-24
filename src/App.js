@@ -3,16 +3,16 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 import Sign from './components/sign';
-import MainFrame from './components/mainFrame';
+import Drawer from './components/Drawer';
 
 class App extends Component {
 	render() {
 		const { isLoggedIn, user, isLoad } = this.props.loginData;
-		if (isLoggedIn) {
+		if (true) {
 			user.token && (axios.defaults.headers.common['Authorization'] = `Token ${user.token}`);
 			return (
 
-				<MainFrame role={user.role} isLoad={isLoad} />
+				<Drawer role={user.role} isLoad={isLoad} />
 
 			);
 		} else {

@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import axios from 'axios';
 
-import apiPath from '../../services/apiPath';
+import {apiBaseURL} from '../../config';
 
 function MaskedPhone(props) {
     const { inputRef, ...other } = props;
@@ -181,7 +181,7 @@ class SignUp extends Component {
             //     state.isValid = false;
             //     return state;
             // });
-            // axios.post(`${apiPath}signup`).then(resp => {
+            // axios.post(`${apiBaseURL}signup`).then(resp => {
             //     if (/*resp.data.msg == 'this email alredy used'*/ true) {
             //         this.setState(state => {
             //             state.email.errMsg = 'Данный емейл уже используется';
