@@ -8,7 +8,7 @@ import Drawer from './components/Drawer';
 class App extends Component {
 	render() {
 		const { isLoggedIn, user, isLoad } = this.props.loginData;
-		if (true) {
+		if (isLoggedIn) {
 			user.token && (axios.defaults.headers.common['Authorization'] = `Token ${user.token}`);
 			return (
 
