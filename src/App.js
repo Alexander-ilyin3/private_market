@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom'
 
 import Sign from './components/sign';
 import Drawer from './components/Drawer';
@@ -8,12 +9,12 @@ import Drawer from './components/Drawer';
 class App extends Component {
 	render() {
 		const { isLoggedIn, user, isLoad } = this.props.loginData;
-		if (isLoggedIn) {
+		if (/*isLoggedIn*/true) {
 			user.token && (axios.defaults.headers.common['Authorization'] = `Token ${user.token}`);
 			return (
-
-				<Drawer role={user.role} isLoad={isLoad} />
-
+				<BrowserRouter>
+					<Drawer role={user.role} isLoad={isLoad} />
+				</BrowserRouter >
 			);
 		} else {
 			return (

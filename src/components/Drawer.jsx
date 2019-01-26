@@ -39,13 +39,13 @@ const styles = theme => ({
         overflowX: 'hidden',
         width: theme.spacing.unit * 7 + 1,
         [theme.breakpoints.up('sm')]: {
-            width: theme.spacing.unit * 9 + 1,
+            width: theme.spacing.unit * 7 + 1,
         },
     },
     appBar: {
         backgroundColor: theme.palette.common.white,
         color: theme.palette.text.primary,
-        width: `calc(100% - ${theme.spacing.unit * 9 + 1}px)`,
+        width: `calc(100% - ${theme.spacing.unit * 7 + 1}px)`,
         [theme.breakpoints.down('xs')]: {
             width: 'calc(100%)',
         },

@@ -228,7 +228,8 @@ class SignIn extends Component {
                                             </Link>
                                         </div>
                                         <Button
-                                            variant='contained'
+                                            variant='extendedFab'
+                                            
                                             color='primary'
                                             fullWidth
                                             type='submit'

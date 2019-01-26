@@ -23,6 +23,10 @@ export default createMuiTheme({
                 fontWeight: 400,
             },
 
+            outlinedSecondary: {
+                borderColor: '#fff',
+                color: '#fff',
+            }
             // outlinedPrimary: {
             //     borderColor: '#fff',
             //     borderWidth: 2,
@@ -41,4 +45,9 @@ export default createMuiTheme({
         }
     },
     direction: 'rtl',
+    mixins: {
+        toolbar: {
+            backgroundColor: '#fff',
+        }
+    }
 });

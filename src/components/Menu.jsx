@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,8 +10,12 @@ import IconHome from '@material-ui/icons/HomeOutlined';
 import ShopIcon from '@material-ui/icons/ShoppingCartOutlined';
 import BagIcon from '@material-ui/icons/WorkOutlineOutlined';
 import CreditCardIcon from '@material-ui/icons/CreditCardOutlined';
-import AccountIcon from '@material-ui/icons/AccountBoxOutlined'
+import AccountIcon from '@material-ui/icons/AccountBoxOutlined';
+import classNames from 'classnames';
+import { withRouter } from 'react-router-dom';
 
+
+import { ROOT_DOMAIN, apiNewOrder, apiProfile } from '../config';
 const styles = theme => ({
     toolbar: theme.mixins.toolbar,
     toolbar: {
@@ -22,102 +26,170 @@ const styles = theme => ({
     },
     root: {
         backgroundColor: theme.palette.menuBackground,
-        color: theme.palette.getContrastText(theme.palette.menuBackground),
+        color: theme.palette.text.secondary,
     },
     menuIcon: {
-        color: theme.palette.text.secondary,
+        color: 'inherit',
+    },
+    focus: {
+        color: '#fff',
+        backgroundColor: 'rgba(255, 255, 255, 0.14)'
+    },
+    topIcon: {
+        marginRight: 0,
+        marginLeft: -5,
+    },
+    link: {
+        color: 'inherit',
+        textDecoration: 'none',
+        wordWrap: 'nowrap',
     }
 });
-
-function Menu(props) {
-    const { classes, theme } = props;
-    return (
-        <div className={classes.root}>
-            <div className={classes.toolbar}>
-                <ListItem button key={0}>
-                    <ListItemIcon>
-                        <IconAdd fontSize='large' className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
-                            variant: 'h6',
+class Menu extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedIndex: 0,
+        }
+    }
+    handleListItemClick = (event, index) => {
+        this.setState({ selectedIndex: index });
+    };
+    render(props) {
+        const { classes, history } = this.props;
+        return (
+            <div className={classes.root}>
+                <div className={classes.toolbar}>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 0}
+                        onClick={event => {this.handleListItemClick(event, 0); history.push(apiNewOrder)}}
+                        classes={{
+                            selected: classes.focus,
+                            default: classes.defaultItem
                         }}
-                        primary='НОВЫЙ ЗАКАЗ'
-                    />
-                </ListItem>
-            </div>
-            <Divider />
-            <List>
-                <ListItem button >
-                    <ListItemIcon>
-                        <IconHome className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classNames(classes.menuIcon, classes.topIcon)}>
+                            <IconAdd fontSize='large' />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                                variant: 'title',
+                                style: { fontWeight: 400 }
+                            }}
+                            primary='НОВЫЙ ЗАКАЗ'
+                        />
+                    </ListItem>
+                </div>
+                <Divider />
+                <List>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 1}
+                        onClick={event => this.handleListItemClick(event, 1)}
+                        classes={{
+                            selected: classes.focus,
+                            default: classes.defaultItem
                         }}
-                        primary='Статистика'
-                    />
-                </ListItem>
-                <ListItem button >
-                    <ListItemIcon>
-                        <ShopIcon className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <IconHome />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Статистика'
+                        />
+                    </ListItem>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 2}
+                        onClick={event => this.handleListItemClick(event, 2)}
+                        classes={{
+                            selected: classes.focus,
                         }}
-                        primary='Товары'
-                    />
-                </ListItem>
-                <ListItem button >
-                    <ListItemIcon>
-                        <BagIcon className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <ShopIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Товары'
+                        />
+                    </ListItem>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 3}
+                        onClick={event => this.handleListItemClick(event, 3)}
+                        classes={{
+                            selected: classes.focus,
                         }}
-                        primary='Заказы'
-                    />
-                </ListItem>
-                <ListItem button >
-                    <ListItemIcon>
-                        <CreditCardIcon className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <BagIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Заказы'
+                        />
+                    </ListItem>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 4}
+                        onClick={event => this.handleListItemClick(event, 4)}
+                        classes={{
+                            selected: classes.focus,
                         }}
-                        primary='Журнал оплат'
-                    />
-                </ListItem>
-                <ListItem button >
-                    <ListItemIcon>
-                        <IconAdd className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <CreditCardIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Журнал оплат'
+                        />
+                    </ListItem>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 5}
+                        onClick={event => {this.handleListItemClick(event, 5); history.push(apiNewOrder)}}
+                        classes={{
+                            selected: classes.focus,
                         }}
-                        primary='Новый заказ'
-                    />
-                </ListItem>
-                <ListItem button >
-                    <ListItemIcon>
-                        <AccountIcon className={classes.menuIcon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primaryTypographyProps={{
-                            color: 'inherit',
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <IconAdd />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Новый заказ'
+                        />
+                    </ListItem>
+                    <ListItem button
+                        selected={this.state.selectedIndex === 6}
+                        onClick={event => {this.handleListItemClick(event, 6); history.push(apiProfile)}}
+                        classes={{
+                            selected: classes.focus,
                         }}
-                        primary='Мой профиль'
-                    />
-                </ListItem>
-            </List>
-        </div>
-    );
+                    >
+                        <ListItemIcon className={classes.menuIcon}>
+                            <AccountIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                color: 'inherit',
+                            }}
+                            primary='Мой профиль'
+                        />
+                    </ListItem>
+                </List>
+            </div >
+        );
+    }
 }
 
-export default withStyles(styles, { withTheme: true })(Menu);
+export default withRouter(withStyles(styles, { withTheme: true })(Menu));
