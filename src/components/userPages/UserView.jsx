@@ -3,16 +3,19 @@ import { object } from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
     Paper,
-    Avatar,
-    Card,
-    CardHeader,
-    CardContent,
+    // Avatar,
+    // Card,
+    // CardHeader,
+    // CardContent,
     Typography,
     AppBar,
     Tabs,
     Tab,
     Grid,
+    Button,
+
 } from '@material-ui/core';
+import UserEdit from './UserEdit';
 
 const styles = theme => ({
     root: {
@@ -26,39 +29,25 @@ const styles = theme => ({
     tabsBar: {
         backgroundColor: theme.palette.common.white,
         color: theme.palette.text.primary,
+    },
+    headreWuthBtn: {
+        display: 'flex',
+        justifyContent: 'space-between',
     }
 });
 
-const TabCommon = () => (
-    <Grid container spacing={16} style={{paddingTop: 16}}>
-        <Grid item sm={12} md={12} lg={6}>
-            <Paper>
-                <Typography
-                    component='div'
-                    variant='h6'
-                >
-                    ОСНОВНАЯ ИНФОРМАЦИЯ
-                </Typography>
-                
-            </Paper>
+const Item = (props) => (
+    <Grid container >
+        <Grid item xs={6}>
+            <Typography variant='subheading'>
+                {`${props.name}:`}
+            </Typography>
         </Grid>
-        <Grid item sm={12} md={12} lg={6}>
-            <Paper>
-            <Typography
-                    component='div'
-                    variant='h6'
-                >
-                    МЕНЕДЖЕРЫ
-                </Typography>
-            </Paper>
-        </Grid>
-        <Grid item sm={12} md={12} lg={6}>
-            <Paper>
-
-            </Paper>
+        <Grid item xs={6}>
+            {props.value}
         </Grid>
     </Grid>
-);
+)
 
 const TabManagers = () => (
     <Grid container spacing={8}>
@@ -80,9 +69,29 @@ class UseView extends Component {
         super(props);
         this.state = {
             tab: 0,
-            imgUrl: '',
-            name: 'Viktor',
+            openPopup: false,
+            user: {
+                imgUrl: '',
+                firstName: 'Виктор',
+                lastName: 'Лимишенко',
+                position: 'Front-end developer',
+                city: 'Kharkiv',
+                address: 'Marshala Batitskogo 5, 14',
+                phone: '0953652131',
+                email: 'dictor93@gmail.com',
+            },
+            managers: {
+
+            }
         }
+    }
+
+    handlePopupOpen = () => {
+        this.setState({ openPopup: true });
+    }
+
+    handlePopupClose = () => {
+        this.setState({ openPopup: false });
     }
 
     handleChangeTab = (event, tab) => {
@@ -91,39 +100,109 @@ class UseView extends Component {
 
     render() {
         const { classes } = this.props;
-        const { tab, imgUrl, name } = this.state;
+        const { tab, user, openPopup } = this.state;
         return (
-            <Card className={classes.root}>
-                <CardHeader
-                    avatar={
-                        <Avatar src={imgUrl} className={classes.avatar}>
-                            {imgUrl ? null : name[0] || 'UU'}
-                        </Avatar>
-                    }
-                    title={<Typography
-                        variant='h5'
-                    >{name}</Typography>}
-                    subheader={
-                        <div>
-                            subheader
-                        </div>
-                    }
+            // <Card className={classes.root}>
+            //     <CardHeader
+            //         avatar={
+            //             <Avatar src={user.imgUrl} className={classes.avatar}>
+            //                 {user.imgUrl ? null : <Typography variant='h3'>{((user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0]: '')) || 'UU'}</Typography> }
+            //             </Avatar>
+            //         }
+            //         title={<Typography
+            //             variant='h5'
+            //         >{ `${user.firstName || ''} ${user.lastName || ''}`}</Typography>}
+            //         subheader={
+            //             <div>
+            //                 subheader
+            //             </div>
+            //         }
+            //     />
+            //     <CardContent>
+            <Paper>
+                <UserEdit
+                    open={openPopup}
+                    onClose={this.handlePopupClose}
                 />
-                <CardContent>
-                    <AppBar
-                        className={classes.tabsBar}
-                        color='primary'
-                        position='static'>
-                        <Tabs value={tab} onChange={this.handleChangeTab}>
-                            <Tab label='ОБЩЕЕ' />
-                            <Tab label='МЕНЕДЖЕРЫ' />
-                        </Tabs>
-                    </AppBar>
-                    {tab === 0 && <TabCommon />}
-                    {tab === 1 && <TabManagers />}
-                </CardContent>
+                <AppBar
+                    className={classes.tabsBar}
+                    color='primary'
+                    position='static'>
+                    <Tabs value={tab} onChange={this.handleChangeTab}>
+                        <Tab label='ОБЩЕЕ' />
+                        <Tab label='МЕНЕДЖЕРЫ' />
+                    </Tabs>
+                </AppBar>
+                {tab === 0 &&
+                    <Grid container spacing={16} style={{ padding: 16 }}>
+                        <Grid item sm={12} md={12} lg={6}>
+                            <div className={classes.headreWuthBtn}>
+                                <Typography
+                                    component='div'
+                                    variant='h6'
+                                    paragraph
+                                >
+                                    ОСНОВНАЯ ИНФОРМАЦИЯ
+                                </Typography>
+                                <Button
+                                    color='primary'
+                                    variant='contained'
+                                    onClick={this.handlePopupOpen}
+                                    size='small'
+                                    style={{height: 31, padding:'6px 16px'}}
+                                >
+                                    Изменить
+                                </Button>
+                            </div>
+                            <Item
+                                name='Имя'
+                                value={user.firstName}
+                            />
+                            <Item
+                                name='Фамилия'
+                                value={user.lastName}
+                            />
+                            <Item
+                                name='Должность'
+                                value={user.position}
+                            />
+                            <Item
+                                name='Город'
+                                value={user.city}
+                            />
+                            <Item
+                                name='Адрес'
+                                value={user.address}
+                            />
+                            <Item
+                                name='Телефон'
+                                value={user.phone}
+                            />
+                            <Item
+                                name='Email'
+                                value={user.email}
+                            />
+                        </Grid>
+                        <Grid item sm={12} md={12} lg={6}>
+                            <Typography
+                                component='div'
+                                variant='h6'
+                            >
+                                МЕНЕДЖЕРЫ
+                                </Typography>
+                        </Grid>
+                        <Grid item sm={12} md={12} lg={6}>
+                            <Paper>
 
-            </Card>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                }
+                {tab === 1 && <TabManagers />}
+                {/* </CardContent>
+
+            </Card> */}
+            </Paper>
         );
     }
 }

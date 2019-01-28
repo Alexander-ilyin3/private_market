@@ -19,6 +19,8 @@ export default createMuiTheme({
     },
     overrides: {
         MuiButton: {
+            fontWeight: 400,
+            
             raised: {
                 fontWeight: 400,
             },
@@ -33,21 +35,18 @@ export default createMuiTheme({
             //     color: '#fff',
             // },
         },
-        MuiOutlinedInput: {
-            input: {
-                padding: '0.65rem 1.25rem;',
-            },
-        },
-        MuiInputLabel: {
-            outlined: {
-                transform: 'translate(14px, 13px) scale(1)',
-            }
-        }
+        // MuiOutlinedInput: {
+        //     input: {
+        //         padding: '0.65rem 1.25rem;',
+        //     },
+        // },
+        // MuiInputLabel: {
+        //     outlined: {
+        //         transform: 'translate(14px, 13px) scale(1)',
+        //     }
+        // }
     },
-    direction: 'rtl',
     mixins: {
-        toolbar: {
-            backgroundColor: '#fff',
-        }
+        
     }
 });

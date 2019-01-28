@@ -33,7 +33,7 @@ const styles = theme => ({
     },
     focus: {
         color: '#fff',
-        backgroundColor: 'rgba(255, 255, 255, 0.14)'
+        backgroundColor: 'rgba(255, 255, 255, 0.14)!important'
     },
     topIcon: {
         marginRight: 0,
@@ -43,6 +43,12 @@ const styles = theme => ({
         color: 'inherit',
         textDecoration: 'none',
         wordWrap: 'nowrap',
+    },
+    listButton: {
+        // '& :hover': {
+        //     backgroundColor: 'rgba(255, 255, 255, 0.14)'
+        // },
+
     }
 });
 class Menu extends Component {
@@ -62,10 +68,11 @@ class Menu extends Component {
                 <div className={classes.toolbar}>
                     <ListItem button
                         selected={this.state.selectedIndex === 0}
-                        onClick={event => {this.handleListItemClick(event, 0); history.push(apiNewOrder)}}
+                        onClick={event => { this.handleListItemClick(event, 0); history.push(apiNewOrder) }}
                         classes={{
                             selected: classes.focus,
-                            default: classes.defaultItem
+                            default: classes.defaultItem,
+                            container: classes.listButton
                         }}
                     >
                         <ListItemIcon className={classNames(classes.menuIcon, classes.topIcon)}>
@@ -154,7 +161,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 5}
-                        onClick={event => {this.handleListItemClick(event, 5); history.push(apiNewOrder)}}
+                        onClick={event => { this.handleListItemClick(event, 5); history.push(apiNewOrder) }}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -171,7 +178,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 6}
-                        onClick={event => {this.handleListItemClick(event, 6); history.push(apiProfile)}}
+                        onClick={event => { this.handleListItemClick(event, 6); history.push(apiProfile) }}
                         classes={{
                             selected: classes.focus,
                         }}

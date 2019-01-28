@@ -144,7 +144,6 @@ class AppDrawer extends Component {
                         <Drawer
                             container={this.props.container}
                             variant="temporary"
-                            anchor='right'
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             classes={{
@@ -156,7 +155,6 @@ class AppDrawer extends Component {
                     </Hidden>
                     <Hidden xsDown implementation="css">
                         <Drawer
-                            anchor='right'
                             variant="permanent"
                             className={classNames(classes.drawer, {
                                 [classes.drawerOpen]: this.state.max,
