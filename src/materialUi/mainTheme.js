@@ -19,7 +19,6 @@ export default createMuiTheme({
     },
     overrides: {
         MuiButton: {
-            fontWeight: 400,
             
             raised: {
                 fontWeight: 400,

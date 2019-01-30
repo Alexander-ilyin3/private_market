@@ -9,7 +9,7 @@ import Drawer from './components/Drawer';
 class App extends Component {
 	render() {
 		const { isLoggedIn, user, isLoad } = this.props.loginData;
-		if (/*isLoggedIn*/true) {
+		if (isLoggedIn/*true*/) {
 			user.token && (axios.defaults.headers.common['Authorization'] = `Token ${user.token}`);
 			return (
 				<BrowserRouter>

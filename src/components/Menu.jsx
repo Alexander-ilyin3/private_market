@@ -81,7 +81,7 @@ class Menu extends Component {
                         <ListItemText
                             primaryTypographyProps={{
                                 color: 'inherit',
-                                variant: 'title',
+                                variant: 'h6',
                                 style: { fontWeight: 400 }
                             }}
                             primary='НОВЫЙ ЗАКАЗ'

@@ -18,7 +18,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom'
 
-import {apiBaseURL} from '../../config';
+import { signin } from '../../services/api';
 
 const styles = theme => ({
     login: {
@@ -123,45 +123,14 @@ class SignIn extends Component {
         this.setState({ isChecked: true });
         this.validateForm();
         if (this.state.isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-            axios.post(apiBaseURL + 'login', {
-                email: email,
-                password: password,
-                remember: remember,
-            }).then(response => {
-                return response;
-            }).then(json => {
-                console.log(json)
-                if ('OK' === json.statusText) {
-                    let userData = {
-                        id: json.data.id,
-                        token: json.data.accessToken,
-                        expireAt: json.data.expires_at,
-                        email: email.value,
-                    };
-                    let appState = {
-                        isLoggedIn: true,
-                        user: userData
-                    };
-                    // save app state with user date in reducer
 
-                    this.props.onLogin(appState);
-                    this.props.history.push('/kudato');
-                }
-            }).catch(error => {
-
-                if (error.response) {
-                    console.log(error.response, 222)
-                    const msg = error.response.statusText;
-                    this.setState(currentState => {
-                        currentState.email.isValid = false;
-                        currentState.email.errMsg = msg;
-                        currentState.isValid = false;
-                        currentState.password.isValid = false;
-                        currentState.password.errMsg = msg;
-                        currentState.isValid = false;
-                        return currentState;
-                    });
-                }
+            signin({
+                email: email.value,
+                password: password.value,
+            }).then(success => {
+                console.log(success);
+            }).catch(err => {
+                console.log(err);
             });
         }
     }
@@ -228,8 +197,8 @@ class SignIn extends Component {
                                             </Link>
                                         </div>
                                         <Button
-                                            variant='extendedFab'
-                                            
+                                            variant='contained'
+
                                             color='primary'
                                             fullWidth
                                             type='submit'

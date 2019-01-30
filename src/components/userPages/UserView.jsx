@@ -39,7 +39,7 @@ const styles = theme => ({
 const Item = (props) => (
     <Grid container >
         <Grid item xs={6}>
-            <Typography variant='subheading'>
+            <Typography variant='subtitle1'>
                 {`${props.name}:`}
             </Typography>
         </Grid>

@@ -12,9 +12,13 @@ import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
 import MaskedInput from 'react-text-mask';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import axios from 'axios';
+import classNames from 'classnames';
+import { withRouter } from 'react-router-dom'
 
-import {apiBaseURL} from '../../config';
+
+
+import { signup } from '../../services/api';
+import { Typography } from '@material-ui/core';
 
 function MaskedPhone(props) {
     const { inputRef, ...other } = props;
@@ -25,7 +29,7 @@ function MaskedPhone(props) {
             ref={ref => {
                 inputRef(ref ? ref.inputElement : null);
             }}
-            mask={['+', '3', '8', '(', '0', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
+            mask={['(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
             placeholderChar={'\u2000'}
             showMask
         />
@@ -65,6 +69,10 @@ const styles = theme => ({
     },
     title: {
         textAlign: 'center',
+    },
+    error: {
+        border: '1px solid',
+        borderColor: theme.palette.error.main,
     }
 });
 
@@ -72,13 +80,15 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            errMsg: '',
+            error: false,
             name: {
                 value: '',
                 isValid: false,
                 errMsg: 'слишком короткое имя',
             },
             phone: {
-                value: '+38(0  )   -  -  ',
+                value: '(0  )   -  -  ',
                 isValid: false,
                 errMsg: 'введите корректный номер',
             },
@@ -111,7 +121,7 @@ class SignUp extends Component {
     handleInput = (field, value) => {
         this.setState(state => {
             state[field].value = value;
-
+            state.error = false;
             return state;
         });
         this.validateField(field, value);
@@ -127,7 +137,7 @@ class SignUp extends Component {
                 break;
             case 'phone':
                 console.log(value)
-                valid = !!value.match(/\+38\(0\d\d\)\d\d\d-\d\d-\d\d/);
+                valid = !!value.match(/\(0\d\d\)\d\d\d-\d\d-\d\d/);
                 console.log(valid)
                 break;
             case 'url':
@@ -168,39 +178,41 @@ class SignUp extends Component {
     }
 
     handleSign = (e) => {
-        const { name, phone, url, email, password, isValid } = this.state;
+        const { name, phone, url, email, password, repeatPassword, isValid } = this.state;
 
         e.preventDefault();
         this.setState({ isChecked: true });
         this.validateForm();
-        if (this.state.isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-            // this.setState(state => {
-            //     console.log(123)
-            //     state.email.errMsg = 'Данный емейл уже используется';
-            //     state.email.isValid = false;
-            //     state.isValid = false;
-            //     return state;
-            // });
-            // axios.post(`${apiBaseURL}signup`).then(resp => {
-            //     if (/*resp.data.msg == 'this email alredy used'*/ true) {
-            //         this.setState(state => {
-            //             state.email.errMsg = 'Данный емейл уже используется';
-            //             state.email.isValid = false;
-            //             return state;
-            //         });
-            //     }
-            // });
-            
+        if (isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
+
+            signup({
+                name: name.value,
+                phone: phone.value,
+                url: url.value,
+                email: email.value,
+                password: password.value,
+                repeatPassword: repeatPassword.value,
+            }).then(success => {
+                if (success) {
+                    console.log('Sended success: ', success);
+                    this.props.history.push('/successreg');
+                }
+
+            }).catch(err => {
+                if (err) {
+                    this.setState({ errMsg: err.message, error: true });
+                }
+            });
         }
         return false;
     }
 
     render() {
         const { classes } = this.props;
-        const { isValid, isChecked, name, url, phone, email, password, repeatPassword, agree } = this.state;
+        const { error, errMsg, isValid, isChecked, name, url, phone, email, password, repeatPassword, agree } = this.state;
         return (
             <div>
-                <Paper elevation={5} square className={classes.signup}>
+                <Paper elevation={5} square className={classNames(classes.signup, error && classes.error)}>
                     <div className={classes.head}>
                         <Avatar className={classes.avatar} component='span' children={
                             <AccountCircleIcon />
@@ -213,6 +225,12 @@ class SignUp extends Component {
                                 title="РЕГИСТРАЦИЯ"
                             />
                             <CardContent>
+                                <Typography
+                                    color='error'
+                                    align='center'
+                                >
+                                    {error && errMsg}
+                                </Typography>
                                 <TextField
                                     error={isChecked && !isValid && name.errMsg && !name.isValid}
                                     value={name.value}
@@ -236,7 +254,7 @@ class SignUp extends Component {
                                     InputProps={{
                                         inputComponent: MaskedPhone,
                                     }}
-                                    helperText="Номер в формате +38(0xx)xxx-xx-xx"
+                                    helperText="Номер в формате (0xx)xxx-xx-xx"
                                 />
                                 <TextField
                                     error={isChecked && !isValid && url.errMsg && !url.isValid}
@@ -316,4 +334,4 @@ class SignUp extends Component {
     }
 }
 
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

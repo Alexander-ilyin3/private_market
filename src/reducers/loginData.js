@@ -7,11 +7,11 @@ const emptyState = {
 
 let initialState;
 
-getStorageItem('appState') && (initialState = getStorageItem('appState'));
+getStorageItem('appState') && (initialState = JSON.parse(getStorageItem('appState')));
 
 export default function loginData(state = initialState || emptyState, action) {
     if(action.type === 'LOG_IN'){
-        setStorageItem("appState", action.payload);
+        setStorageItem("appState", JSON.stringify(action.payload));
         return action.payload;
     }
     if(action.type === 'LOG_OUT'){
