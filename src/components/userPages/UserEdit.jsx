@@ -35,23 +35,25 @@ class UserEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            user: props.user,
         }
     }
 
     handleClose = () => {
-        this.props.onClose(this.props.selectedValue);
+        this.props.onClose();
     };
 
     render() {
         const { classes, onClose, ...other } = this.props;
+        const { user } = this.state;
         console.log(this.props)
 
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="edit-user-data" {...other}>
+            <Dialog onClose={this.handleClose} aria-labelledby="edit-user-data" {...other} >
                 <div className={classes.root}>
                     <form>
                         <TextField
+                            value={user.firstName}
                             label='Имя'
                             variant='outlined'
                             fullWidth

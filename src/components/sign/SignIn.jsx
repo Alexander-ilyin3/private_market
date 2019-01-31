@@ -15,9 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
 import CheckIcon from '@material-ui/icons/Check';
-import axios from 'axios';
 import { withRouter } from 'react-router-dom'
+import classNames from 'classnames'
 
+import { apiSignupPath } from '../../config';
 import { signin } from '../../services/api';
 
 const styles = theme => ({
@@ -61,6 +62,10 @@ const styles = theme => ({
     },
     title: {
         textAlign: 'center',
+    },
+    error: {
+        border: '1px solid',
+        borderColor: theme.palette.error.light,
     }
 });
 
@@ -68,6 +73,8 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            error: false,
+            errMsg: '',
             email: {
                 value: '',
                 isValid: false,
@@ -86,7 +93,8 @@ class SignIn extends Component {
     handleInput = (field, value) => {
         this.setState(state => {
             state[field].value = value;
-
+            state.error = false;
+            state.errMsg = '';
             return state;
         });
         this.validateField(field, value);
@@ -130,19 +138,19 @@ class SignIn extends Component {
             }).then(success => {
                 console.log(success);
             }).catch(err => {
-                console.log(err);
+                this.setState({ error: true, errMsg: err.message });
             });
         }
     }
     render() {
         const { classes } = this.props;
-        const { email, password, remember, isValid, isChecked } = this.state;
+        const { error, errMsg, email, password, remember, isValid, isChecked } = this.state;
         return (
 
             <div>
                 <Paper elevation={5} square className={classes.login}>
                     <Grid container>
-                        <Grid item md={6} sm={12} className={classes.entrance}>
+                        <Grid item md={6} sm={12} className={classNames(classes.entrance, error && classes.error)}>
                             <div className={classes.head}>
                                 <Avatar className={classes.avatar} component='span' children={
                                     <AccountCircleIcon />
@@ -155,6 +163,12 @@ class SignIn extends Component {
                                         title="ВХОД"
                                     />
                                     <CardContent>
+                                        <Typography
+                                            color='error'
+                                            align='center'
+                                        >
+                                            {error && errMsg}
+                                        </Typography>
                                         <TextField
                                             error={isChecked && !isValid && email.errMsg && !email.isValid}
                                             value={email.value}
@@ -274,7 +288,7 @@ class SignIn extends Component {
                                     </Typography>
                                     Lorem Ipsum dolar set.
                                 </Typography>
-                                <Link to='register' style={{ textDecoration: 'none' }}>
+                                <Link to={apiSignupPath} style={{ textDecoration: 'none' }}>
                                     <Button
                                         variant='outlined'
                                         color='secondary'
@@ -290,20 +304,4 @@ class SignIn extends Component {
     }
 }
 
-export default connect(
-    state => ({
-        loginData: state.loginData,
-    }),
-    dispath => ({
-        onLogin: (loginData) => {
-            dispath({ type: 'LOG_IN', payload: loginData });
-            // getData({ url: /*url to fetch user data*/null }).then(response => {
-            //     let userData = response.data;
-            //     if(loginData.user.role === 'courier') userData = response.data.response;
-
-            //     userData.avatar = userData.pictureUrl;
-            //     dispath({ type: 'USER_DATA', payload: userData});
-            // });
-        }
-    }),
-)(withRouter(withStyles(styles)(SignIn)));
+export default withStyles(styles)(SignIn);

@@ -15,6 +15,9 @@ import {
     Button,
 
 } from '@material-ui/core';
+
+import { getProfile } from '../../services/api';
+
 import UserEdit from './UserEdit';
 
 const styles = theme => ({
@@ -59,7 +62,7 @@ const TabManagers = () => (
     </Grid>
 );
 
-class UseView extends Component {
+class UserView extends Component {
 
     static propTypes = {
         classes: object.isRequired,
@@ -72,18 +75,26 @@ class UseView extends Component {
             openPopup: false,
             user: {
                 imgUrl: '',
-                firstName: 'Виктор',
-                lastName: 'Лимишенко',
-                position: 'Front-end developer',
-                city: 'Kharkiv',
-                address: 'Marshala Batitskogo 5, 14',
-                phone: '0953652131',
-                email: 'dictor93@gmail.com',
+                firstName: '',
+                lastName: '',
+                position: '',
+                address: [],
+                phone: '',
+                email: '',
             },
             managers: {
 
             }
         }
+    }
+
+    componentDidMount() {
+        getProfile().then(userData => {
+            console.log(userData)
+            this.setState({ user: userData });
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     handlePopupOpen = () => {
@@ -123,6 +134,7 @@ class UseView extends Component {
                 <UserEdit
                     open={openPopup}
                     onClose={this.handlePopupClose}
+                    user={user}
                 />
                 <AppBar
                     className={classes.tabsBar}
@@ -149,7 +161,7 @@ class UseView extends Component {
                                     variant='contained'
                                     onClick={this.handlePopupOpen}
                                     size='small'
-                                    style={{height: 31, padding:'6px 16px'}}
+                                    style={{ height: 31, padding: '6px 16px' }}
                                 >
                                     Изменить
                                 </Button>
@@ -166,14 +178,13 @@ class UseView extends Component {
                                 name='Должность'
                                 value={user.position}
                             />
-                            <Item
-                                name='Город'
-                                value={user.city}
-                            />
-                            <Item
-                                name='Адрес'
-                                value={user.address}
-                            />
+                            {user.address.map((address, i) => {
+                                return <Item
+                                key={address.id_address}
+                                    name={`Адрес ${i + 1}`}
+                                    value={`${address.city || ''}, ${address.street || ''} ${address.house_number || ''}, ${address.office_number || ''}`}
+                                />
+                            })}
                             <Item
                                 name='Телефон'
                                 value={user.phone}
@@ -209,4 +220,4 @@ class UseView extends Component {
 
 
 
-export default withStyles(styles)(UseView);
+export default withStyles(styles)(UserView);

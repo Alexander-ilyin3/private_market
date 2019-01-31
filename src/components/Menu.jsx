@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
 
-import { ROOT_DOMAIN, apiNewOrder, apiProfile } from '../config';
+import { ROOT_DOMAIN, apiNewOrderPath, apiProfilePath } from '../config';
 const styles = theme => ({
     toolbar: theme.mixins.toolbar,
     toolbar: {
@@ -68,7 +68,7 @@ class Menu extends Component {
                 <div className={classes.toolbar}>
                     <ListItem button
                         selected={this.state.selectedIndex === 0}
-                        onClick={event => { this.handleListItemClick(event, 0); history.push(apiNewOrder) }}
+                        onClick={event => { this.handleListItemClick(event, 0); history.push(apiNewOrderPath) }}
                         classes={{
                             selected: classes.focus,
                             default: classes.defaultItem,
@@ -161,7 +161,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 5}
-                        onClick={event => { this.handleListItemClick(event, 5); history.push(apiNewOrder) }}
+                        onClick={event => { this.handleListItemClick(event, 5); history.push(apiNewOrderPath) }}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -178,7 +178,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 6}
-                        onClick={event => { this.handleListItemClick(event, 6); history.push(apiProfile) }}
+                        onClick={event => { this.handleListItemClick(event, 6); history.push(apiProfilePath) }}
                         classes={{
                             selected: classes.focus,
                         }}
