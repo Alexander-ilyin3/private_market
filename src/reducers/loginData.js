@@ -1,8 +1,8 @@
-import {getStorageItem, removeStorageItem, setStorageItem} from '../services/storage';
+import {getStorageItem, setStorageItem} from '../services/storage';
 
 const emptyState = {
     isLoggedIn: false,
-    user: {},
+    token: null,
 };
 
 let initialState;

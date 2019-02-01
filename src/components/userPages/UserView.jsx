@@ -74,11 +74,11 @@ class UserView extends Component {
             tab: 0,
             openPopup: false,
             user: {
-                imgUrl: '',
+                url: '',
                 firstName: '',
                 lastName: '',
                 position: '',
-                address: [],
+                address: '',
                 phone: '',
                 email: '',
             },
@@ -89,8 +89,11 @@ class UserView extends Component {
     }
 
     componentDidMount() {
+        this.handleFetchUser();
+    }
+
+    handleFetchUser = () => {
         getProfile().then(userData => {
-            console.log(userData)
             this.setState({ user: userData });
         }).catch(err => {
             console.log(err);
@@ -104,6 +107,9 @@ class UserView extends Component {
     handlePopupClose = () => {
         this.setState({ openPopup: false });
     }
+    handlePopupOk = () => {
+        this.handleFetchUser();
+    }
 
     handleChangeTab = (event, tab) => {
         this.setState({ tab });
@@ -112,30 +118,21 @@ class UserView extends Component {
     render() {
         const { classes } = this.props;
         const { tab, user, openPopup } = this.state;
+        console.log(user);
+        const address = [];
+        user.address.city && address.push(user.address.city);
+        user.address.street && address.push(user.address.street);
+        user.address.house_number && address.push(user.address.house_number);
+        user.address.office_number && address.push(user.address.office_number);
+
         return (
-            // <Card className={classes.root}>
-            //     <CardHeader
-            //         avatar={
-            //             <Avatar src={user.imgUrl} className={classes.avatar}>
-            //                 {user.imgUrl ? null : <Typography variant='h3'>{((user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0]: '')) || 'UU'}</Typography> }
-            //             </Avatar>
-            //         }
-            //         title={<Typography
-            //             variant='h5'
-            //         >{ `${user.firstName || ''} ${user.lastName || ''}`}</Typography>}
-            //         subheader={
-            //             <div>
-            //                 subheader
-            //             </div>
-            //         }
-            //     />
-            //     <CardContent>
             <Paper>
-                <UserEdit
+                {openPopup && <UserEdit
                     open={openPopup}
                     onClose={this.handlePopupClose}
+                    onOk={this.handlePopupOk}
                     user={user}
-                />
+                />}
                 <AppBar
                     className={classes.tabsBar}
                     color='primary'
@@ -166,33 +163,35 @@ class UserView extends Component {
                                     Изменить
                                 </Button>
                             </div>
-                            <Item
+                            {user.firstName && <Item
                                 name='Имя'
                                 value={user.firstName}
-                            />
-                            <Item
+                            />}
+                            {user.lastName && <Item
                                 name='Фамилия'
                                 value={user.lastName}
-                            />
-                            <Item
+                            />}
+                            {user.position && <Item
                                 name='Должность'
                                 value={user.position}
-                            />
-                            {user.address.map((address, i) => {
-                                return <Item
-                                key={address.id_address}
-                                    name={`Адрес ${i + 1}`}
-                                    value={`${address.city || ''}, ${address.street || ''} ${address.house_number || ''}, ${address.office_number || ''}`}
-                                />
-                            })}
-                            <Item
+                            />}
+
+                            {address.join(', ') && <Item
+                                name='Адрес'
+                                value={address.join(', ')}
+                            />}
+                            {user.url && <Item
+                                name='Сайт'
+                                value={user.url}
+                            />}
+                            {user.phone && <Item
                                 name='Телефон'
                                 value={user.phone}
-                            />
-                            <Item
+                            />}
+                            {user.email && <Item
                                 name='Email'
                                 value={user.email}
-                            />
+                            />}
                         </Grid>
                         <Grid item sm={12} md={12} lg={6}>
                             <Typography

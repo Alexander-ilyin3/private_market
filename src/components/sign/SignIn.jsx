@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
 import CheckIcon from '@material-ui/icons/Check';
-import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { apiSignupPath } from '../../config';

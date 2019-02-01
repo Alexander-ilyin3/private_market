@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
 
@@ -8,11 +7,11 @@ import Drawer from './components/Drawer';
 
 class App extends Component {
 	render() {
-		const { isLoggedIn, user, isLoad } = this.props.loginData;
+		const { isLoggedIn } = this.props.loginData;
 		if (isLoggedIn/*true*/) {
 			return (
 				<BrowserRouter>
-					<Drawer role={user.role} isLoad={isLoad} />
+					<Drawer />
 				</BrowserRouter >
 			);
 		} else {

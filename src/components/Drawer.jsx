@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,13 +13,14 @@ import Drawer from '@material-ui/core/Drawer';
 
 import Menu from './Menu';
 import MainFrame from './MmainFrame';
+import Preloader from './assets/preloader';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
         display: 'flex',
-        
+
     },
     drawer: {
         whiteSpace: 'nowrap',
@@ -84,7 +86,9 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing.unit * 1,
-        marginTop: 65
+        marginTop: 65,
+        position: 'relative',
+        height: 'calc(100vh - 65px)',
     },
 });
 
@@ -106,7 +110,8 @@ class AppDrawer extends Component {
     };
 
     render() {
-        const { classes, theme } = this.props;
+        const { classes, theme, isLoading } = this.props;
+        console.log(isLoading);
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -161,7 +166,7 @@ class AppDrawer extends Component {
                                 [classes.drawerClose]: !this.state.max,
                             })}
                             classes={{
-                                paper: classNames(classes.drawerPaper,{
+                                paper: classNames(classes.drawerPaper, {
                                     [classes.drawerOpen]: this.state.max,
                                     [classes.drawerClose]: !this.state.max,
                                 }),
@@ -173,6 +178,7 @@ class AppDrawer extends Component {
                     </Hidden>
                 </nav>
                 <main className={classes.content}>
+                    {isLoading && <Preloader />}
                     <MainFrame />
                 </main>
             </div>
@@ -180,4 +186,8 @@ class AppDrawer extends Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(AppDrawer)
+export default connect(
+    state => ({
+        isLoading: state.isLoading,
+    })
+)(withStyles(styles, { withTheme: true })(AppDrawer));
