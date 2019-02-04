@@ -1,6 +1,7 @@
 import axios from 'axios';
 import querystring from 'querystring';
 import { store } from '../reducers';
+import {convertToCamelcase, convertToSnakecase} from './functions';
 
 import {
     apiBaseURL,
@@ -111,18 +112,7 @@ export const getProfile = async () => {
             const { data = {} } = res || {};
             const { success = false, customer = {} } = data;
             if (success) {
-                return {
-                    id_address: customer.address[0] ? customer.address[0].id_address : null,
-                    url: customer.info[0] ? customer.info[0].customer_website || '' : '',
-                    firstName: customer.customer_name,
-                    lastName: customer.customer_lastname,
-                    position: customer.info[0] ? customer.info[0].customer_position || '' : '',
-                    address: customer.address[0] || {},
-                    phone: customer.info[0] ? customer.info[0].customer_phone || '' : '',
-                    id_contacts_info: customer.info[0] ? customer.info[0].id_contacts_info : null,
-                    email: customer.customer_email,
-
-                };
+                return convertToCamelcase(customer);
             }
 
 
@@ -137,7 +127,7 @@ export const getProfile = async () => {
 export const updateProfile = async (userData) => {
     try {
         console.log(userData)
-        const res = await instance.put(apiprofileUpdatePath, userData);
+        const res = await instance.put(apiprofileUpdatePath, convertToSnakecase(userData));
         if (res) {
             return res;
         }
@@ -148,16 +138,17 @@ export const updateProfile = async (userData) => {
 }
 
 instance.interceptors.response.use(
-    (res) => {
+    res => {
         store.dispatch({ type: 'LOADING_STOP' });
-        console.log('resp use interceptors');
         return res;
+    }, err => {
+        store.dispatch({ type: 'LOADING_STOP' });
+        throw new Error(err)
     }
 );
 
 instance.interceptors.request.use(
     (config) => {
-        console.log('req use interceptors');
         const token = store.getState().loginData.token;
         store.dispatch({ type: 'LOADING_START' });
         const updatedConfig = config;

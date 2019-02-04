@@ -73,14 +73,23 @@ class UserView extends Component {
         this.state = {
             tab: 0,
             openPopup: false,
-            user: {
-                url: '',
-                firstName: '',
-                lastName: '',
-                position: '',
-                address: '',
-                phone: '',
-                email: '',
+            customer: {
+                customerEmail: "",
+                customerLastname: "",
+                customerName: "",
+                idCustomer: null,
+                info: {
+                    city: null,
+                    customerPhone: null,
+                    customerPosition: null,
+                    customerWebsite: null,
+                    houseNumber: null,
+                    idCustomer: null,
+                    idCustomerInfo: null,
+                    idManagerSupplier: null,
+                    officeNumber: null,
+                    street: null,
+                },
             },
             managers: {
 
@@ -94,7 +103,8 @@ class UserView extends Component {
 
     handleFetchUser = () => {
         getProfile().then(userData => {
-            this.setState({ user: userData });
+            console.log(userData);
+            this.setState({ customer: userData });
         }).catch(err => {
             console.log(err);
         });
@@ -117,21 +127,29 @@ class UserView extends Component {
 
     render() {
         const { classes } = this.props;
-        const { tab, user, openPopup } = this.state;
-        console.log(user);
+        const { tab, customer, openPopup } = this.state;
+        const { info = '', customerEmail = '', customerLastname = '', customerName = '' } = customer;
+        const {
+            city = '',
+            houseNumber = '',
+            street = '',
+            officeNumber = '',
+            customerPhone = '',
+            customerPosition = '',
+            customerWebsite = ''
+        } = info;
         const address = [];
-        user.address.city && address.push(user.address.city);
-        user.address.street && address.push(user.address.street);
-        user.address.house_number && address.push(user.address.house_number);
-        user.address.office_number && address.push(user.address.office_number);
-
+        city && address.push(city);
+        street && address.push(street);
+        houseNumber && address.push(houseNumber);
+        officeNumber && address.push(officeNumber);
         return (
             <Paper>
                 {openPopup && <UserEdit
                     open={openPopup}
                     onClose={this.handlePopupClose}
                     onOk={this.handlePopupOk}
-                    user={user}
+                    user={customer}
                 />}
                 <AppBar
                     className={classes.tabsBar}
@@ -163,34 +181,34 @@ class UserView extends Component {
                                     Изменить
                                 </Button>
                             </div>
-                            {user.firstName && <Item
+                            {customerName && <Item
                                 name='Имя'
-                                value={user.firstName}
+                                value={customerName}
                             />}
-                            {user.lastName && <Item
+                            {customerLastname && <Item
                                 name='Фамилия'
-                                value={user.lastName}
+                                value={customerLastname}
                             />}
-                            {user.position && <Item
+                            {customerPosition && <Item
                                 name='Должность'
-                                value={user.position}
+                                value={customerPosition}
                             />}
 
                             {address.join(', ') && <Item
                                 name='Адрес'
                                 value={address.join(', ')}
                             />}
-                            {user.url && <Item
+                            {customerWebsite && <Item
                                 name='Сайт'
-                                value={user.url}
+                                value={customerWebsite}
                             />}
-                            {user.phone && <Item
+                            {customerPhone && <Item
                                 name='Телефон'
-                                value={user.phone}
+                                value={customerPhone}
                             />}
-                            {user.email && <Item
+                            {customerEmail && <Item
                                 name='Email'
-                                value={user.email}
+                                value={customerEmail}
                             />}
                         </Grid>
                         <Grid item sm={12} md={12} lg={6}>

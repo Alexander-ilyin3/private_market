@@ -37,17 +37,19 @@ class UserEdit extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {...props.user};
+        this.state = {
+            ...props.user,
+        }
     }
 
     handleClose = () => {
         this.props.onClose();
     };
 
-    handleInput = (value, field, isAddress) => {
+    handleInput = (value, field, isInfo) => {
         this.setState(currentState => {
-            if (isAddress) {
-                currentState.address[field] = value;
+            if (isInfo) {
+                currentState.info[field] = value;
             } else {
                 currentState[field] = value;
             }
@@ -57,31 +59,9 @@ class UserEdit extends Component {
         });
         console.log(this.state);
     }
-
     handleOk = () => {
-        const { address, firstName, lastName, phone, url, position, id_contacts_info, id_address } = this.state;
-        const updateRequest = {
-            customer_name: firstName,
-            customer_lastname: lastName,
-            info: [{
-                id_contacts_info,
-                customer_phone: phone,
-                customer_website: url,
-                customer_position: position,
-            }],
-            address: [{
-                id_address,
-                city: address.city,
-                house_number: address.house_number,
-                office_number: address.office_number,
-                street: address.street,
-            }]
-
-        }
-
-
-
-        updateProfile(updateRequest).then(resp => {
+        // const { user } = this.state;
+        updateProfile(this.state).then(resp => {
             if (resp) {
                 console.log(resp);
                 this.props.onOk();
@@ -94,9 +74,17 @@ class UserEdit extends Component {
 
     render() {
         const { classes, onClose, open } = this.props;
-        const { address, firstName, lastName, phone, url, position } = this.state;
-
-        // console.log(user);
+        const { info = '', customerLastname = '', customerName = '' } = this.state;
+        const {
+            city = '',
+            houseNumber = '',
+            street = '',
+            officeNumber = '',
+            customerPhone = '',
+            customerPosition = '',
+            customerWebsite = ''
+        } = info;
+        console.log(info);
 
         return (
             <Dialog onClose={this.handleClose} aria-labelledby="edit-user-data" open={open} >
@@ -106,24 +94,27 @@ class UserEdit extends Component {
                 <div className={classes.root}>
                     <form>
                         <TextField
-                            onInput={(e) => { this.handleInput(e.target.value, 'firstName') }}
-                            value={firstName}
+                            inputProps={{tabIndex:'11'}}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerName') }}
+                            value={customerName || ''}
                             label='Имя'
                             variant='outlined'
                             fullWidth
                             margin='normal'
                         />
                         <TextField
-                            onInput={(e) => { this.handleInput(e.target.value, 'lastName') }}
-                            value={lastName}
+                            inputProps={{tabIndex:'12'}}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerLastname') }}
+                            value={customerLastname || ''}
                             label='Фамилия'
                             variant='outlined'
                             fullWidth
                             margin='normal'
                         />
                         <TextField
-                            onInput={(e) => { this.handleInput(e.target.value, 'position') }}
-                            value={position}
+                            inputProps={{tabIndex:'13'}}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerPosition', true) }}
+                            value={customerPosition || ''}
                             label='Должность'
                             variant='outlined'
                             fullWidth
@@ -132,16 +123,18 @@ class UserEdit extends Component {
                         <Grid container spacing={8}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    inputProps={{tabIndex:'14'}}
                                     onInput={(e) => { this.handleInput(e.target.value, 'city', true) }}
-                                    value={address.city || ''}
+                                    value={city || ''}
                                     label='Город'
                                     variant='outlined'
                                     fullWidth
                                     margin='normal'
                                 />
                                 <TextField
-                                    onInput={(e) => { this.handleInput(e.target.value, 'house_number', true) }}
-                                    value={address.house_number || ''}
+                                    inputProps={{tabIndex:'16'}}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'houseNumber', true) }}
+                                    value={houseNumber || ''}
                                     label='№ дома'
                                     variant='outlined'
                                     fullWidth
@@ -150,16 +143,18 @@ class UserEdit extends Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    inputProps={{tabIndex:'15'}}
                                     onInput={(e) => { this.handleInput(e.target.value, 'street', true) }}
-                                    value={address.street || ''}
+                                    value={street || ''}
                                     label='Улица'
                                     variant='outlined'
                                     fullWidth
                                     margin='normal'
                                 />
                                 <TextField
-                                    onInput={(e) => { this.handleInput(e.target.value, 'office_number', true) }}
-                                    value={address.office_number || ''}
+                                    inputProps={{tabIndex:'17'}}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'officeNumber', true) }}
+                                    value={officeNumber || ''}
                                     label='№ офиса'
                                     variant='outlined'
                                     fullWidth
@@ -169,16 +164,18 @@ class UserEdit extends Component {
                         </Grid>
 
                         <TextField
-                            onInput={(e) => { this.handleInput(e.target.value, 'url') }}
-                            value={url}
+                            inputProps={{tabIndex:'18'}}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerWebsite', true) }}
+                            value={customerWebsite || ''}
                             label='Сайт'
                             variant='outlined'
                             fullWidth
                             margin='normal'
                         />
                         <TextField
-                            onInput={(e) => { this.handleInput(Number(e.target.value), 'phone') }}
-                            value={phone}
+                            inputProps={{tabIndex:'19'}}
+                            onInput={(e) => { this.handleInput(Number(e.target.value), 'customerPhone', true) }}
+                            value={customerPhone || ''}
                             label='Телефон'
                             variant='outlined'
                             fullWidth
@@ -188,13 +185,15 @@ class UserEdit extends Component {
 
                         <DialogActions>
                             <Button
+                                inputProps={{tabIndex:'20'}}
                                 variant='outlined'
                                 color='primary'
                                 onClick={this.handleClose}
                             >
                                 закрыть
-                        </Button>
+                            </Button>
                             <Button
+                                inputProps={{tabIndex:'21'}}
                                 variant='contained'
                                 color='secondary'
                                 onClick={this.handleOk}

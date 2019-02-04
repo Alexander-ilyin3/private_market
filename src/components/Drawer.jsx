@@ -111,7 +111,6 @@ class AppDrawer extends Component {
 
     render() {
         const { classes, theme, isLoading } = this.props;
-        console.log(isLoading);
         return (
             <div className={classes.root}>
                 <CssBaseline />
