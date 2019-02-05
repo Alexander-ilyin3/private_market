@@ -97,7 +97,7 @@ class SignUp extends Component {
             password: {
                 value: '',
                 isValid: false,
-                errMsg: 'Пароль не соответствует требованиям',
+                errMsg: 'Пароль должен быть не короче 8 символов, содержать латинские буквы верхнего и нижнего регистра, а  также цифры.',
             },
             repeatPassword: {
                 value: '',
@@ -277,7 +277,7 @@ class SignUp extends Component {
                                     type='password'
                                     placeholder='Пароль'
                                     label='Пароль'
-                                    helperText={isChecked && !isValid && !password.isValid && password.errMsg}
+                                    helperText={password.errMsg}
                                 />
                                 <TextField
                                     error={isChecked && !isValid && repeatPassword.errMsg && !repeatPassword.isValid}
