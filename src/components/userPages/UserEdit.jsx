@@ -54,7 +54,7 @@ class UserEdit extends Component {
     handleOk = () => {
         const userData = { ...this.state }
         if(typeof userData.customerPhone === 'string')
-        userData.customerPhone = Number(userData.customerPhone.replace(/\D+/g, ""));
+        userData.customerPhone = userData.customerPhone.replace(/\D+/g, "");
         updateProfile(userData).then(resp => {
             if (resp) {
                 this.props.onOk();
@@ -176,8 +176,8 @@ class UserEdit extends Component {
                         />
                         <TextField
                             inputprops={{ tabIndex: '19' }}
-                            onInput={(e) => { this.handleInput(e.target.value, 'customerPhone') }}
-                            value={customerPhone || '+38(0'}
+                            onChange={(e) => { this.handleInput(e.target.value, 'customerPhone') }}
+                            value={customerPhone || '(0'}
                             variant='outlined'
                             fullWidth
                             margin="normal"
@@ -186,7 +186,7 @@ class UserEdit extends Component {
                             InputProps={{
                                 inputComponent: MaskedPhone,
                             }}
-                            helperText="Номер в формате +38(0xx)xxx-xx-xx"
+                            helperText="Номер в формате (0xx)xxx-xx-xx"
                         />
 
                         <DialogActions>

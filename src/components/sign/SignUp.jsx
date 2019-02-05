@@ -14,9 +14,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import classNames from 'classnames';
 import { withRouter, Link } from 'react-router-dom';
 
-
-
-
 import { signup } from '../../services/api';
 import { apiRegisterSuccessPath } from '../../config';
 import { Typography } from '@material-ui/core';
@@ -80,7 +77,7 @@ class SignUp extends Component {
                 errMsg: 'слишком короткое имя',
             },
             phone: {
-                value: '380',
+                value: '',
                 isValid: false,
                 errMsg: 'введите корректный номер',
             },
@@ -111,6 +108,7 @@ class SignUp extends Component {
     }
 
     handleInput = (field, value) => {
+        console.log(value)
         this.setState(state => {
             state[field].value = value;
             state.error = false;
@@ -128,7 +126,7 @@ class SignUp extends Component {
                 valid = (value.length > 2);
                 break;
             case 'phone':
-                valid = !!value.match(/\+38\(0\d\d\)\d\d\d-\d\d-\d\d/);
+                valid = !!value.match(/\(0\d\d\)\d\d\d-\d\d-\d\d/);
                 break;
             case 'url':
                 valid = !!value.match(/\w+\.\w{2}/);
@@ -176,7 +174,7 @@ class SignUp extends Component {
             console.log(phone)
             signup({
                 name: name.value,
-                phone: Number(phone.value.replace(/\D+/g, "")),
+                phone: phone.value.replace(/\D+/g, ""),
                 url: url.value,
                 email: email.value,
                 password: password.value,
@@ -233,8 +231,8 @@ class SignUp extends Component {
                                 />
                                 <TextField
                                     error={isChecked && !isValid && phone.errMsg && !phone.isValid}
-                                    value={phone.value}
-                                    onInput={(event) => { this.handleInput('phone', event.target.value) }}
+                                    value={phone.value || '(0'}
+                                    onChange={(event) => this.handleInput('phone', event.target.value)}
                                     variant='outlined'
                                     fullWidth
                                     margin="normal"
@@ -243,7 +241,7 @@ class SignUp extends Component {
                                     InputProps={{
                                         inputComponent: MaskedPhone,
                                     }}
-                                    helperText="Номер в формате +38(0xx)xxx-xx-xx"
+                                    helperText="Номер в формате (0xx)xxx-xx-xx"
                                 />
                                 <TextField
                                     error={isChecked && !isValid && url.errMsg && !url.isValid}
