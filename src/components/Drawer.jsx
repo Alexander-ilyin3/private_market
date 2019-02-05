@@ -10,10 +10,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
 
 import Menu from './Menu';
 import MainFrame from './MmainFrame';
 import Preloader from './assets/preloader';
+
+import { logout } from '../services/api';
 
 const drawerWidth = 240;
 
@@ -21,6 +24,9 @@ const styles = theme => ({
     root: {
         display: 'flex',
 
+    },
+    grow: {
+        flexGrow: 1,
     },
     drawer: {
         whiteSpace: 'nowrap',
@@ -110,7 +116,7 @@ class AppDrawer extends Component {
     };
 
     render() {
-        const { classes, theme, isLoading } = this.props;
+        const { classes, isLoading } = this.props;
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -120,7 +126,9 @@ class AppDrawer extends Component {
                         [classes.appBarShift]: this.state.max,
                     })}
                 >
-                    <Toolbar>
+                    <Toolbar
+
+                    >
                         <IconButton
                             color="inherit"
                             aria-label="Open drawer"
@@ -137,6 +145,13 @@ class AppDrawer extends Component {
                         >
                             <MenuIcon />
                         </IconButton>
+                        <div className={classes.grow}></div>
+                        <Button
+                            size='small'
+                            color="inherit"
+                            variant='text'
+                            onClick={logout}
+                        >Выход</Button>
                         <Typography variant="h6" color="inherit" noWrap>
 
                         </Typography>
@@ -153,6 +168,7 @@ class AppDrawer extends Component {
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
+                            onClick={this.handleDrawerToggle}
                         >
                             <Menu />
                         </Drawer>

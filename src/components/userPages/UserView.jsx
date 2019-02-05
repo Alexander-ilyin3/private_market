@@ -54,7 +54,7 @@ const Item = (props) => (
 
 const TabManagers = () => (
     <Grid container spacing={8}>
-        <Grid sm={12} md={12}>
+        <Grid item sm={12} md={12}>
             <Paper>
 
             </Paper>
@@ -103,7 +103,6 @@ class UserView extends Component {
 
     handleFetchUser = () => {
         getProfile().then(userData => {
-            console.log(userData);
             this.setState({ customer: userData });
         }).catch(err => {
             console.log(err);
@@ -128,7 +127,6 @@ class UserView extends Component {
     render() {
         const { classes } = this.props;
         const { tab, customer, openPopup } = this.state;
-        const { info = '', customerEmail = '', customerLastname = '', customerName = '' } = customer;
         const {
             city = '',
             houseNumber = '',
@@ -136,8 +134,12 @@ class UserView extends Component {
             officeNumber = '',
             customerPhone = '',
             customerPosition = '',
-            customerWebsite = ''
-        } = info;
+            customerWebsite = '',
+            customerEmail = '',
+            customerLastname = '',
+            customerName = ''
+        } = customer;
+
         const address = [];
         city && address.push(city);
         street && address.push(street);
@@ -202,10 +204,10 @@ class UserView extends Component {
                                 name='Сайт'
                                 value={customerWebsite}
                             />}
-                            {customerPhone && <Item
+                            {customerPhone ? <Item
                                 name='Телефон'
                                 value={customerPhone}
-                            />}
+                            /> : null}
                             {customerEmail && <Item
                                 name='Email'
                                 value={customerEmail}

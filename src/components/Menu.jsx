@@ -17,8 +17,8 @@ import { withRouter } from 'react-router-dom';
 
 import { ROOT_DOMAIN, apiNewOrderPath, apiProfilePath } from '../config';
 const styles = theme => ({
-    toolbar: theme.mixins.toolbar,
     toolbar: {
+        ...theme.mixins.toolbar,
         backgroundColor: '#4c6c8b',
         height: 64,
         alignItems: 'middle',

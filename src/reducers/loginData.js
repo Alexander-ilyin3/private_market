@@ -15,7 +15,7 @@ export default function loginData(state = initialState || emptyState, action) {
         return action.payload;
     }
     if(action.type === 'LOG_OUT'){
-        setStorageItem("appState", emptyState);
+        setStorageItem("appState", JSON.stringify(emptyState));
         return emptyState;
     }
     return state;

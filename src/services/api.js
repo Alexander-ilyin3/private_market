@@ -1,7 +1,7 @@
 import axios from 'axios';
 import querystring from 'querystring';
 import { store } from '../reducers';
-import {convertToCamelcase, convertToSnakecase} from './functions';
+import { convertToCamelcase, convertToSnakecase } from './functions';
 
 import {
     apiBaseURL,
@@ -29,6 +29,8 @@ export const signup = async (signUpData) => {
         customer_name: signUpData.name,
         customer_email: signUpData.email,
         customer_password: signUpData.password,
+        customer_phone: signUpData.phone,
+        customer_website: signUpData.url,
         c_password: signUpData.repeatPassword,
     };
     try {
@@ -38,19 +40,11 @@ export const signup = async (signUpData) => {
     } catch (err) {
         const { response = {} } = err || {};
         const { data = {} } = response;
-        const { error = {} } = data;
-        if (typeof error === 'string') {
-            throw new Error(error);
-        }
-        if (error.c_password) {
-            throw new Error(error.c_password);
-        }
-        if (error.customer_password) {
-            throw new Error(error.customer_password);
+        const { message = {} } = data;
+        if (typeof message === 'string') {
+            throw new Error(message);
         }
         throw new Error('Signup Failed!');
-    } finally {
-
     }
 }
 
@@ -76,31 +70,25 @@ export const signin = async (loginData) => {
     } catch (err) {
         const { response = {} } = err || {};
         const { data = {} } = response;
-        const { error = {} } = data;
-        console.log(error);
-        if (typeof error === 'string') {
-            throw new Error(error);
+        const { message = {} } = data;
+        console.log(message);
+        if (typeof message === 'string') {
+            throw new Error(message);
         }
-
-    } finally {
-
+        throw new Error('Ошибка авторизации');
     }
 }
 
 export const logout = async () => {
     try {
         const res = await instance.post(apiLogoutPath);
-        if (res) {
-            store.dispatch({
-                type: 'LOG_OUT',
-            })
-            return (true);
-        }
-
+        return (true);
     } catch (err) {
 
     } finally {
-
+        store.dispatch({
+            type: 'LOG_OUT',
+        });
     }
 }
 
@@ -119,8 +107,6 @@ export const getProfile = async () => {
         }
     } catch (err) {
         throw new Error(err);
-    } finally {
-
     }
 }
 
@@ -132,8 +118,17 @@ export const updateProfile = async (userData) => {
             return res;
         }
     } catch (err) {
-        throw new Error(err);
-    } finally {
+        const { response = {} } = err || {};
+        const { data = {} } = response;
+        const { message = {} } = data;
+        console.log(message)
+        if (typeof message === 'string') {
+            throw new Error(message);
+        }
+        if(message.customer_phone){
+            throw new Error(message.customer_phone[0]);
+        }
+        throw new Error('Невозможно обновить профиль');
     }
 }
 
@@ -143,7 +138,7 @@ instance.interceptors.response.use(
         return res;
     }, err => {
         store.dispatch({ type: 'LOADING_STOP' });
-        throw new Error(err)
+        return Promise.reject(err);
     }
 );
 
@@ -155,7 +150,7 @@ instance.interceptors.request.use(
         if (token) {
             updatedConfig.headers.Authorization = token;
         }
-        
+
         return {
             ...updatedConfig,
         };

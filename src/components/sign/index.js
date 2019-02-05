@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import {apiSignupPath} from '../../config';
+import { apiSignupPath, apiRegisterSuccessPath } from '../../config';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -12,7 +12,7 @@ export default function () {
         <BrowserRouter>
             <Switch>
                 <Route exact path={apiSignupPath} render={() => <SignUp />} />
-                <Route exact path='/successreg' render={() => <AfterReg/>} />
+                <Route exact path={apiRegisterSuccessPath} render={() => <AfterReg />} />
                 <Route path='/' render={() => <SignIn />} />
             </Switch>
         </BrowserRouter>

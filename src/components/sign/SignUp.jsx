@@ -9,32 +9,18 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
-import MaskedInput from 'react-text-mask';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom';
+
 
 
 
 import { signup } from '../../services/api';
+import { apiRegisterSuccessPath } from '../../config';
 import { Typography } from '@material-ui/core';
-
-function MaskedPhone(props) {
-    const { inputRef, ...other } = props;
-
-    return (
-        <MaskedInput
-            {...other}
-            ref={ref => {
-                inputRef(ref ? ref.inputElement : null);
-            }}
-            mask={['(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
-            placeholderChar={'\u2000'}
-            showMask
-        />
-    );
-}
+import MaskedPhone from '../assets/MaskedPhone';
 
 const styles = theme => ({
     signup: {
@@ -73,6 +59,12 @@ const styles = theme => ({
     error: {
         border: '1px solid',
         borderColor: theme.palette.error.main,
+    },
+    link: {
+        textDecoration: 'none',
+        '&:visited': {
+            color: theme.palette.primary.main,
+        }
     }
 });
 
@@ -88,7 +80,7 @@ class SignUp extends Component {
                 errMsg: 'слишком короткое имя',
             },
             phone: {
-                value: '(0  )   -  -  ',
+                value: '380',
                 isValid: false,
                 errMsg: 'введите корректный номер',
             },
@@ -136,9 +128,7 @@ class SignUp extends Component {
                 valid = (value.length > 2);
                 break;
             case 'phone':
-                console.log(value)
-                valid = !!value.match(/\(0\d\d\)\d\d\d-\d\d-\d\d/);
-                console.log(valid)
+                valid = !!value.match(/\+38\(0\d\d\)\d\d\d-\d\d-\d\d/);
                 break;
             case 'url':
                 valid = !!value.match(/\w+\.\w{2}/);
@@ -174,7 +164,6 @@ class SignUp extends Component {
             );
             return currentState;
         });
-        console.log(this.state.isValid)
     }
 
     handleSign = (e) => {
@@ -184,10 +173,10 @@ class SignUp extends Component {
         this.setState({ isChecked: true });
         this.validateForm();
         if (isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-
+            console.log(phone)
             signup({
                 name: name.value,
-                phone: phone.value,
+                phone: Number(phone.value.replace(/\D+/g, "")),
                 url: url.value,
                 email: email.value,
                 password: password.value,
@@ -195,7 +184,7 @@ class SignUp extends Component {
             }).then(success => {
                 if (success) {
                     console.log('Sended success: ', success);
-                    this.props.history.push('/successreg');
+                    this.props.history.push(apiRegisterSuccessPath);
                 }
 
             }).catch(err => {
@@ -254,7 +243,7 @@ class SignUp extends Component {
                                     InputProps={{
                                         inputComponent: MaskedPhone,
                                     }}
-                                    helperText="Номер в формате (0xx)xxx-xx-xx"
+                                    helperText="Номер в формате +38(0xx)xxx-xx-xx"
                                 />
                                 <TextField
                                     error={isChecked && !isValid && url.errMsg && !url.isValid}
@@ -327,6 +316,13 @@ class SignUp extends Component {
                                 </Button>
                             </CardContent>
                         </form>
+                        <Typography
+                            color='primary'
+                            paragraph
+                            align='center'
+                        >
+                            <Link to='/' className={classes.link}>У меня уже есть аккаунт</Link>
+                        </Typography>
                     </Card>
                 </Paper>
             </div>

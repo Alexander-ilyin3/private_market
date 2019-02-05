@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 import { object } from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {
-    Paper,
-    // Avatar,
-    // Card,
-    // CardHeader,
-    // CardContent,
-    Typography,
-    AppBar,
-    Tabs,
-    Tab,
     Grid,
     Button,
     Dialog,
@@ -22,9 +13,16 @@ import {
 
 import { updateProfile } from '../../services/api';
 
+import MaskedPhone from '../assets/MaskedPhone';
+
 const styles = theme => ({
-    root: {
+    body: {
         padding: 20,
+    },
+    root: {
+        [theme.breakpoints.down('sm')]: {
+            margin: 5,
+        }
     }
 });
 
@@ -46,24 +44,19 @@ class UserEdit extends Component {
         this.props.onClose();
     };
 
-    handleInput = (value, field, isInfo) => {
+    handleInput = (value, field) => {
+        console.log(value)
         this.setState(currentState => {
-            if (isInfo) {
-                currentState.info[field] = value;
-            } else {
-                currentState[field] = value;
-            }
-
-
+            currentState[field] = value;
             return currentState;
         });
-        console.log(this.state);
     }
     handleOk = () => {
-        // const { user } = this.state;
-        updateProfile(this.state).then(resp => {
+        const userData = { ...this.state }
+        if(typeof userData.customerPhone === 'string')
+        userData.customerPhone = Number(userData.customerPhone.replace(/\D+/g, ""));
+        updateProfile(userData).then(resp => {
             if (resp) {
-                console.log(resp);
                 this.props.onOk();
                 this.handleClose();
             }
@@ -73,8 +66,7 @@ class UserEdit extends Component {
     }
 
     render() {
-        const { classes, onClose, open } = this.props;
-        const { info = '', customerLastname = '', customerName = '' } = this.state;
+        const { classes, open } = this.props;
         const {
             city = '',
             houseNumber = '',
@@ -82,19 +74,25 @@ class UserEdit extends Component {
             officeNumber = '',
             customerPhone = '',
             customerPosition = '',
-            customerWebsite = ''
-        } = info;
-        console.log(info);
-
+            customerWebsite = '',
+            customerLastname = '',
+            customerName = ''
+        } = this.state;
+        console.log(customerPhone);
         return (
-            <Dialog onClose={this.handleClose} aria-labelledby="edit-user-data" open={open} >
+            <Dialog
+                onClose={this.handleClose}
+                aria-labelledby="edit-user-data"
+                open={open}
+                classes={{ paper: classes.root }}
+            >
                 <DialogTitle
                     style={{ textAlign: 'center' }}
                 >Изменить личные данные</DialogTitle>
-                <div className={classes.root}>
+                <div className={classes.body}>
                     <form>
                         <TextField
-                            inputProps={{tabIndex:'11'}}
+                            inputprops={{ tabIndex: '11' }}
                             onInput={(e) => { this.handleInput(e.target.value, 'customerName') }}
                             value={customerName || ''}
                             label='Имя'
@@ -103,7 +101,7 @@ class UserEdit extends Component {
                             margin='normal'
                         />
                         <TextField
-                            inputProps={{tabIndex:'12'}}
+                            inputprops={{ tabIndex: '12' }}
                             onInput={(e) => { this.handleInput(e.target.value, 'customerLastname') }}
                             value={customerLastname || ''}
                             label='Фамилия'
@@ -112,8 +110,8 @@ class UserEdit extends Component {
                             margin='normal'
                         />
                         <TextField
-                            inputProps={{tabIndex:'13'}}
-                            onInput={(e) => { this.handleInput(e.target.value, 'customerPosition', true) }}
+                            inputprops={{ tabIndex: '13' }}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerPosition') }}
                             value={customerPosition || ''}
                             label='Должность'
                             variant='outlined'
@@ -123,17 +121,30 @@ class UserEdit extends Component {
                         <Grid container spacing={8}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    inputProps={{tabIndex:'14'}}
-                                    onInput={(e) => { this.handleInput(e.target.value, 'city', true) }}
+                                    inputprops={{ tabIndex: '14' }}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'city') }}
                                     value={city || ''}
                                     label='Город'
                                     variant='outlined'
                                     fullWidth
                                     margin='normal'
                                 />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
-                                    inputProps={{tabIndex:'16'}}
-                                    onInput={(e) => { this.handleInput(e.target.value, 'houseNumber', true) }}
+                                    inputprops={{ tabIndex: '15' }}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'street') }}
+                                    value={street || ''}
+                                    label='Улица'
+                                    variant='outlined'
+                                    fullWidth
+                                    margin='normal'
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    inputprops={{ tabIndex: '16' }}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'houseNumber') }}
                                     value={houseNumber || ''}
                                     label='№ дома'
                                     variant='outlined'
@@ -143,17 +154,8 @@ class UserEdit extends Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    inputProps={{tabIndex:'15'}}
-                                    onInput={(e) => { this.handleInput(e.target.value, 'street', true) }}
-                                    value={street || ''}
-                                    label='Улица'
-                                    variant='outlined'
-                                    fullWidth
-                                    margin='normal'
-                                />
-                                <TextField
-                                    inputProps={{tabIndex:'17'}}
-                                    onInput={(e) => { this.handleInput(e.target.value, 'officeNumber', true) }}
+                                    inputprops={{ tabIndex: '17' }}
+                                    onInput={(e) => { this.handleInput(e.target.value, 'officeNumber') }}
                                     value={officeNumber || ''}
                                     label='№ офиса'
                                     variant='outlined'
@@ -164,8 +166,8 @@ class UserEdit extends Component {
                         </Grid>
 
                         <TextField
-                            inputProps={{tabIndex:'18'}}
-                            onInput={(e) => { this.handleInput(e.target.value, 'customerWebsite', true) }}
+                            inputprops={{ tabIndex: '18' }}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerWebsite') }}
                             value={customerWebsite || ''}
                             label='Сайт'
                             variant='outlined'
@@ -173,19 +175,22 @@ class UserEdit extends Component {
                             margin='normal'
                         />
                         <TextField
-                            inputProps={{tabIndex:'19'}}
-                            onInput={(e) => { this.handleInput(Number(e.target.value), 'customerPhone', true) }}
-                            value={customerPhone || ''}
-                            label='Телефон'
+                            inputprops={{ tabIndex: '19' }}
+                            onInput={(e) => { this.handleInput(e.target.value, 'customerPhone') }}
+                            value={customerPhone || '+38(0'}
                             variant='outlined'
                             fullWidth
-                            margin='normal'
-                            type='number'
+                            margin="normal"
+                            placeholder='Телефон'
+                            label='Телефон'
+                            InputProps={{
+                                inputComponent: MaskedPhone,
+                            }}
+                            helperText="Номер в формате +38(0xx)xxx-xx-xx"
                         />
 
                         <DialogActions>
                             <Button
-                                inputProps={{tabIndex:'20'}}
                                 variant='outlined'
                                 color='primary'
                                 onClick={this.handleClose}
@@ -193,7 +198,6 @@ class UserEdit extends Component {
                                 закрыть
                             </Button>
                             <Button
-                                inputProps={{tabIndex:'21'}}
                                 variant='contained'
                                 color='secondary'
                                 onClick={this.handleOk}
@@ -203,7 +207,7 @@ class UserEdit extends Component {
                         </DialogActions>
                     </form>
                 </div>
-            </Dialog>
+            </Dialog >
         );
     }
 }

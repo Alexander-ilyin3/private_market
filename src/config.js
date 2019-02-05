@@ -7,6 +7,7 @@ export const ROOT_DOMAIN = process.env.REACT_APP_ROOT_DOMAIN || '/';
 const apiCustomer = '/customer';
 export const apiLoginPath = `${apiCustomer}/login`;
 export const apiSignupPath = `${apiCustomer}/register`;
+export const apiRegisterSuccessPath = '/register/success';
 export const apiForgotPassword = '/reset-password/';
 export const apiLogoutPath = `${apiCustomer}/logout`;
 export const apiProfilePath = `${apiCustomer}/details`;
