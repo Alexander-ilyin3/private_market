@@ -175,7 +175,6 @@ class UserEdit extends Component {
                             margin='normal'
                         />
                         <TextField
-                            inputprops={{ tabIndex: '19' }}
                             onChange={(e) => { this.handleInput(e.target.value, 'customerPhone') }}
                             value={customerPhone || '(0'}
                             variant='outlined'
@@ -184,6 +183,7 @@ class UserEdit extends Component {
                             placeholder='Телефон'
                             label='Телефон'
                             InputProps={{
+                                tabIndex: '19',
                                 inputComponent: MaskedPhone,
                             }}
                             helperText="Номер в формате (0xx)xxx-xx-xx"

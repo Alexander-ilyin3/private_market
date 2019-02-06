@@ -7,7 +7,7 @@ import {
     apiBaseURL,
     apiLoginPath,
     apiSignupPath,
-    apiForgotPassword,
+    apiRecoveryPasswordPath,
     apiEmailVerify,
     apiLogoutPath,
     apiProfilePath,
@@ -79,10 +79,32 @@ export const signin = async (loginData) => {
     }
 }
 
+export const recovery = async (email) => {
+    try {
+        const res = await instance.post(apiRecoveryPasswordPath, {email: email});
+        if (res) {
+            return true;
+        }
+    } catch (err) {
+        const { response = {} } = err || {};
+        const { data = {} } = response;
+        const { message = {} } = data;
+        if (typeof message === 'string') {
+            throw new Error(message);
+        }
+        if (message.recovery) {
+            throw new Error(message.recovery);
+        }
+        throw new Error('Ошибка восстановления пароля');
+    }
+}
+
 export const logout = async () => {
     try {
         const res = await instance.post(apiLogoutPath);
-        return (true);
+        if (res) {
+            return (true);
+        }
     } catch (err) {
 
     } finally {
@@ -125,7 +147,7 @@ export const updateProfile = async (userData) => {
         if (typeof message === 'string') {
             throw new Error(message);
         }
-        if(message.customer_phone){
+        if (message.customer_phone) {
             throw new Error(message.customer_phone[0]);
         }
         throw new Error('Невозможно обновить профиль');
