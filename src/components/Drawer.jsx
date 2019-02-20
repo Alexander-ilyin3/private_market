@@ -10,6 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Button from '@material-ui/core/Button';
 
 import Menu from './Menu';
@@ -111,8 +112,12 @@ class AppDrawer extends Component {
         this.setState(state => ({ max: !state.max }));
     };
 
-    handleDrawerToggle = () => {
-        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+    handleDrawerToggle = (status) => () => {
+        if(status !== undefined){
+            this.setState(() => ({ mobileOpen: status }));
+        } else {
+            this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+        }
     };
 
     render() {
@@ -132,7 +137,7 @@ class AppDrawer extends Component {
                         <IconButton
                             color="inherit"
                             aria-label="Open drawer"
-                            onClick={this.handleDrawerToggle}
+                            onClick={this.handleDrawerToggle()}
                             className={classes.menuButton}
                         >
                             <MenuIcon />
@@ -160,18 +165,19 @@ class AppDrawer extends Component {
                 <nav className={classes.drawer}>
 
                     <Hidden smUp implementation="css">
-                        <Drawer
-                            container={this.props.container}
-                            variant="temporary"
+                        <SwipeableDrawer
+                            // container={this.props.container}
+                            // variant="temporary"
                             open={this.state.mobileOpen}
-                            onClose={this.handleDrawerToggle}
+                            onClose={this.handleDrawerToggle(false)}
+                            onOpen={this.handleDrawerToggle(true)}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
-                            onClick={this.handleDrawerToggle}
+                            onClick={this.handleDrawerToggle(false)}
                         >
                             <Menu />
-                        </Drawer>
+                        </SwipeableDrawer>
                     </Hidden>
                     <Hidden xsDown implementation="css">
                         <Drawer
