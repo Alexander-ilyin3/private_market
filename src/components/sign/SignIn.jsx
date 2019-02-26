@@ -16,7 +16,7 @@ import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
 import CheckIcon from '@material-ui/icons/Check';
 import classNames from 'classnames'
 
-import { apiSignupPath, apiRecoveryPasswordPath } from '../../config';
+import { signUpPath, apiRecoveryPasswordPath } from '../../config';
 import { signin } from '../../services/api';
 
 const styles = theme => ({
@@ -210,7 +210,6 @@ class SignIn extends Component {
                                         </div>
                                         <Button
                                             variant='contained'
-
                                             color='primary'
                                             fullWidth
                                             type='submit'
@@ -286,7 +285,7 @@ class SignIn extends Component {
                                     </Typography>
                                     Lorem Ipsum dolar set.
                                 </Typography>
-                                <Link to={apiSignupPath} style={{ textDecoration: 'none' }}>
+                                <Link to={signUpPath} style={{ textDecoration: 'none' }}>
                                     <Button
                                         variant='outlined'
                                         color='secondary'

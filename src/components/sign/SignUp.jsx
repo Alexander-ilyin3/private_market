@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { withRouter, Link } from 'react-router-dom';
 
 import { signup } from '../../services/api';
-import { apiRegisterSuccessPath } from '../../config';
+import { registerSuccessPath } from '../../config';
 import { Typography } from '@material-ui/core';
 import MaskedPhone from '../assets/MaskedPhone';
 
@@ -182,7 +182,7 @@ class SignUp extends Component {
             }).then(success => {
                 if (success) {
                     console.log('Sended success: ', success);
-                    this.props.history.push(apiRegisterSuccessPath);
+                    this.props.history.push(registerSuccessPath);
                 }
 
             }).catch(err => {

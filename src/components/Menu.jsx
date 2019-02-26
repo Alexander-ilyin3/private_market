@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
 
-import { ROOT_DOMAIN, apiNewOrderPath, apiProfilePath } from '../config';
+import { ROOT_DOMAIN, newOrderPath, ordersPath, paymentLogPath, productsPath, profilePath, statisticPath } from '../config';
 const styles = theme => ({
     toolbar: {
         ...theme.mixins.toolbar,
@@ -68,7 +68,7 @@ class Menu extends Component {
                 <div className={classes.toolbar}>
                     <ListItem button
                         selected={this.state.selectedIndex === 0}
-                        onClick={event => { this.handleListItemClick(event, 0); history.push(apiNewOrderPath) }}
+                        onClick={event => { this.handleListItemClick(event, 0); history.push(newOrderPath) }}
                         classes={{
                             selected: classes.focus,
                             default: classes.defaultItem,
@@ -92,7 +92,7 @@ class Menu extends Component {
                 <List>
                     <ListItem button
                         selected={this.state.selectedIndex === 1}
-                        onClick={event => this.handleListItemClick(event, 1)}
+                        onClick={event => {this.handleListItemClick(event, 1); history.push(statisticPath)}}
                         classes={{
                             selected: classes.focus,
                             default: classes.defaultItem
@@ -110,7 +110,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 2}
-                        onClick={event => this.handleListItemClick(event, 2)}
+                        onClick={event => {this.handleListItemClick(event, 2); history.push(productsPath)}}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -127,7 +127,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 3}
-                        onClick={event => this.handleListItemClick(event, 3)}
+                        onClick={event => { this.handleListItemClick(event, 3); history.push(ordersPath);}}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -144,7 +144,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 4}
-                        onClick={event => this.handleListItemClick(event, 4)}
+                        onClick={event => {this.handleListItemClick(event, 4); history.push(paymentLogPath);}}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -161,7 +161,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 5}
-                        onClick={event => { this.handleListItemClick(event, 5); history.push(apiNewOrderPath) }}
+                        onClick={event => { this.handleListItemClick(event, 5); history.push(newOrderPath) }}
                         classes={{
                             selected: classes.focus,
                         }}
@@ -178,7 +178,7 @@ class Menu extends Component {
                     </ListItem>
                     <ListItem button
                         selected={this.state.selectedIndex === 6}
-                        onClick={event => { this.handleListItemClick(event, 6); history.push(apiProfilePath) }}
+                        onClick={event => { this.handleListItemClick(event, 6); history.push(profilePath) }}
                         classes={{
                             selected: classes.focus,
                         }}
