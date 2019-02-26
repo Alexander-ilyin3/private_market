@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { withRouter, Link } from 'react-router-dom';
 
 import { signup } from '../../services/api';
-import { registerSuccessPath } from '../../config';
+import { registerSuccessPath, signInPath } from '../../config/routes';
 import { Typography } from '@material-ui/core';
 import MaskedPhone from '../assets/MaskedPhone';
 
@@ -319,7 +319,7 @@ class SignUp extends Component {
                             paragraph
                             align='center'
                         >
-                            <Link to='/' className={classes.link}>У меня уже есть аккаунт</Link>
+                            <Link to={signInPath} className={classes.link}>У меня уже есть аккаунт</Link>
                         </Typography>
                     </Card>
                 </Paper>

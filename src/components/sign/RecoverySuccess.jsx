@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
+import { signInPath } from '../../config/routes';
 
 const styles = theme => ({
     root: {
@@ -65,7 +66,7 @@ function AfterReg(props) {
                 variant='subtitle1'
                 align='center'
             >
-                <Link to='/' className={classes.link}>Страница авторизации</Link>
+                <Link to={signInPath} className={classes.link}>Страница авторизации</Link>
             </Typography>
         </div>
     );

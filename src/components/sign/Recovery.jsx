@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import { withRouter, Link } from 'react-router-dom';
 
-import { apiRecoverySuccessPath } from '../../config';
+import { recoveryPasswordPath, signInPath } from '../../config/routes';
 import { recovery } from '../../services/api';
 
 const styles = theme => ({
@@ -73,14 +73,14 @@ class Recovery extends Component {
 
         recovery(email).then(success => {
             if (success) {
-                this.props.history.push(apiRecoverySuccessPath);
+                this.props.history.push(recoveryPasswordPath);
             }
         }).catch(err => {
             if (err) {
                 this.setState({ errMsg: err.message, error: true });
             }
         });
-        this.props.history.push(apiRecoverySuccessPath);
+        this.props.history.push(recoveryPasswordPath);
 
     }
 
@@ -133,7 +133,7 @@ class Recovery extends Component {
                             paragraph
                             align='center'
                         >
-                            <Link to='/' className={classes.link}>Страница авторизации</Link>
+                            <Link to={signInPath} className={classes.link}>Страница авторизации</Link>
                         </Typography>
                     </Card>
                 </Paper>

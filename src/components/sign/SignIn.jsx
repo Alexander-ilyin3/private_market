@@ -16,7 +16,7 @@ import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
 import CheckIcon from '@material-ui/icons/Check';
 import classNames from 'classnames'
 
-import { signUpPath, apiRecoveryPasswordPath } from '../../config';
+import { signUpPath, recoveryPasswordPath } from '../../config/routes';
 import { signin } from '../../services/api';
 
 const styles = theme => ({
@@ -200,7 +200,7 @@ class SignIn extends Component {
                                                 }
                                                 label="Запомнить"
                                             />
-                                            <Link to={apiRecoveryPasswordPath} style={{ textDecoration: 'none' }}>
+                                            <Link to={recoveryPasswordPath} style={{ textDecoration: 'none' }}>
                                                 <Typography
                                                     color='primary'
                                                     variant='caption'

@@ -4,7 +4,6 @@ import { store } from '../reducers';
 import { convertToCamelcase, convertToSnakecase } from './functions';
 
 import {
-    apiBaseURL,
     apiLoginPath,
     apiSignupPath,
     apiRecoveryPasswordPath,
@@ -12,7 +11,9 @@ import {
     apiLogoutPath,
     apiProfilePath,
     apiprofileUpdatePath,
-} from '../config';
+} from '../config/apiPath';
+
+import { apiBaseURL } from '../config/constants';
 
 const instance = axios.create({
     baseURL: apiBaseURL,
@@ -81,7 +82,7 @@ export const signin = async (loginData) => {
 
 export const recovery = async (email) => {
     try {
-        const res = await instance.post(apiRecoveryPasswordPath, {email: email});
+        const res = await instance.post(apiRecoveryPasswordPath, { email: email });
         if (res) {
             return true;
         }

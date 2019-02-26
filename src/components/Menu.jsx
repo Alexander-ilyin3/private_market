@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
 
-import { ROOT_DOMAIN, newOrderPath, ordersPath, paymentLogPath, productsPath, profilePath, statisticPath } from '../config';
+import { newOrderPath, ordersPath, paymentLogPath, productsPath, profilePath, statisticPath } from '../config/routes';
 const styles = theme => ({
     toolbar: {
         ...theme.mixins.toolbar,
