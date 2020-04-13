@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { newOrderPath, statisticPath, profilePath, productsPath, paymentLogPath, ordersPath } from '../config/routes';
-import { ROOT_DOMAIN } from '../config/constants'
+import { newOrderPath, statisticPath, profilePath, productsPath, paymentLogPath, ordersPath } from 'config/routes';
+import { ROOT_DOMAIN } from 'config/constants'
 
-import UserView from './userPages/UserView';
-import Products from './productsPages/Products';
+import UserView from 'components/pages/UserView';
+import Products from 'components/pages/products';
 
-class MainFrame extends Component {
+export default class AuthRouter extends Component {
     render() {
         return (
             <Switch>
@@ -18,5 +18,3 @@ class MainFrame extends Component {
         );
     }
 }
-
-export default MainFrame;

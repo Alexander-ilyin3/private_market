@@ -4,27 +4,6 @@ import { Paper, Button, Typography, TextField, IconButton } from '@material-ui/c
 import DataTable from "mui-datatables";
 import SearchIcon from '@material-ui/icons/Search';
 
-const styles = theme => ({
-    Bar: {
-        padding: '20px 50px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    rightmenuElements: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'spacearound',
-        alignItems: 'center',
-    },
-    searchBar: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-});
-
 class Products extends Component {
 
     state = {
@@ -74,4 +53,4 @@ class Products extends Component {
 
 }
 
-export default withStyles(styles)(Products);
+export default Products;

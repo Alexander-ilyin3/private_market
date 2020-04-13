@@ -11,20 +11,9 @@ import {
 
 } from '@material-ui/core';
 
-import { updateProfile } from '../../services/api';
+import { updateProfile } from 'services/api';
 
-import MaskedPhone from '../assets/MaskedPhone';
-
-const styles = theme => ({
-    body: {
-        padding: 20,
-    },
-    root: {
-        [theme.breakpoints.down('sm')]: {
-            margin: 5,
-        }
-    }
-});
+import MaskedPhone from 'components/assets/MaskedPhone';
 
 
 class UserEdit extends Component {
@@ -212,4 +201,4 @@ class UserEdit extends Component {
     }
 }
 
-export default withStyles(styles)(UserEdit);
+export default UserEdit

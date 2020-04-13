@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,45 +11,11 @@ import BagIcon from '@material-ui/icons/WorkOutlineOutlined';
 import CreditCardIcon from '@material-ui/icons/CreditCardOutlined';
 import AccountIcon from '@material-ui/icons/AccountBoxOutlined';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
 
 
-import { newOrderPath, ordersPath, paymentLogPath, productsPath, profilePath, statisticPath } from '../config/routes';
-const styles = theme => ({
-    toolbar: {
-        ...theme.mixins.toolbar,
-        backgroundColor: '#4c6c8b',
-        height: 64,
-        alignItems: 'middle',
-        display: 'flex',
-    },
-    root: {
-        backgroundColor: theme.palette.menuBackground,
-        color: theme.palette.text.secondary,
-    },
-    menuIcon: {
-        color: 'inherit',
-    },
-    focus: {
-        color: '#fff',
-        backgroundColor: 'rgba(255, 255, 255, 0.14)!important'
-    },
-    topIcon: {
-        marginRight: 0,
-        marginLeft: -5,
-    },
-    link: {
-        color: 'inherit',
-        textDecoration: 'none',
-        wordWrap: 'nowrap',
-    },
-    listButton: {
-        // '& :hover': {
-        //     backgroundColor: 'rgba(255, 255, 255, 0.14)'
-        // },
 
-    }
-});
+import { newOrderPath, ordersPath, paymentLogPath, productsPath, profilePath, statisticPath } from 'config/routes'
+
 class Menu extends Component {
     constructor(props) {
         super(props)
@@ -199,4 +164,4 @@ class Menu extends Component {
     }
 }
 
-export default withRouter(withStyles(styles, { withTheme: true })(Menu));
+export default Menu

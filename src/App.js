@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
 
-import Sign from './components/sign';
-import Drawer from './components/Drawer';
+import Guest from 'components/pages/Guest';
+import AppDrawer from 'components/AppDrawer';
 
 class App extends Component {
 	render() {
@@ -11,12 +11,12 @@ class App extends Component {
 		if (isLoggedIn/*true*/) {
 			return (
 				<BrowserRouter>
-					<Drawer />
+					<AppDrawer />
 				</BrowserRouter >
 			);
 		} else {
 			return (
-				<Sign />
+				<Guest />
 			);
 		}
 	}
