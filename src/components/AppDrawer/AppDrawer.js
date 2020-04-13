@@ -80,7 +80,7 @@ class AppDrawer extends Component {
         </AppBar>
         <nav className={classes.drawer}>
 
-          <Hidden mdUp implementation="css">
+          <Hidden smUp implementation="css">
             <SwipeableDrawer
               // container={this.props.container}
               // variant="temporary"
@@ -95,7 +95,7 @@ class AppDrawer extends Component {
               <Menu />
             </SwipeableDrawer>
           </Hidden>
-          <Hidden xsDown implementation="css">
+          <Hidden smDown implementation="css">
             <Drawer
               variant="permanent"
               className={classNames(classes.drawer, {

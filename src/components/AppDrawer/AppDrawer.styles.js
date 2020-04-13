@@ -34,7 +34,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.common.white,
         color: theme.palette.text.primary,
         width: `calc(100% - ${theme.spacing.unit * 7 + 1}px)`,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: 'calc(100%)',
         },
         zIndex: theme.zIndex.drawer + 1,
@@ -55,13 +55,13 @@ const styles = theme => ({
     },
     menuButton: {
         marginRight: 20,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             display: 'none',
         },
     },
     miniButton: {
         marginRight: 20,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             display: 'none',
         },
     },
