@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import { Check } from '@material-ui/icons/'
 import {
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@material-ui/core'
 
 function AfterReg(props) {
-  const { classes } = props;
+  const { classes } = props
   return (
     <div className={classes.root}>
       <Paper
@@ -31,7 +31,7 @@ function AfterReg(props) {
         </div>
       </Paper>
     </div>
-  );
+  )
 }
 
-export default AfterReg;
+export default AfterReg

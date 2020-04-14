@@ -1,28 +1,27 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import classNames from 'classnames';
-import { Link } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import React, { Component } from 'react'
+import Paper from '@material-ui/core/Paper'
+import Button from '@material-ui/core/Button'
+import Avatar from '@material-ui/core/Avatar'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
+import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Typography } from '@material-ui/core'
 
-import { signup } from 'services/api';
-import { registerSuccessPath, signInPath } from 'config/routes';
-import MaskedPhone from 'components/assets/MaskedPhone';
+import { signup } from 'services/api'
+import { registerSuccessPath, signInPath } from 'config/routes'
+import MaskedPhone from 'components/assets/MaskedPhone'
 
 
 class SignUp extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       errMsg: '',
       error: false,
@@ -63,108 +62,131 @@ class SignUp extends Component {
   }
 
   handleInput = (field, value) => {
-    console.log(value)
-    this.setState(state => {
-      state[field].value = value;
-      state.error = false;
-      return state;
-    });
-    this.validateField(field, value);
-    this.validateForm();
+    this.setState((state) => {
+      state[field].value = value
+      state.error = false
+      return state
+    })
+    this.validateField(field, value)
+    this.validateForm()
   }
 
   validateField = (field, value) => {
-    let valid = false;
-    let errMsg = '';
+    const { password } = this.state
+    let valid = false
+    let errMsg = ''
     switch (field) {
       case 'name':
-        valid = (value.length > 2);
-        break;
+        valid = (value.length > 2)
+        break
       case 'phone':
-        valid = !!value.match(/\(0\d\d\)\d\d\d-\d\d-\d\d/);
-        break;
+        valid = !!value.match(/\(0\d\d\)\d\d\d-\d\d-\d\d/)
+        break
       case 'url':
-        valid = !!value.match(/\w+\.\w{2}/);
-        break;
+        valid = !!value.match(/\w+\.\w{2}/)
+        break
       case 'email':
-        valid = !!value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        errMsg = 'Некорректный email';
-        break;
+        valid = !!value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+        errMsg = 'Некорректный email'
+        break
       case 'password':
-        valid = !!value.match(/(?=^.{8,}$)^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/);
-        break;
+        valid = !!value.match(/(?=^.{8,}$)^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
+        break
       case 'repeatPassword':
-        valid = (value === this.state.password.value);
-        break;
+        valid = (value === password.value)
+        break
+      default:
+        break
     }
     this.setState((currentState) => {
-      currentState[field].isValid = valid;
-      errMsg && (currentState[field].errMsg = errMsg);
-      return currentState;
-    });
+      currentState[field].isValid = valid
+      if (errMsg) currentState[field].errMsg = errMsg
+      return currentState
+    })
   }
 
   validateForm = () => {
-    this.setState(currentState => {
+    this.setState((currentState) => {
       currentState.isValid = (
-        currentState.name.isValid &&
-        currentState.phone.isValid &&
-        currentState.url.isValid &&
-        currentState.email.isValid &&
-        currentState.password.isValid &&
-        currentState.repeatPassword.isValid &&
-        currentState.agree
-      );
-      return currentState;
-    });
+        currentState.name.isValid
+        && currentState.phone.isValid
+        && currentState.url.isValid
+        && currentState.email.isValid
+        && currentState.password.isValid
+        && currentState.repeatPassword.isValid
+        && currentState.agree
+      )
+      return currentState
+    })
   }
 
   handleSign = (e) => {
-    const { name, phone, url, email, password, repeatPassword, isValid } = this.state;
+    const {
+      name,
+      phone,
+      url,
+      email,
+      password,
+      repeatPassword,
+      isValid,
+    } = this.state
 
-    e.preventDefault();
-    this.setState({ isChecked: true });
-    this.validateForm();
+    const { history } = this.props
+
+    e.preventDefault()
+    this.setState({ isChecked: true })
+    this.validateForm()
     if (isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
       console.log(phone)
       signup({
         name: name.value,
-        phone: phone.value.replace(/\D+/g, ""),
+        phone: phone.value.replace(/\D+/g, ''),
         url: url.value,
         email: email.value,
         password: password.value,
         repeatPassword: repeatPassword.value,
-      }).then(success => {
+      }).then((success) => {
         if (success) {
-          console.log('Sended success: ', success);
-          this.props.history.push(registerSuccessPath);
+          console.log('Sended success: ', success)
+          history.push(registerSuccessPath)
         }
-
-      }).catch(err => {
+      }).catch((err) => {
         if (err) {
-          this.setState({ errMsg: err.message, error: true });
+          this.setState({ errMsg: err.message, error: true })
         }
-      });
+      })
     }
-    return false;
+    return false
   }
 
   render() {
-    const { classes } = this.props;
-    const { error, errMsg, isValid, isChecked, name, url, phone, email, password, repeatPassword, agree } = this.state;
+    const { classes } = this.props
+    const {
+      error,
+      errMsg,
+      isValid,
+      isChecked,
+      name,
+      url,
+      phone,
+      email,
+      password,
+      repeatPassword,
+      agree,
+    } = this.state
     return (
       <div>
         <Paper elevation={5} square className={classNames(classes.signup, error && classes.error)}>
           <div className={classes.head}>
-            <Avatar className={classes.avatar} component='span' children={
+            <Avatar className={classes.avatar} component='span'>
               <AccountCircleIcon />
-            } />
+            </Avatar>
           </div>
           <Card className={classes.card}>
             <form onSubmit={this.handleSign}>
               <CardHeader
                 classes={{ title: classes.title }}
-                title="РЕГИСТРАЦИЯ"
+                title='РЕГИСТРАЦИЯ'
               />
               <CardContent>
                 <Typography
@@ -179,7 +201,7 @@ class SignUp extends Component {
                   onInput={(event) => { this.handleInput('name', event.target.value) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   placeholder='Имя'
                   label='Имя'
                   helperText={isChecked && !isValid && !name.isValid && name.errMsg}
@@ -187,16 +209,16 @@ class SignUp extends Component {
                 <TextField
                   error={isChecked && !isValid && phone.errMsg && !phone.isValid}
                   value={phone.value || '(0'}
-                  onChange={(event) => this.handleInput('phone', event.target.value)}
+                  onChange={event => this.handleInput('phone', event.target.value)}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   placeholder='Телефон'
                   label='Телефон'
                   InputProps={{
                     inputComponent: MaskedPhone,
                   }}
-                  helperText="Номер в формате (0xx)xxx-xx-xx"
+                  helperText='Номер в формате (0xx)xxx-xx-xx'
                 />
                 <TextField
                   error={isChecked && !isValid && url.errMsg && !url.isValid}
@@ -204,7 +226,7 @@ class SignUp extends Component {
                   onInput={(event) => { this.handleInput('url', event.target.value) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   placeholder='Сайт'
                   label='Сайт'
                   helperText={isChecked && !isValid && !url.isValid && url.errMsg}
@@ -215,7 +237,7 @@ class SignUp extends Component {
                   onInput={(event) => { this.handleInput('email', event.target.value) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   placeholder='Емел'
                   label='Емейл'
                   helperText={isChecked && !isValid && !email.isValid && email.errMsg}
@@ -226,7 +248,7 @@ class SignUp extends Component {
                   onInput={(event) => { this.handleInput('password', event.target.value) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   type='password'
                   placeholder='Пароль'
                   label='Пароль'
@@ -238,23 +260,25 @@ class SignUp extends Component {
                   onInput={(event) => { this.handleInput('repeatPassword', event.target.value) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   type='password'
                   placeholder='Подтверждение пароля'
                   label='Подтверждение пароля'
-                  helperText={isChecked && !isValid && !repeatPassword.isValid && repeatPassword.errMsg}
+                  helperText={
+                    isChecked && !isValid && !repeatPassword.isValid && repeatPassword.errMsg
+                  }
                 />
                 <FormControlLabel
                   checked={agree}
-                  control={
+                  control={(
                     <Checkbox
                       color='primary'
                       onChange={(event) => {
-                        this.setState({ agree: event.target.checked });
-                        this.validateForm();
+                        this.setState({ agree: event.target.checked })
+                        this.validateForm()
                       }}
                     />
-                  }
+                  )}
                   label='Я принимаю условия сотрудничества и даю согласие на оработку моих персональных данных'
                 />
                 {(isChecked && !isValid && !agree) && <FormHelperText margin='dense' error>Вы должны принять условия</FormHelperText>}
@@ -266,7 +290,7 @@ class SignUp extends Component {
                   style={{ marginTop: 20 }}
                 >
                   Зарегистрироваться
-                                </Button>
+                </Button>
               </CardContent>
             </form>
             <Typography
@@ -279,8 +303,8 @@ class SignUp extends Component {
           </Card>
         </Paper>
       </div>
-    );
+    )
   }
 }
 
-export default SignUp;
+export default SignUp

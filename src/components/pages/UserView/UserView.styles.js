@@ -14,7 +14,7 @@ const styles = theme => ({
   headreWuthBtn: {
     display: 'flex',
     justifyContent: 'space-between',
-  }
-});
+  },
+})
 
 export { styles }

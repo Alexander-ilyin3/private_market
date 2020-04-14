@@ -1,14 +1,20 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import { signInPath, registerSuccessPath, recoveryPasswordPath, signUpPath, recoveryPasswordSuccessPath } from '../../../config/routes';
+import {
+  signInPath,
+  registerSuccessPath,
+  recoveryPasswordPath,
+  signUpPath,
+  recoveryPasswordSuccessPath,
+} from 'config/routes'
 
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import AfterReg from './pages/AfterReg';
-import Recovery from './pages/Recovery';
-import RecoverySuccess from './pages/RecoverySuccess';
-import Home from 'components/pages/Home';
+import Home from 'components/pages/Home'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
+import AfterReg from './pages/AfterReg'
+import Recovery from './pages/Recovery'
+import RecoverySuccess from './pages/RecoverySuccess'
 
 export default function () {
   return (
@@ -22,5 +28,5 @@ export default function () {
         <Route path='/' component={Home} />
       </Switch>
     </BrowserRouter>
-  );
+  )
 }

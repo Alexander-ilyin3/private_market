@@ -1,17 +1,16 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react'
 import { Check } from '@material-ui/icons/'
 import {
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@material-ui/core'
 
-import { Link } from 'react-router-dom';
-import { signInPath } from 'config/routes';
+import { Link } from 'react-router-dom'
+import { signInPath } from 'config/routes'
 
 
 function RecoverySuccess(props) {
-  const { classes } = props;
+  const { classes } = props
   return (
     <div className={classes.root}>
       <Paper
@@ -44,7 +43,7 @@ function RecoverySuccess(props) {
         <Link to={signInPath} className={classes.link}>Страница авторизации</Link>
       </Typography>
     </div>
-  );
+  )
 }
 
 export default RecoverySuccess

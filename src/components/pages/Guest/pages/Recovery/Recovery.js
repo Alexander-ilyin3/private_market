@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined';
-import classNames from 'classnames';
-import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import Paper from '@material-ui/core/Paper'
+import Button from '@material-ui/core/Button'
+import Avatar from '@material-ui/core/Avatar'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
+import TextField from '@material-ui/core/TextField'
+import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined'
+import classNames from 'classnames'
+import Typography from '@material-ui/core/Typography'
+import { Link } from 'react-router-dom'
 
-import { recoveryPasswordPath, signInPath } from 'config/routes';
-import { recovery } from 'services/api';
+import { recoveryPasswordPath, signInPath } from 'config/routes'
+import { recovery } from 'services/api'
 
 
 class Recovery extends Component {
@@ -22,38 +22,41 @@ class Recovery extends Component {
   }
 
   handleSubmit = (e) => {
-    const { email } = this.state;
-    e.preventDefault();
+    const { email } = this.state
+    const { history } = this.props
+    e.preventDefault()
 
-    recovery(email).then(success => {
+    recovery(email).then((success) => {
       if (success) {
-        this.props.history.push(recoveryPasswordPath);
+        history.push(recoveryPasswordPath)
       }
-    }).catch(err => {
+    }).catch((err) => {
       if (err) {
-        this.setState({ errMsg: err.message, error: true });
+        this.setState({ errMsg: err.message, error: true })
       }
-    });
-    this.props.history.push(recoveryPasswordPath);
-
+    })
+    history.push(recoveryPasswordPath)
   }
 
   render() {
-    const { classes } = this.props;
-    const { errMsg, email } = this.state;
+    const { classes } = this.props
+    const { errMsg, email } = this.state
     return (
       <div>
         <Paper elevation={5} square className={classNames(classes.signup, errMsg && classes.error)}>
           <div className={classes.head}>
-            <Avatar className={classes.avatar} component='span' children={
+            <Avatar
+              className={classes.avatar}
+              component='span'
+            >
               <AccountCircleIcon />
-            } />
+            </Avatar>
           </div>
           <Card className={classes.card}>
             <form onSubmit={this.handleSubmit}>
               <CardHeader
                 classes={{ title: classes.title }}
-                title="Восстановление пароля"
+                title='Восстановление пароля'
               />
               <CardContent>
                 <Typography
@@ -67,7 +70,7 @@ class Recovery extends Component {
                   onInput={(event) => { this.setState({ email: event.target.value, errMsg: '' }) }}
                   variant='outlined'
                   fullWidth
-                  margin="normal"
+                  margin='normal'
                   placeholder='Email'
                   label='Email'
                 />
@@ -79,7 +82,7 @@ class Recovery extends Component {
                   style={{ marginTop: 20 }}
                 >
                   Восстановить
-                                </Button>
+                </Button>
               </CardContent>
             </form>
             <Typography
@@ -92,8 +95,8 @@ class Recovery extends Component {
           </Card>
         </Paper>
       </div>
-    );
+    )
   }
 }
 
-export default Recovery;
+export default Recovery

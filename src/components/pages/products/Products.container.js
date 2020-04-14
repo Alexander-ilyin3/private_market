@@ -4,4 +4,4 @@ import Products from './Products'
 import { styles } from './Products.styles'
 
 
-export default withStyles(styles)(Products);
+export default withStyles(styles)(Products)

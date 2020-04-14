@@ -1,7 +1,7 @@
-const getStorageItem = (key) => localStorage.getItem(key);
+const getStorageItem = key => localStorage.getItem(key)
 
-const setStorageItem = (key, value) => localStorage.setItem(key, value);
+const setStorageItem = (key, value) => localStorage.setItem(key, value)
 
-const removeStorageItem = (key) => localStorage.removeItem(key);
+const removeStorageItem = key => localStorage.removeItem(key)
 
-export { getStorageItem, setStorageItem, removeStorageItem };
+export { getStorageItem, setStorageItem, removeStorageItem }
