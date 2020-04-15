@@ -16,7 +16,6 @@ import CheckIcon from '@material-ui/icons/Check'
 import classNames from 'classnames'
 
 import { signUpPath, recoveryPasswordPath } from 'config/routes'
-import { signin } from 'services/api'
 
 class SignIn extends Component {
   constructor(props) {
@@ -87,18 +86,14 @@ class SignIn extends Component {
       remember,
       isValid,
     } = this.state
+    const { signin } = this.props
     e.preventDefault()
     this.setState({ isChecked: true })
     this.validateForm()
     if (isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-
       signin({
         email: email.value,
         password: password.value,
-      }).then((success) => {
-        console.log(success)
-      }).catch((err) => {
-        this.setState({ error: true, errMsg: err.message })
       })
     }
   }

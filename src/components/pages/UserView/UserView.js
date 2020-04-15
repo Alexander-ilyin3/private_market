@@ -16,8 +16,6 @@ import {
 
 } from '@material-ui/core'
 
-import { getProfile } from 'services/api'
-
 import UserEdit from './UserEdit'
 
 const Item = (props) => {
@@ -54,39 +52,21 @@ class UserView extends Component {
     this.state = {
       tab: 0,
       openPopup: false,
-      customer: {
-        customerEmail: '',
-        customerLastname: '',
-        customerName: '',
-        idCustomer: null,
-        info: {
-          city: null,
-          customerPhone: null,
-          customerPosition: null,
-          customerWebsite: null,
-          houseNumber: null,
-          idCustomer: null,
-          idCustomerInfo: null,
-          idManagerSupplier: null,
-          officeNumber: null,
-          street: null,
-        },
-      },
-      managers: {},
     }
   }
 
   componentDidMount() {
-    this.handleFetchUser()
+    const { getProfile } = this.props
+    getProfile()
   }
 
-  handleFetchUser = () => {
-    getProfile().then((userData) => {
-      this.setState({ customer: userData })
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
+  // handleFetchUser = () => {
+  //   getProfile().then((userData) => {
+  //     this.setState({ customer: userData })
+  //   }).catch((err) => {
+  //     console.log(err)
+  //   })
+  // }
 
   handlePopupOpen = () => {
     this.setState({ openPopup: true })
@@ -97,7 +77,8 @@ class UserView extends Component {
   }
 
   handlePopupOk = () => {
-    this.handleFetchUser()
+    const { getProfile } = this.props
+    getProfile()
   }
 
   handleChangeTab = (event, tab) => {
@@ -105,8 +86,8 @@ class UserView extends Component {
   }
 
   render() {
-    const { classes } = this.props
-    const { tab, customer, openPopup } = this.state
+    const { classes, customer } = this.props
+    const { tab, openPopup } = this.state
     const {
       city = '',
       houseNumber = '',

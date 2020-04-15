@@ -1,6 +1,18 @@
 import { withStyles } from '@material-ui/core'
+import { connect } from 'react-redux'
+
+import { getProfile } from 'services/profile.service'
+import { userData } from 'storage/selectors/userData.selector'
 
 import UserView from './UserView'
 import { styles } from './UserView.styles'
 
-export default withStyles(styles)(UserView)
+const mapStateToPops = state => ({
+  customer: userData(state),
+})
+
+const mapDispatchToProps = dispatch => ({
+  getProfile: () => dispatch(getProfile()),
+})
+
+export default connect(mapStateToPops, mapDispatchToProps)(withStyles(styles)(UserView))

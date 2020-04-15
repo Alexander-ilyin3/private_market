@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import {
   newOrderPath,
   statisticPath,
@@ -7,6 +7,7 @@ import {
   productsPath,
   paymentLogPath,
   ordersPath,
+  signInPath,
 } from 'config/routes'
 import { ROOT_DOMAIN } from 'config/constants'
 
@@ -15,10 +16,11 @@ import Products from 'components/pages/products'
 
 const AuthRouter = () => (
   <Switch>
+    <Redirect path={signInPath} to={profilePath} />
+    <Redirect exact path={ROOT_DOMAIN} to={newOrderPath} />
     <Route path={profilePath} component={UserView} />
     <Route path={productsPath} component={Products} />
     <Route path={newOrderPath} />
-    <Route path={ROOT_DOMAIN} />
   </Switch>
 )
 
