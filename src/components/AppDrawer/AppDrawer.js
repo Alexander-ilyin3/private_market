@@ -14,7 +14,6 @@ import Button from '@material-ui/core/Button'
 import Menu from 'components/parts/Menu'
 import Preloader from 'components/assets/preloader'
 
-import { logout } from 'services/api'
 import AuthRouter from './AuthRouter'
 
 class AppDrawer extends Component {
@@ -39,7 +38,7 @@ class AppDrawer extends Component {
   };
 
   render() {
-    const { classes, isLoading } = this.props
+    const { classes, isLoading, logout } = this.props
     const { max, mobileOpen } = this.state
     return (
       <div className={classes.root}>
@@ -73,7 +72,7 @@ class AppDrawer extends Component {
               size='small'
               color='inherit'
               variant='text'
-              onClick={logout}
+              onClick={() => logout()}
             >
               Выход
             </Button>

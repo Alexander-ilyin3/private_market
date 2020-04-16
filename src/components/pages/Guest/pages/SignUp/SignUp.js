@@ -14,7 +14,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Typography } from '@material-ui/core'
 
-import { signup } from 'services/api'
+import { signup } from 'services/login.service'
 import { registerSuccessPath, signInPath } from 'config/routes'
 import MaskedPhone from 'components/assets/MaskedPhone'
 

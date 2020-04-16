@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 import { recoveryPasswordPath, signInPath } from 'config/routes'
-import { recovery } from 'services/api'
+import { recovery } from 'services/login.service'
 
 
 class Recovery extends Component {

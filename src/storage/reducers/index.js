@@ -4,10 +4,16 @@ import thunk from 'redux-thunk'
 
 import loginData from './loginData'
 import isLoading from './isLoading'
+import userData from './userData'
+import menuItem from './menu'
 
 const reducer = combineReducers({
   loginData,
   isLoading,
+  userData,
+  menuItem,
 })
 
-export const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+
+export default store
