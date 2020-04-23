@@ -46,20 +46,26 @@ export const signin = loginData => async (dispatch) => {
         isLoggedIn: true,
         token: `${token_type} ${access_token}`,
       }))
+    } else {
+      dispatch(loginAaction({
+        error: 'Someting Wnt Wrong',
+      }))
     }
   } catch (err) {
     const { response = {} } = err || {}
     const { data = {} } = response
-    const { message = {} } = data
-    console.log(message)
+    const { message } = data
+    let error = ''
+    if (typeof message === 'string') {
+      error = message
+    } else {
+      error = 'Oops, something went wrong'
+    }
     dispatch(loginAaction({
       isLoggedIn: false,
       token: null,
+      error,
     }))
-    if (typeof message === 'string') {
-      console.log(new Error(message))
-    }
-    console.log(new Error('Ошибка авторизации'))
   }
 }
 
