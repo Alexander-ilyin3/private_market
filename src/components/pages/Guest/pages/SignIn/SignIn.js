@@ -99,10 +99,8 @@ class SignIn extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, error } = this.props
     const {
-      error,
-      errMsg,
       email,
       password,
       remember,
@@ -110,7 +108,6 @@ class SignIn extends Component {
       isChecked,
     } = this.state
     return (
-
       <div>
         <Paper elevation={5} square className={classes.login}>
           <Grid container>
@@ -137,12 +134,14 @@ class SignIn extends Component {
                     title='ВХОД'
                   />
                   <CardContent>
-                    <Typography
-                      color='error'
-                      align='center'
-                    >
-                      {error && errMsg}
-                    </Typography>
+                    {error && (
+                      <Typography
+                        color='error'
+                        align='center'
+                      >
+                        {error}
+                      </Typography>
+                    )}
                     <TextField
                       error={isChecked && !isValid && email.errMsg && !email.isValid}
                       value={email.value}
