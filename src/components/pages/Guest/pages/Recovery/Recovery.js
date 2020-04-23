@@ -13,34 +13,80 @@ import { Link } from 'react-router-dom'
 
 import { recoveryPasswordPath, signInPath } from 'config/routes'
 import { recovery } from 'services/login.service'
+import { emailValidator, required } from 'services/functions'
 
+
+const validators = [emailValidator, required]
 
 class Recovery extends Component {
   state = {
-    errMsg: '',
+    errors: {},
     email: '',
+    touched: false,
+    valid: false,
   }
 
   handleSubmit = (e) => {
-    const { email } = this.state
+    const { email, valid } = this.state
     const { history } = this.props
     e.preventDefault()
-
+    this.onFocusLeave()
+    if (!valid) {
+      return
+    }
     recovery(email).then((success) => {
       if (success) {
         history.push(recoveryPasswordPath)
       }
     }).catch((err) => {
       if (err) {
-        this.setState({ errMsg: err.message, error: true })
+        this.setState({ errMsg: err.message, valid: false })
       }
     })
     history.push(recoveryPasswordPath)
   }
 
+  handleInput = (event) => {
+    const { value } = event.target
+    this.setState({ email: value })
+    this.validate(value)
+  }
+
+  validate = (value) => {
+    let newErrors = {}
+    validators.forEach((validator) => {
+      newErrors = { ...newErrors, ...validator(value) }
+    })
+    const valid = !Object.keys(newErrors).find(errorName => newErrors[errorName])
+    this.setState({
+      errors: newErrors,
+      valid,
+    })
+    return valid
+  }
+
+  onFocusLeave = (event = {}) => {
+    const { target = {} } = event
+    const { value } = target
+    this.validate(value || '')
+    this.setState({ touched: true })
+  }
+
+  getHelperText = () => {
+    const errTextMap = {
+      required: 'Поле обязательно для заполнения.\n',
+      emailInvalid: 'Некорретный email адрес.\n',
+    }
+    const { errors } = this.state
+    const errorNames = Object.keys(errors)
+    if (errorNames.length > 0) {
+      return errorNames.map(name => errTextMap[name])
+    }
+  }
+
   render() {
     const { classes } = this.props
-    const { errMsg, email } = this.state
+    const { errMsg, touched, valid } = this.state
     return (
       <div>
         <Paper elevation={5} square className={classNames(classes.signup, errMsg && classes.error)}>
@@ -66,13 +112,15 @@ class Recovery extends Component {
                   {errMsg}
                 </Typography>
                 <TextField
-                  value={email}
-                  onInput={(event) => { this.setState({ email: event.target.value, errMsg: '' }) }}
+                  onInput={event => this.handleInput(event)}
                   variant='outlined'
                   fullWidth
                   margin='normal'
                   placeholder='Email'
                   label='Email'
+                  helperText={(touched && !valid) && this.getHelperText()}
+                  error={touched && !valid}
+                  onBlur={this.onFocusLeave}
                 />
                 <Button
                   variant='contained'
