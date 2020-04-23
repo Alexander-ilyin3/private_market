@@ -22,8 +22,8 @@
       "patterns": ["*.css", "!./styles/main.css", "!playground/styles/playground.css"],
       "paths": ["lodash"]
     }],
-    "import/prefer-default-export": false,
-    "react/prop-types": false,
+    "import/prefer-default-export": 0,
+    "react/prop-types": 1,
     "camelcase": 0,
     "prefer-destructuring": 0,
     "no-underscore-dangle": 0,
