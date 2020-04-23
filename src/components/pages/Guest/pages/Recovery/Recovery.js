@@ -78,9 +78,9 @@ class Recovery extends Component {
       emailInvalid: 'Некорретный email адрес.\n',
     }
     const { errors } = this.state
-    const errorNames = Object.keys(errors)
-    if (errorNames.length > 0) {
-      return errorNames.map(name => errTextMap[name])
+    const errorName = Object.keys(errors)[0]
+    if (errorName) {
+      return errTextMap[errorName]
     }
   }
 
