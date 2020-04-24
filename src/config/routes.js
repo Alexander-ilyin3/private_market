@@ -1,6 +1,6 @@
 export const signUpPath = '/register'
 export const registerSuccessPath = `${signUpPath}/success`
-export const recoveryPasswordPath = '/recovery'
+export const recoveryPasswordPath = '/password_recovery'
 export const recoveryPasswordSuccessPath = `${recoveryPasswordPath}/success`
 export const signInPath = '/login'
 export const ordersPath = '/orders'
@@ -9,3 +9,4 @@ export const statisticPath = '/statistic'
 export const profilePath = '/profile'
 export const productsPath = '/products'
 export const paymentLogPath = '/paymentlog'
+export const resetPassword = '/password_reset'

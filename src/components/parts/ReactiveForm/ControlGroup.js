@@ -14,16 +14,18 @@ export class ControlGroup {
     this.values = Object.fromEntries(this.keys.map(
       controlName => [controlName, this.controls[controlName].value],
     ))
+    this.submitHandler = () => {}
+    this.validChangedHandler = () => {}
   }
 
   onUpdated = (name, value) => {
     this.touched = true
     this.values[name] = value
-    this.valid = !this.keys.find(key => this.controls[key].invalid)
+    this.setValid(!this.keys.find(key => this.controls[key].invalid))
     this.subscriber(this)
   }
 
-  get = name => this.controls.find(control => control.name === name)
+  get = name => this.controls[name]
 
   getValuesForced = () => {
     const values = Object.fromEntries(this.keys.map(
@@ -32,13 +34,38 @@ export class ControlGroup {
     return values
   }
 
+  setValid = (valid) => {
+    if (valid !== this.valid) {
+      this.valid = valid
+      this.validChangedHandler()
+    }
+  }
+
+  onValidChanged = (handler) => {
+    this.validChangedHandler = handler
+  }
+
   validateAll = () => {
-    this.valid = true
-    Object.keys(this.controls).forEach((control) => {
-      const valid = this.controls[control].touch()
-      if (!valid) this.valid = false
-    })
+    if (Object.keys(this.controls).find(control => !this.controls[control].touch())) {
+      this.setValid(false)
+    } else {
+      this.setValid(true)
+    }
     return this.valid
+  }
+
+  onSubmit = (handler) => {
+    this.submitHandler = handler
+  }
+
+  setAsSubmited = () => {
+    this.submited = true
+    this.validChangedHandler()
+  }
+
+  setAsInvalid = () => {
+    this.setValid(false)
+    this.touched = true
   }
 
   registerUpdateSubscriber(subscriber) {

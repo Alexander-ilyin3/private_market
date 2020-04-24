@@ -22,12 +22,13 @@ export class Control {
   validate = () => {
     let newErrors = {}
     this.validators.forEach((validator) => {
-      newErrors = { ...newErrors, ...validator(this.value) }
+      if (validator && (validator instanceof Function)) {
+        newErrors = { ...newErrors, ...validator(this.value) }
+      }
     })
     this.valid = !Object.keys(newErrors).find(errorName => newErrors[errorName])
     this.invalid = !this.valid
     this.errors = newErrors
-    this.onUpdated(this.name, this.value)
     return this.valid
   }
 
@@ -35,10 +36,16 @@ export class Control {
     const { value } = event.target
     this.value = value
     this.validate()
+    this.onUpdated(this.name, this.value)
+  }
+
+  addValidator = (newValidator) => {
+    this.validators = [...this.validators, newValidator]
   }
 
   blur = () => {
     this.touch()
+    this.onUpdated(this.name, this.value)
   }
 
   touch = () => {

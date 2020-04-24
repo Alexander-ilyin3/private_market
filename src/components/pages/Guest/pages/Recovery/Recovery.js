@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
@@ -6,14 +7,14 @@ import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
 import TextField from '@material-ui/core/TextField'
-import AccountCircleIcon from '@material-ui/icons/PersonOutlineOutlined'
+import LockOpen from '@material-ui/icons/LockOpen'
 import classNames from 'classnames'
 import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
-import { recoveryPasswordPath, signInPath } from 'config/routes'
+import { recoveryPasswordSuccessPath, signInPath } from 'config/routes'
 import { recovery } from 'services/login.service'
-import { emailValidator, required } from 'services/functions'
+import { emailValidator, required } from 'components/parts/ReactiveForm/validators'
 
 
 const validators = [emailValidator, required]
@@ -36,14 +37,14 @@ class Recovery extends Component {
     }
     recovery(email).then((success) => {
       if (success) {
-        history.push(recoveryPasswordPath)
+        history.push(recoveryPasswordSuccessPath)
+        this.setState({ errMsg: '', valid: true })
       }
     }).catch((err) => {
       if (err) {
         this.setState({ errMsg: err.message, valid: false })
       }
     })
-    history.push(recoveryPasswordPath)
   }
 
   handleInput = (event) => {
@@ -66,9 +67,10 @@ class Recovery extends Component {
   }
 
   onFocusLeave = (event = {}) => {
+    const { email } = this.state
     const { target = {} } = event
     const { value } = target
-    this.validate(value || '')
+    this.validate(value || email)
     this.setState({ touched: true })
   }
 
@@ -78,9 +80,9 @@ class Recovery extends Component {
       emailInvalid: 'Некорретный email адрес.\n',
     }
     const { errors } = this.state
-    const errorNames = Object.keys(errors)
-    if (errorNames.length > 0) {
-      return errorNames.map(name => errTextMap[name])
+    const errorName = Object.keys(errors)[0]
+    if (errorName) {
+      return errTextMap[errorName]
     }
   }
 
@@ -95,7 +97,7 @@ class Recovery extends Component {
               className={classes.avatar}
               component='span'
             >
-              <AccountCircleIcon />
+              <LockOpen />
             </Avatar>
           </div>
           <Card className={classes.card}>
@@ -148,3 +150,8 @@ class Recovery extends Component {
 }
 
 export default Recovery
+
+Recovery.propTypes = {
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+}

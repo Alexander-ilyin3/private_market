@@ -79,12 +79,11 @@ export default class FormGroup extends Component {
 FormGroup.contextType = FormContext
 
 FormGroup.defaultProps = {
-  children: null,
+  children: <></>,
 }
 
 FormGroup.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.object,
+    PropTypes.node,
   ]),
 }

@@ -21,6 +21,7 @@ const AuthRouter = () => (
     <Route path={profilePath} component={UserView} />
     <Route path={productsPath} component={Products} />
     <Route path={newOrderPath} />
+    <Redirect path={ROOT_DOMAIN} to={profilePath} />
   </Switch>
 )
 

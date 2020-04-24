@@ -35,5 +35,3 @@ export function convertToCamelcase(obj, skipPropsUnder) {
 export function convertToSnakecase(obj, skipPropsUnder) {
   return onEachObjectProp(obj, snakeCase, skipPropsUnder)
 }
-
-export { emailValidator, required } from './validators'
