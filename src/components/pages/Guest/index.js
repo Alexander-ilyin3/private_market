@@ -1,3 +1,3 @@
-import Guest from './Guest'
+import GuestRouter from './GuestRouter'
 
-export default Guest
+export default GuestRouter
