@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 import { FormContext } from './formContext'
 import FormGroup from './FormGroup'
-
+import { ControlGroup } from './ControlGroup'
 
 export default class FormContainer extends Component {
   constructor(props) {
@@ -24,4 +26,10 @@ export default class FormContainer extends Component {
       </FormContext.Provider>
     )
   }
+}
+
+
+FormContainer.propTypes = {
+  controlGroup: PropTypes.instanceOf(ControlGroup).isRequired,
+  children: PropTypes.node.isRequired,
 }
