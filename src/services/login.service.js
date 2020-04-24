@@ -2,6 +2,7 @@ import {
   apiLoginPath,
   apiSignupPath,
   apiRecoveryPasswordPath,
+  apiResetPasswordPath,
   apiLogoutPath,
 } from 'config/apiPath'
 import { loginAaction, logoutAction } from 'storage/actions/login.actions'
@@ -48,7 +49,7 @@ export const signin = loginData => async (dispatch) => {
       }))
     } else {
       dispatch(loginAaction({
-        error: 'Someting Wnt Wrong',
+        error: 'Someting Went Wrong',
       }))
     }
   } catch (err) {
@@ -69,9 +70,42 @@ export const signin = loginData => async (dispatch) => {
   }
 }
 
-export const recovery = async (email) => {
+
+export const checkToken = async (token) => {
   try {
-    const res = await instance.post(apiRecoveryPasswordPath, { email })
+    const res = await instance.get(apiResetPasswordPath, { params: { token } })
+    if (res && res.data) {
+      const { success } = res.data
+      return { success }
+    }
+  } catch (err) {
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message = {} } = data
+    return { success: false, message }
+  }
+}
+
+export const resetPassword = async (data) => {
+  try {
+    const res = await instance.post(apiResetPasswordPath, data)
+    if (res && res.data) {
+      return { success: res.data.success }
+    }
+  } catch (err) {
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message = {}, success } = data
+    if (typeof message === 'string') {
+      return { success, message }
+    }
+    return { success, message: 'Что-то пошло нетак' }
+  }
+}
+
+export const recovery = async (customer_email) => {
+  try {
+    const res = await instance.post(apiRecoveryPasswordPath, { customer_email })
     if (res) {
       return true
     }
@@ -96,7 +130,7 @@ export const logout = () => async (dispatch) => {
       return (true)
     }
   } catch (err) {
-
+    console.log(err)
   } finally {
     dispatch(logoutAction())
   }
