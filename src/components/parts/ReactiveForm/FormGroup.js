@@ -66,6 +66,9 @@ export default class FormGroup extends Component {
 
   render() {
     const { controls } = this.context
+
+    console.log(this.childs)
+
     if (this.childs) {
       return this.renderChildren(this.childs)
     }
