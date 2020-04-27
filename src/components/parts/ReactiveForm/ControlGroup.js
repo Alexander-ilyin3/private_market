@@ -18,6 +18,17 @@ export class ControlGroup {
     this.validChangedHandler = () => {}
   }
 
+  submit = (e) => {
+    e.preventDefault()
+    this.setAsSubmited()
+    if (!this.valid) {
+      this.validateAll()
+    }
+    this.subscriber(this)
+    if (this.valid) this.submitHandler(this)
+  }
+
+
   onUpdated = (name, value) => {
     this.touched = true
     this.values[name] = value
@@ -38,6 +49,7 @@ export class ControlGroup {
     if (valid !== this.valid) {
       this.valid = valid
       this.validChangedHandler()
+      this.subscriber(this)
     }
   }
 
