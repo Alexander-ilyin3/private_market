@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   Button,
@@ -19,7 +19,6 @@ import {
   FormGroup,
   FormControl,
   validators,
-  useForceUpdate,
 } from 'components/parts/ReactiveForm'
 
 import BrokenToken from './BrokenToken'
@@ -33,106 +32,119 @@ const {
 } = validators
 
 
-const RestorePassword = (props) => {
-  const { classes, location, history } = props
-  const formUpdated = useForceUpdate()
-  const [tokenChecked, onTokenChecked] = useState(null)
-  const [token, setToken] = useState(null)
-  const [formError, setFormError] = useState(null)
-  const [form] = useState(new ControlGroup({
-    password: { meta: { label: 'Новый Пароль' }, validators: [required, password, validateSibling] },
-    passwordConfirm: { meta: { label: 'Подтверждение Пароля' } },
-  }))
-  form.onValidChanged(() => {
-    formUpdated()
-  })
-  useEffect(() => {
+export class RestorePassword extends Component {
+  state = {
+    tokenChecked: null,
+    token: null,
+    formError: null,
+  }
+
+  constructor(props) {
+    super(props)
+    this.form = new ControlGroup({
+      password: { meta: { label: 'Новый Пароль' }, validators: [required, password, validateSibling] },
+      passwordConfirm: { meta: { label: 'Подтверждение Пароля' } },
+    })
+
+    const passwordConfirmField = this.form.get('passwordConfirm')
+    passwordConfirmField.addValidator(compareWith(this.form.get('password')))
+    this.form.get('password').addValidator(validateSibling(passwordConfirmField))
+
+    this.form.onSubmit(this.onSubmit)
+  }
+
+  componentDidMount() {
+    const { location } = this.props
     const token = location.search.slice(location.search.indexOf('=') + 1)
-    setToken(token)
-    const passwordConfirmField = form.get('passwordConfirm')
-    passwordConfirmField.addValidator(compareWith(form.get('password')))
-    form.get('password').addValidator(validateSibling(passwordConfirmField))
+    this.setState({ token })
+
     checkToken(token).then(({ success, message }) => {
       if (success) {
-        onTokenChecked({ success })
+        this.setState({ tokenChecked: { success } })
       } else {
-        onTokenChecked({ success, message })
+        this.setState({ tokenChecked: { success, message } })
       }
     })
-  }, [form])
-  const onSubmit = (e) => {
-    form.setAsSubmited()
-    e.preventDefault()
-    if (!form.valid) {
-      form.validateAll()
-    }
-    if (form.valid) {
-      const { password, passwordConfirm } = form.values
-      resetPassword({ password, password_confirmation: passwordConfirm, token })
-        .then(({ success, message }) => {
-          if (success) {
-            history.push(signInPath)
-          } else {
-            setFormError(message)
-            form.setAsInvalid()
-          }
-        })
-    }
   }
-  if (tokenChecked) {
-    return (
-      tokenChecked.success
-        ? (
-          <Paper
-            elevation={5}
-            square
-            className={
-              classNames(classes.singleForm, form.submited && !form.valid && classes.error)
-            }
-          >
-            <div className={classes.head}>
-              <Avatar className={classes.avatar} component='span'>
-                <Security />
-              </Avatar>
-            </div>
-            <Card className={classes.card}>
-              {form.submited && !form.valid && (
-                <Typography
-                  className={classes.formError}
-                  color='error'
+
+  onSubmit = (form) => {
+    const { token } = this.state
+    const { history } = this.props
+    const { password, passwordConfirm } = form.values
+    resetPassword({ password, password_confirmation: passwordConfirm, token })
+      .then(({ success, message }) => {
+        if (success) {
+          history.push(signInPath)
+        } else {
+          this.setState({ formError: message })
+          form.setAsInvalid()
+        }
+      })
+  }
+
+  render() {
+    const { classes } = this.props
+    const { tokenChecked, formError } = this.state
+
+    if (tokenChecked) {
+      return (
+        tokenChecked.success
+          ? (
+            <FormGroup
+              controlGroup={this.form}
+              render={({ valid, submited, submit }) => (
+                <Paper
+                  elevation={5}
+                  square
+                  className={
+                    classNames(classes.singleForm, submited && !valid && classes.error)
+                  }
                 >
-                  {formError}
-                </Typography>
+                  <div className={classes.head}>
+                    <Avatar className={classes.avatar} component='span'>
+                      <Security />
+                    </Avatar>
+                  </div>
+                  <Card className={classes.card}>
+                    {submited && !valid && (
+                      <Typography
+                        className={classes.formError}
+                        color='error'
+                      >
+                        {formError}
+                      </Typography>
+                    )}
+                    <form onSubmit={submit}>
+                      <CardHeader
+                        classes={{ title: classes.title }}
+                        title='Установить Новый Пароль'
+                      />
+
+                      <div>
+                        <FormControl name='password' render={PasswordInputRender} />
+                      </div>
+                      <div>
+                        <FormControl name='passwordConfirm' render={PasswordInputRender} />
+                      </div>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        fullWidth
+                        type='submit'
+                        style={{ marginTop: 20 }}
+                      >
+                        Изменить Пароль
+                      </Button>
+                    </form>
+                  </Card>
+                </Paper>
               )}
-              <form onSubmit={onSubmit}>
-                <CardHeader
-                  classes={{ title: classes.title }}
-                  title='Установить Новый Пароль'
-                />
-                <FormGroup controlGroup={form}>
-                  <div>
-                    <FormControl name='password' render={PasswordInputRender} />
-                  </div>
-                  <div>
-                    <FormControl name='passwordConfirm' render={PasswordInputRender} />
-                  </div>
-                </FormGroup>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  fullWidth
-                  type='submit'
-                  style={{ marginTop: 20 }}
-                >
-                  Изменить Пароль
-                </Button>
-              </form>
-            </Card>
-          </Paper>
-        ) : <BrokenToken message={tokenChecked.message} />
-    )
+            />
+          ) : <BrokenToken message={tokenChecked.message} />
+      )
+    }
+    return null
   }
-  return null
 }
 
 RestorePassword.propTypes = {
