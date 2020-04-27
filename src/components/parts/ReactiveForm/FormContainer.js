@@ -14,15 +14,16 @@ export default class FormContainer extends Component {
     }
     controlGroup.registerUpdateSubscriber((controlGroup) => {
       this.setState({ controlGroup })
+      this.forceUpdate()
     })
   }
 
   render() {
-    const { children } = this.props
+    const { render } = this.props
     const { controlGroup } = this.state
     return (
       <FormContext.Provider value={controlGroup}>
-        <FormGroup>{children}</FormGroup>
+        <FormGroup render={render} />
       </FormContext.Provider>
     )
   }
@@ -31,5 +32,5 @@ export default class FormContainer extends Component {
 
 FormContainer.propTypes = {
   controlGroup: PropTypes.instanceOf(ControlGroup).isRequired,
-  children: PropTypes.node.isRequired,
+  render: PropTypes.func.isRequired,
 }
