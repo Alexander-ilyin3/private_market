@@ -127,7 +127,7 @@ class UserView extends Component {
           </Tabs>
         </AppBar>
         {tab === 0 && (
-          <Grid container spacing={16} style={{ padding: 16 }}>
+          <Grid container spacing={4} style={{ padding: 16 }}>
             <Grid item sm={12} md={12} lg={6}>
               <div className={classes.headreWuthBtn}>
                 <Typography

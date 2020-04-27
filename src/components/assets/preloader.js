@@ -30,19 +30,19 @@ const styles = _theme => ({
   one: {
     left: '0%',
     top: '0%',
-    animation: 'cssload-rotate-one 1.15s linear infinite',
+    animation: '$cssload-rotate-one 1.15s linear infinite',
     borderBottom: '3px solid #5C5EDC',
   },
   two: {
     right: '0%',
     top: '0%',
-    animation: 'cssload-rotate-two 1.15s linear infinite',
+    animation: '$cssload-rotate-two 1.15s linear infinite',
     borderRight: '3px solid rgba(76, 70, 101, 0.99)',
   },
   three: {
     right: '0%',
     bottom: '0%',
-    animation: 'cssload-rotate-three 1.15s linear infinite',
+    animation: '$cssload-rotate-three 1.15s linear infinite',
     borderTop: '3px solid rgb(233, 144, 138)',
   },
 

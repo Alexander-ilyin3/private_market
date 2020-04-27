@@ -8,5 +8,6 @@ export const newOrderPath = `${ordersPath}/new`
 export const statisticPath = '/statistic'
 export const profilePath = '/profile'
 export const productsPath = '/products'
+export const productsCategoriesPath = '/products-categories'
 export const paymentLogPath = '/paymentlog'
 export const resetPassword = '/password_reset'

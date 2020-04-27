@@ -25,15 +25,15 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing.unit * 7 + 1,
+    width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 7 + 1,
+      width: theme.spacing(7) + 1,
     },
   },
   appBar: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.text.primary,
-    width: `calc(100% - ${theme.spacing.unit * 7 + 1}px)`,
+    width: `calc(100% - ${theme.spacing(7) + 1}px)`,
     [theme.breakpoints.down('sm')]: {
       width: 'calc(100%)',
     },
@@ -71,7 +71,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 1,
+    padding: theme.spacing(1),
     marginTop: 65,
     position: 'relative',
     height: 'calc(100vh - 65px)',
