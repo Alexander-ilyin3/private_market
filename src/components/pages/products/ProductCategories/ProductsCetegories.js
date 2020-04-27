@@ -1,51 +1,33 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
+
 import {
   Paper,
 } from '@material-ui/core'
 import DataTable from 'mui-datatables'
 
 const columns = ['Внутрений номер категории', 'Название', 'Родительская категория']
-const data = [
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-  [115, 'Продуктики', 'Другие продуктики'],
-]
 
 class ProductsCetegories extends Component {
-  state = {
-    count: 0,
-    page: 0,
-    rowsPerPage: 5,
-  }
-
   componentDidMount() {
-
+    const { getProductCategories } = this.props
+    getProductCategories({ page: 0, rowsPerPage: 5 })
   }
 
-  onChangePage = (page) => {
-    this.setState({ page })
-  }
-
-  onChangeRowsPerPage = (rowsPerPage) => {
-    this.setState({ rowsPerPage })
+  onTableChange = (eventType, state) => {
+    const { getProductCategories } = this.props
+    const { page, rowsPerPage } = state
+    if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
+      getProductCategories({ page, rowsPerPage })
+    }
   }
 
   render() {
-    const { count, rowsPerPage, page } = this.state
-    const { onChangePage, onChangeRowsPerPage } = this
-
+    const { onTableChange } = this
+    const { productCategories = {} } = this.props
+    const { categories = [], config = {} } = productCategories
+    const { page, rowsPerPage, count } = config
 
     const options = {
       download: false,
@@ -58,8 +40,7 @@ class ProductsCetegories extends Component {
       serverSide: true,
       rowsPerPage,
       rowsPerPageOptions: [5, 10, 15],
-      onChangePage,
-      onChangeRowsPerPage,
+      onTableChange,
       textLabels: {
         filter: {
           all: 'Все',
@@ -100,13 +81,19 @@ class ProductsCetegories extends Component {
         <DataTable
           key={count}
           columns={columns}
-          data={data}
+          data={categories}
           title='КАТЕГОРИИ ТОВАРОВ'
           options={{ ...options }}
         />
       </Paper>
     )
   }
+}
+
+
+ProductsCetegories.propTypes = {
+  productCategories: PropTypes.object.isRequired,
+  getProductCategories: PropTypes.func.isRequired,
 }
 
 export default ProductsCetegories
