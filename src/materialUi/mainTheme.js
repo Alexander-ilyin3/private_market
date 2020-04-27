@@ -6,7 +6,7 @@ export default createMuiTheme({
   palette: {
     primary: { main: '#4a5ab9' },
     secondary: { main: '#18c5a9' },
-    warning: '#f39c12',
+    warning: { main: '#f39c12' },
     error: { main: red[600] },
     text: { primary: '#979797', secondary: '#b4bcc8' },
     contrastThreshold: 3,
