@@ -1,0 +1,5 @@
+export const SET_PRODUCT_CATEGORIES = 'SET_PRODUCT_CATEGORIES'
+
+export default {
+  SET_PRODUCT_CATEGORIES,
+}
