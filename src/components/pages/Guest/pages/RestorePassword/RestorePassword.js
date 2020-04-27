@@ -11,7 +11,7 @@ import {
 import { Security } from '@material-ui/icons'
 import classNames from 'classnames'
 
-import { checkToken, resetPassword } from 'services/login.service'
+import { checkToken, resetPassword } from 'services/api/login.service'
 import { signInPath } from 'config/routes'
 
 import {

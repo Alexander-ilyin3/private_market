@@ -11,7 +11,7 @@ import {
 
 } from '@material-ui/core';
 
-import { updateProfile } from 'services/axiosProvider';
+import { updateProfile } from 'services/api/profile.service';
 
 import MaskedPhone from 'components/assets/MaskedPhone';
 
