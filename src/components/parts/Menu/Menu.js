@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -7,11 +9,11 @@ import Divider from '@material-ui/core/Divider'
 import IconAdd from '@material-ui/icons/Add'
 import classNames from 'classnames'
 
-import { menuConfig, RouterListener } from './menuConfig'
-
 import {
   newOrderPath,
 } from 'config/routes'
+import { menuConfig, RouterListener } from './menuConfig'
+
 
 const Menu = (props) => {
   const { classes, history, menuItem } = props
@@ -73,6 +75,16 @@ const Menu = (props) => {
       <RouterListener />
     </div>
   )
+}
+
+Menu.defaultProps = {
+  menuItem: 4,
+}
+
+Menu.propTypes = {
+  menuItem: PropTypes.number,
+  history: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 }
 
 export default Menu
