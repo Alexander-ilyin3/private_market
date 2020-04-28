@@ -7,19 +7,24 @@ import {
 } from '@material-ui/core'
 import DataTable from 'mui-datatables'
 
-const columns = ['Внутрений номер категории', 'Название', 'Родительская категория']
+const columns = [
+  { name: 'id', label: 'id', options: { display: 'false' } },
+  'Внутрений номер категории',
+  'Название',
+  'Родительская категория',
+]
 
 class ProductsCetegories extends Component {
   componentDidMount() {
     const { getProductCategories } = this.props
-    getProductCategories({ page: 0, rowsPerPage: 5 })
+    getProductCategories({ page: 0, limit: 5 })
   }
 
   onTableChange = (eventType, state) => {
     const { getProductCategories } = this.props
     const { page, rowsPerPage } = state
     if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
-      getProductCategories({ page, rowsPerPage })
+      getProductCategories({ page, limit: rowsPerPage })
     }
   }
 
@@ -27,18 +32,17 @@ class ProductsCetegories extends Component {
     const { onTableChange } = this
     const { productCategories = {} } = this.props
     const { categories = [], config = {} } = productCategories
-    const { page, rowsPerPage, count } = config
+    const { page, limit, count } = config
 
     const options = {
       download: false,
       print: false,
       search: false,
-      viewColumns: false,
       filter: false,
       count,
       page,
       serverSide: true,
-      rowsPerPage,
+      rowsPerPage: limit,
       rowsPerPageOptions: [5, 10, 15],
       onTableChange,
       textLabels: {
