@@ -7,6 +7,8 @@ import {
 } from '@material-ui/core'
 import DataTable from 'mui-datatables'
 
+import { textLabels } from 'config/tableConfig/textLabels'
+
 const columns = [
   { name: 'id', label: 'id', options: { display: 'false' } },
   'Внутрений номер категории',
@@ -45,39 +47,7 @@ class ProductsCetegories extends Component {
       rowsPerPage: limit,
       rowsPerPageOptions: [5, 10, 15],
       onTableChange,
-      textLabels: {
-        filter: {
-          all: 'Все',
-          reset: 'Сброс',
-          title: 'Фильтр',
-        },
-        body: {
-          noMatch: 'Нет Совпадений',
-          toolTip: 'Сортировать',
-        },
-        pagination: {
-          displayRows: 'строк из',
-          next: 'Вперед',
-          previous: 'Назад',
-          rowsPerPage: 'На странице',
-        },
-        selectedRows: {
-          delete: 'Удалить',
-          deleteAria: '',
-          text: '',
-        },
-        toolbar: {
-          downloadCsv: 'Скачать в CSV',
-          filterTable: 'Фильтры',
-          print: 'Распечатать',
-          search: 'Поиск',
-          viewColumns: 'Показывать колонки',
-        },
-        viewColumns: {
-          title: 'Показывать',
-          // titleAria: '',
-        },
-      },
+      textLabels,
     }
 
     return (
