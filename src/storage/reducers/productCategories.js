@@ -4,7 +4,7 @@ const defaultState = ({
   categories: [],
   config: {
     page: 0,
-    limit: 5,
+    limit: 10,
     count: 0,
   },
 })
