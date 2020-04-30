@@ -41,6 +41,8 @@ class ProductsCetegories extends Component {
       print: false,
       search: false,
       filter: false,
+      selectableRowsHeader: false,
+      selectableRows: 'none',
       count,
       page,
       serverSide: true,

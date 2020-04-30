@@ -149,9 +149,11 @@ class Products extends PureComponent {
     const options = {
       download: false,
       print: false,
+      serverSide: true,
       count,
       page,
-      serverSide: true,
+      selectableRowsHeader: false,
+      selectableRows: 'none',
       rowsPerPage: limit,
       rowsPerPageOptions: [5, 10, 15],
       onTableChange,
