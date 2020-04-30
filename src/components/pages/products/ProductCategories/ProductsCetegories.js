@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import {
   Paper,
+  Typography,
 } from '@material-ui/core'
 import DataTable from 'mui-datatables'
 
@@ -33,7 +34,7 @@ class ProductsCetegories extends Component {
   render() {
     const { onTableChange } = this
     const { productCategories = {} } = this.props
-    const { categories = [], config = {} } = productCategories
+    const { categories = [], config = {}, err } = productCategories
     const { page, limit, count } = config
 
     const options = {
@@ -54,6 +55,13 @@ class ProductsCetegories extends Component {
 
     return (
       <Paper>
+        <Typography
+          variant='h4'
+          color='error'
+          align='center'
+        >
+          {err}
+        </Typography>
         <DataTable
           columns={columns}
           data={categories}
