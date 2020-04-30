@@ -15,6 +15,8 @@ const productsDefaultState = {
     limit: 5,
     count: 0,
     maxAmount: 0,
+    vendors: [],
+    selectedVendors: [],
     searchText: '',
   },
 }
