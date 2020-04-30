@@ -11,6 +11,7 @@ export const apiNewOrderPath = 'neworder/'
 export const apiStatistic = 'statistic/'
 export const apiProducts = 'products/'
 export const apiCategoriesPath = ''
+export const apiProductSearchAutocompletePath = 'product_autocomplete/'
 export const apiOrders = 'orders/'
 export const apiPaymentLog = 'paymentlog/'
 export const apiResetPasswordPath = `${apiCustomer}password_reset/`
