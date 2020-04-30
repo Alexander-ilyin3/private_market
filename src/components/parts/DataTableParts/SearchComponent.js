@@ -5,7 +5,7 @@ import {
   TextField,
 } from '@material-ui/core'
 
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import { Autocomplete } from '@material-ui/lab'
 
