@@ -1,5 +1,10 @@
 import { connect } from 'react-redux'
-import { searchAutocomleteList, products, config } from 'storage/selectors/products.selector'
+import {
+  searchAutocomleteList,
+  products,
+  config,
+  vendors,
+} from 'storage/selectors/products.selector'
 import { getProductList, getSearchAutocomplete } from 'services/api/products.service'
 
 import Products from './Products'
@@ -8,6 +13,7 @@ const mapStateToProps = state => ({
   products: products(state),
   config: config(state),
   searchAutocomleteList: searchAutocomleteList(state),
+  vendors: vendors(state),
 })
 
 const mapDispatchToProps = dispatch => ({
