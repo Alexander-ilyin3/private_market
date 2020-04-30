@@ -10,13 +10,13 @@ export const productSearchAutocomplete = (state = [], action) => {
 
 const productsDefaultState = {
   products: [],
+  vendors: [],
   config: {
     page: 0,
-    limit: 5,
+    limit: 10,
     count: 0,
     maxAmount: 0,
-    vendors: [],
-    selectedVendors: [],
+    vendor: 0,
     searchText: '',
   },
 }
