@@ -14,7 +14,7 @@ const productsDefaultState = {
     page: 0,
     limit: 5,
     count: 0,
-    filter: {},
+    maxAmount: 0,
     searchText: '',
   },
 }
