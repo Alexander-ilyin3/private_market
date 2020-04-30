@@ -20,9 +20,9 @@ import {
   FormControl,
   validators,
 } from 'components/parts/ReactiveForm'
+import PasswordInputRender from 'components/parts/FormParts/PasswordInputRender'
 
 import BrokenToken from './BrokenToken'
-import PasswordInputRender from './PasswordInputRender'
 
 const {
   required,
