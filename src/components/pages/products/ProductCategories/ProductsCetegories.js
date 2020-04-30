@@ -53,7 +53,6 @@ class ProductsCetegories extends Component {
     return (
       <Paper>
         <DataTable
-          key={count}
           columns={columns}
           data={categories}
           title='КАТЕГОРИИ ТОВАРОВ'
