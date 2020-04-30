@@ -39,7 +39,6 @@ export default class Search extends PureComponent {
       searchText,
       handleSearch,
       list,
-      options,
     } = this.props
     return (
       <Autocomplete
