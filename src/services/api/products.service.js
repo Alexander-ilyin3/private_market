@@ -10,29 +10,6 @@ import { convertToCamelcase } from '../functions'
 
 import instance from './axiosProvider'
 
-
-const mockedData = [
-  [19, 1, 'Продуктики', 'Другие продуктики'],
-  [18, 2, 'Продуктики', 'Другие продуктики'],
-  [17, 3, 'Продуктики', 'Другие продуктики'],
-  [16, 4, 'Продуктики', 'Другие '],
-  [15, 5, 'Продукт', 'Другие продуктики'],
-  [14, 6, 'Продуктики', 'Другие продуктики'],
-  [13, 7, 'Продуктики', 'Другие продуктики'],
-  [12, 8, 'Продуктики', 'Другие продуктики'],
-  [11, 9, 'Продуктasfasdfики', 'Другие проasdfдуктики'],
-  [10, 10, 'Продуasdfasdfктики', 'Другие продуктики'],
-  [9, 11, 'Продуктиasdfasdfки', 'Другие продуктики'],
-  [8, 12, 'Прктики', 'Другие продукти'],
-  [7, 13, 'Продуктики', 'Другие продуктики'],
-  [6, 14, 'Продуки', 'Другие продукки'],
-  [5, 15, 'дуктики', 'Другие прики'],
-  [4, 16, 'Продуки', 'Другие продуктики'],
-  [3, 17, 'тики', 'Другие '],
-  [4, 18, 'Продуктики', 'Другие продуктики'],
-  [3, 19, 'Продуктики', 'Другие продуктики'],
-]
-
 const mockedProducts = [
   [1, '110', 'https://ktonanovenkogo.ru/image/tovar-chto-takoe-korobka.jpg', 'Другой', 'Продуктики', 'Вендор1', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
   [1, '110', 'https://ktonanovenkogo.ru/image/tovar-chto-takoe-korobka.jpg', 'Название', 'Продуктики', 'Вендор1', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
@@ -63,38 +40,29 @@ const mockedProducts = [
 ]
 
 export const getProductCategories = ({ page, limit }) => async (dispatch) => {
-  dispatch(loadingStart())
+  try {
+    const res = await instance.get(apiCategoriesPath, { page, limit })
 
-  setTimeout(() => {
-    const newRow = [...mockedData[mockedData.length - 1]]
-    newRow[1] += 1
-    mockedData.push(newRow)
-    dispatch(setProductCategoriesAction(convertToCamelcase({
-      categories: mockedData.slice(limit * page, page * limit + limit),
-      config: { page: 1, limit, count: mockedData.length },
-    })))
-    dispatch(loadingStop())
-  }, 1000)
-
-  // try {
-  //   const res = await instance.get(apiCategoriesPath, { params })
-
-  //   if (res) {
-  //     const { data = {} } = res || {}
-  //     const { success = false, categories = {}, customer } = data
-  //     if (success) {
-  //       dispatch(setProductCategoriesAction(convertToCamelcase({ categories, })))
-  //     }
-  //   }
-  // } catch (err) {
-  //   const { response = {} } = err || {}
-  //   const { data = {} } = response
-  //   const { message = {} } = data
-  //   if (typeof message === 'string') {
-  //     throw new Error(message)
-  //   }
-  //   throw new Error('Failed')
-  // }
+    if (res) {
+      const { data = {} } = res || {}
+      const { success = false, categories = [], config = {} } = data
+      if (success) {
+        const categoriesArray = categories.map(category => (Array.isArray(category) ? category : Object.values(category)))
+        dispatch(setProductCategoriesAction(convertToCamelcase({
+          categories: categoriesArray,
+          config,
+        })))
+      }
+    }
+  } catch (err) {
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message = {} } = data
+    if (typeof message === 'string') {
+      dispatch(setProductCategoriesAction(convertToCamelcase({ err: message })))
+    }
+    dispatch(setProductCategoriesAction(convertToCamelcase({ err: 'Failed' })))
+  }
 }
 
 export const getSearchAutocomplete = searchText => async (dispatch) => {
