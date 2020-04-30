@@ -22,7 +22,7 @@ class Products extends PureComponent {
 
   componentDidMount() {
     const { getProductList } = this.props
-    getProductList({ page: 0, limit: 10, searchText: null })
+    getProductList({ page: 1, limit: 10, searchText: null })
   }
 
   onTableChange = (eventType, state) => {
@@ -69,7 +69,7 @@ class Products extends PureComponent {
         return config[key] !== mapconfigToState(key)
       })) {
         this.throttledChanges({
-          page,
+          page: page + 1,
           limit: rowsPerPage,
           searchText,
           max_price,
