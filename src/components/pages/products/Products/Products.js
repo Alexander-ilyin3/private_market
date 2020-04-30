@@ -101,7 +101,14 @@ class Products extends PureComponent {
     const columns = [
       { name: 'id', label: 'id', options: { display: 'false', filter: false } },
       { name: 'Внутрений номер товара', label: 'Внутрений номер товара', options: { filter: false } },
-      { name: 'Изображение товара', label: 'Изображение товара', options: { filter: false } },
+      {
+        name: 'Изображение товара',
+        label: 'Изображение товара',
+        options: {
+          filter: false,
+          customBodyRender: value => <img alt='Картинка' height='50' width='50' src={value} />,
+        },
+      },
       { name: 'Название', label: 'Название', options: { filter: false } },
       { name: 'Категория', label: 'Категория', options: { filter: false } },
       {
