@@ -11,7 +11,7 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 
-import SearchComponent from '../../../parts/DataTableParts/SearchComponent'
+import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
 
 class Products extends PureComponent {
@@ -22,7 +22,7 @@ class Products extends PureComponent {
 
   componentDidMount() {
     const { getProductList } = this.props
-    getProductList({ page: 0, limit: 5, searchText: null })
+    getProductList({ page: 0, limit: 10, searchText: null })
   }
 
   onTableChange = (eventType, state) => {
@@ -34,26 +34,26 @@ class Products extends PureComponent {
         searchText,
         filterList,
       } = state
-      const maxAmount = filterList[11][0]
-      const selectedVendors = filterList[5]
+      const max_price = filterList[11][0]
+      const vendor = filterList[5][0]
 
       const dependenciesKeys = [
         'page',
         'limit',
         'count',
-        'maxAmount',
+        'max_price',
         'searchText',
-        'selectedVendors',
+        'vendor',
       ]
 
       const mapconfigToState = (key) => {
         switch (key) {
           case 'limit':
             return state.rowsPerPage
-          case 'maxAmount':
-            return maxAmount
-          case 'selectedVendors':
-            return selectedVendors
+          case 'max_price':
+            return max_price
+          case 'vendor':
+            return vendor
           default:
             return state[key]
         }
@@ -72,8 +72,8 @@ class Products extends PureComponent {
           page,
           limit: rowsPerPage,
           searchText,
-          maxAmount,
-          selectedVendors,
+          max_price,
+          vendor,
         })
       }
     }
@@ -87,50 +87,50 @@ class Products extends PureComponent {
       getSearchAutocomplete,
       searchAutocomleteList,
       config,
+      vendors,
     } = this.props
     const {
       page,
       limit,
       count,
-      maxAmount,
+      max_price,
       searchText,
-      vendors,
-      selectedVendors,
+      vendor,
     } = config
 
     const columns = [
       { name: 'id', label: 'id', options: { display: 'false', filter: false } },
-      { name: 'Внутрений номер товара', label: 'Внутрений номер товара', options: { filter: false } },
+      { name: 'external_id', label: 'Внутрений номер товара', options: { filter: false } },
       {
-        name: 'Изображение товара',
+        name: 'image',
         label: 'Изображение товара',
         options: {
           filter: false,
-          customBodyRender: value => <img alt='Картинка' height='50' width='50' src={value} />,
+          customBodyRender: value => <img alt='Картинка' height='50' src={value} />,
         },
       },
-      { name: 'Название', label: 'Название', options: { filter: false } },
-      { name: 'Категория', label: 'Категория', options: { filter: false } },
+      { name: 'name', label: 'Название', options: { filter: false } },
+      { name: 'category_name', label: 'Категория', options: { filter: false } },
       {
-        name: 'Вендор',
+        name: 'vendor_name',
         label: 'Вендор',
         options: {
-          filterList: selectedVendors,
+          filterList: [vendor],
           filterOptions: {
-            names: [...vendors],
+            names: vendors,
           },
         },
       },
-      { name: 'Код вендора', label: 'Код вендора', options: { filter: false } },
-      { name: 'Баркод', label: 'Баркод', options: { filter: false } },
-      { name: 'Объем', label: 'Объем', options: { filter: false } },
-      { name: 'Вес', label: 'Вес', options: { filter: false } },
-      { name: 'УКТЗ', label: 'УКТЗ', options: { filter: false } },
+      { name: 'vendor_code', label: 'Код вендора', options: { filter: false } },
+      { name: 'barcode', label: 'Баркод', options: { filter: false } },
+      { name: 'volume', label: 'Объем', options: { filter: false } },
+      { name: 'weight', label: 'Вес', options: { filter: false } },
+      { name: 'uktz', label: 'УКТЗ', options: { filter: false } },
       {
-        name: 'Цена (до)',
-        label: 'Цена (до)',
+        name: 'price',
+        label: 'Цена',
         options: {
-          filterList: [maxAmount],
+          filterList: [max_price],
           filterType: 'custom',
           filterOptions: {
             logic: () => false,
@@ -143,8 +143,8 @@ class Products extends PureComponent {
     ]
 
     const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
-    serverSideFilterList[5] = selectedVendors || []
-    serverSideFilterList[11] = maxAmount ? [maxAmount] : []
+    serverSideFilterList[5] = vendor ? [vendor] : []
+    serverSideFilterList[11] = max_price ? [max_price] : []
 
     const options = {
       download: false,
@@ -191,6 +191,7 @@ Products.defaultProps = {
   products: [],
   searchAutocomleteList: [],
   config: {},
+  vendors: [],
 }
 
 Products.propTypes = {
@@ -199,6 +200,7 @@ Products.propTypes = {
   products: PropTypes.array,
   searchAutocomleteList: PropTypes.array,
   config: PropTypes.object,
+  vendors: PropTypes.array,
 }
 
 export default Products
