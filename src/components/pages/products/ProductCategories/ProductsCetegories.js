@@ -11,23 +11,28 @@ import DataTable from 'mui-datatables'
 import { textLabels } from 'config/tableConfig/textLabels'
 
 const columns = [
-  { name: 'id', label: 'id', options: { display: 'false' } },
-  'Внутрений номер категории',
-  'Название',
-  'Родительская категория',
+  { name: 'id', label: 'id', options: { display: 'false', sort: false } },
+  { name: 'externalId', label: 'Внутрений номер категории', options: { sort: false } },
+  { name: 'name', label: 'Название', options: { sort: false } },
+  { name: 'parentName', label: 'Родительская категория', options: { sort: false } },
 ]
 
 class ProductsCetegories extends Component {
   componentDidMount() {
     const { getProductCategories } = this.props
-    getProductCategories({ page: 0, limit: 5 })
+    getProductCategories({ page: 1, limit: 10 })
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { productCategories } = this.props
+    return nextProps.productCategories !== productCategories
   }
 
   onTableChange = (eventType, state) => {
     const { getProductCategories } = this.props
     const { page, rowsPerPage } = state
     if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
-      getProductCategories({ page, limit: rowsPerPage })
+      getProductCategories({ page: page + 1, limit: rowsPerPage })
     }
   }
 
