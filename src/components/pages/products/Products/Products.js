@@ -1,5 +1,5 @@
 // /* eslint-disable no-restricted-imports */
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import {
   Paper,
@@ -14,7 +14,7 @@ import { textLabels } from 'config/tableConfig/textLabels'
 import SearchComponent from '../../../parts/DataTableParts/SearchComponent'
 
 
-class Products extends Component {
+class Products extends PureComponent {
   throttledChanges = debounce((value) => {
     const { getProductList } = this.props
     getProductList(value)
@@ -35,6 +35,7 @@ class Products extends Component {
         filterList,
       } = state
       const maxAmount = filterList[11][0]
+      const selectedVendors = filterList[5]
 
       const dependenciesKeys = [
         'page',
@@ -42,6 +43,7 @@ class Products extends Component {
         'count',
         'maxAmount',
         'searchText',
+        'selectedVendors',
       ]
 
       const mapconfigToState = (key) => {
@@ -50,17 +52,28 @@ class Products extends Component {
             return state.rowsPerPage
           case 'maxAmount':
             return maxAmount
+          case 'selectedVendors':
+            return selectedVendors
           default:
             return state[key]
         }
       }
 
-      if (dependenciesKeys.find(key => config[key] !== mapconfigToState(key))) {
+      const compareSelectedVendors = (confVendors = [], stateVendors = []) => {
+        if (confVendors.length !== stateVendors.length) return false
+        return !confVendors.find((vendor, i) => vendor !== stateVendors[i])
+      }
+
+      if (dependenciesKeys.find((key) => {
+        if (key === 'selectedVendors') return !(compareSelectedVendors(config[key], mapconfigToState(key)))
+        return config[key] !== mapconfigToState(key)
+      })) {
         this.throttledChanges({
           page,
           limit: rowsPerPage,
           searchText,
           maxAmount,
+          selectedVendors,
         })
       }
     }
@@ -81,6 +94,8 @@ class Products extends Component {
       count,
       maxAmount,
       searchText,
+      vendors,
+      selectedVendors,
     } = config
 
     const columns = [
@@ -89,7 +104,16 @@ class Products extends Component {
       { name: 'Изображение товара', label: 'Изображение товара', options: { filter: false } },
       { name: 'Название', label: 'Название', options: { filter: false } },
       { name: 'Категория', label: 'Категория', options: { filter: false } },
-      { name: 'Вендор', label: 'Вендор' },
+      {
+        name: 'Вендор',
+        label: 'Вендор',
+        options: {
+          filterList: selectedVendors,
+          filterOptions: {
+            names: [...vendors],
+          },
+        },
+      },
       { name: 'Код вендора', label: 'Код вендора', options: { filter: false } },
       { name: 'Баркод', label: 'Баркод', options: { filter: false } },
       { name: 'Объем', label: 'Объем', options: { filter: false } },
@@ -112,7 +136,8 @@ class Products extends Component {
     ]
 
     const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
-    serverSideFilterList[11] = [maxAmount]
+    serverSideFilterList[11] = selectedVendors || []
+    serverSideFilterList[5] = [maxAmount]
 
     const options = {
       download: false,
