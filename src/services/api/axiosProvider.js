@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'querystring'
 import { store, actions } from 'storage'
 import {
-  apiprofileUpdatePath,
+  apiProductSearchAutocompletePath,
 } from 'config/apiPath'
 import { convertToSnakecase } from '../functions'
 
@@ -35,8 +35,11 @@ instance.interceptors.response.use(
 
 instance.interceptors.request.use(
   (config) => {
+    const { url } = config
+    if (url.indexOf(apiProductSearchAutocompletePath) === -1) {
+      dispatch(loadingStart())
+    }
     const token = store.getState().loginData.token
-    dispatch(loadingStart())
     const updatedConfig = config
     if (token) {
       updatedConfig.headers.Authorization = token
