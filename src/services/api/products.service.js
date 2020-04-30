@@ -41,16 +41,16 @@ const mockedProducts = [
 
 export const getProductCategories = ({ page, limit }) => async (dispatch) => {
   try {
-    const res = await instance.get(apiCategoriesPath, { page, limit })
+    const res = await instance.get(apiCategoriesPath, { params: { page, limit } })
 
     if (res) {
       const { data = {} } = res || {}
       const { success = false, categories = [], config = {} } = data
+      const { page } = config
       if (success) {
-        const categoriesArray = categories.map(category => (Array.isArray(category) ? category : Object.values(category)))
         dispatch(setProductCategoriesAction(convertToCamelcase({
-          categories: categoriesArray,
-          config,
+          categories,
+          config: { ...config, page: page - 1 },
         })))
       }
     }
