@@ -1,8 +1,10 @@
 import {
   apiCategoriesPath,
+  apiProductSearchAutocompletePath,
 } from 'config/apiPath'
 import { setProductCategoriesAction } from 'storage/actions/productCategories.action'
 import { loadingStart, loadingStop } from 'storage/actions/loading.actions'
+import { setProductSearchAutocompleteAction, setProducts } from 'storage/actions/products.actions'
 
 import { convertToCamelcase } from '../functions'
 
@@ -31,14 +33,45 @@ const mockedData = [
   [3, 19, 'Продуктики', 'Другие продуктики'],
 ]
 
+const mockedProducts = [
+  [1, '110', 'http://123', 'Другой', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Название', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 250],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Другой', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 8000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+  [1, '110', 'http://123', 'Продукт', 'Продуктики', 'Вендор', '12', 'Баркод', 'Объем', 'Вес', 'УКТЗ', 10000],
+]
 
 export const getProductCategories = ({ page, limit }) => async (dispatch) => {
   dispatch(loadingStart())
 
   setTimeout(() => {
+    const newRow = [...mockedData[mockedData.length - 1]]
+    newRow[1] += 1
+    mockedData.push(newRow)
     dispatch(setProductCategoriesAction(convertToCamelcase({
       categories: mockedData.slice(limit * page, page * limit + limit),
-      config: { page, limit, count: mockedData.length },
+      config: { page: 1, limit, count: mockedData.length },
     })))
     dispatch(loadingStop())
   }, 1000)
@@ -51,6 +84,74 @@ export const getProductCategories = ({ page, limit }) => async (dispatch) => {
   //     const { success = false, categories = {}, customer } = data
   //     if (success) {
   //       dispatch(setProductCategoriesAction(convertToCamelcase({ categories, })))
+  //     }
+  //   }
+  // } catch (err) {
+  //   const { response = {} } = err || {}
+  //   const { data = {} } = response
+  //   const { message = {} } = data
+  //   if (typeof message === 'string') {
+  //     throw new Error(message)
+  //   }
+  //   throw new Error('Failed')
+  // }
+}
+
+export const getSearchAutocomplete = searchText => async (dispatch) => {
+  setTimeout(() => {
+    const filtered = new Set(mockedProducts.map(product => product[3]).filter(name => name.toUpperCase().indexOf(searchText.toUpperCase()) > -1).slice(0, 5))
+
+    dispatch(setProductSearchAutocompleteAction([...filtered]))
+  }, 1000)
+
+  // try {
+  //   const res = await instance.get(apiProductSearchAutocompletePath, { text: searchText })
+
+  //   if (res) {
+  //     const { data = {} } = res || {}
+  //     const { success = false, searchList } = data
+  //     if (success) {
+  //       dispatch(setProductSearchAutocompleteAction(searchList))
+  //     }
+  //   }
+  // } catch (err) {
+  //   const { response = {} } = err || {}
+  //   const { data = {} } = response
+  //   const { message = {} } = data
+  //   if (typeof message === 'string') {
+  //     throw new Error(message)
+  //   }
+  //   throw new Error('Failed')
+  // }
+}
+
+export const getProductList = config => async (dispatch) => {
+  dispatch(loadingStart())
+  const {
+    page,
+    limit,
+    searchText,
+    maxAmount,
+  } = config
+
+  setTimeout(() => {
+    const products = mockedProducts
+      .filter(product => ((maxAmount > 0) ? product[11] < maxAmount : true))
+      .filter(product => (searchText ? product[3].toUpperCase().indexOf(searchText.toUpperCase()) > -1 : true))
+
+    const sliced = products.slice(limit * page, page * limit + limit)
+    dispatch(setProducts({ products: sliced, config: { ...config, count: products.length } }))
+    dispatch(loadingStop())
+  }, 1000)
+
+  // try {
+  //   const res = await instance.get(apiProductSearchAutocompletePath, { text: searchText })
+
+  //   if (res) {
+  //     const { data = {} } = res || {}
+  //     const { success = false, searchList } = data
+  //     if (success) {
+  //       dispatch(setProductSearchAutocompleteAction(searchList))
   //     }
   //   }
   // } catch (err) {
