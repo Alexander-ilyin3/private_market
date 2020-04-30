@@ -80,6 +80,26 @@ export default createMuiTheme({
           whiteSpace: 'unset',
         },
       },
+      cellStackedSmall: {
+        [theme.breakpoints.down('sm')]: {
+          display: 'inline-block',
+          wordWrap: 'break-word',
+          whiteSpace: 'unset',
+          width: '50%',
+          height: 'auto',
+          borderBottom: 'none',
+        },
+      },
+      responsiveStackedSmall: {
+        [theme.breakpoints.down('sm')]: {
+          width: '50% !important',
+          textAlign: 'end',
+          height: 'auto',
+          borderBottom: 'none',
+          wordWrap: 'break-word',
+          whiteSpace: 'unset',
+        },
+      },
     },
   },
   mixins: {
