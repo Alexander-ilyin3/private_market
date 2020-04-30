@@ -142,9 +142,9 @@ class Products extends PureComponent {
       },
     ]
 
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
-    serverSideFilterList[11] = selectedVendors || []
-    serverSideFilterList[5] = [maxAmount]
+    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
+    serverSideFilterList[5] = selectedVendors || []
+    serverSideFilterList[11] = maxAmount ? [maxAmount] : []
 
     const options = {
       download: false,
@@ -167,6 +167,7 @@ class Products extends PureComponent {
         <DataTable
           columns={columns}
           data={products}
+          title='Товары'
           options={{
             ...options,
             customSearchRender: (searchText, handleSearch, hideSearch, options) => (
