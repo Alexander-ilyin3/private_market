@@ -37,32 +37,26 @@ export const getProductCategories = ({ page, limit }) => async (dispatch) => {
   }
 }
 
-export const getSearchAutocomplete = searchText => async (dispatch) => {
-  // setTimeout(() => {
-  //   const filtered = new Set(mockedProducts.map(product => product[3]).filter(name => name.toUpperCase().indexOf(searchText.toUpperCase()) > -1).slice(0, 5))
+export const getSearchAutocomplete = search_text => async (dispatch) => {
+  try {
+    const res = await instance.get(apiProductSearchAutocompletePath, { params: { search_text } })
 
-  //   dispatch(setProductSearchAutocompleteAction([...filtered]))
-  // }, 1000)
-
-  // try {
-  //   const res = await instance.get(apiProductSearchAutocompletePath, { text: searchText })
-
-  //   if (res) {
-  //     const { data = {} } = res || {}
-  //     const { success = false, searchList } = data
-  //     if (success) {
-  //       dispatch(setProductSearchAutocompleteAction(searchList))
-  //     }
-  //   }
-  // } catch (err) {
-  //   const { response = {} } = err || {}
-  //   const { data = {} } = response
-  //   const { message = {} } = data
-  //   if (typeof message === 'string') {
-  //     throw new Error(message)
-  //   }
-  //   throw new Error('Failed')
-  // }
+    if (res) {
+      const { data = {} } = res || {}
+      const { success = false, search_list } = data
+      if (success) {
+        dispatch(setProductSearchAutocompleteAction(search_list))
+      }
+    }
+  } catch (err) {
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message = {} } = data
+    if (typeof message === 'string') {
+      throw new Error(message)
+    }
+    throw new Error('Failed')
+  }
 }
 
 export const getProductList = config => async (dispatch) => {
@@ -86,6 +80,7 @@ export const getProductList = config => async (dispatch) => {
           config: {
             ...config,
             page: page - 1,
+            searchText: config.search_text,
           },
         }))
       }
