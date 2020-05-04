@@ -71,7 +71,7 @@ class Products extends PureComponent {
         this.throttledChanges({
           page: page + 1,
           limit: rowsPerPage,
-          searchText,
+          search_text: searchText,
           max_price,
           vendor,
         })
