@@ -11,7 +11,7 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 
-import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
+// import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
 
 class Products extends PureComponent {
@@ -34,6 +34,9 @@ class Products extends PureComponent {
         searchText,
         filterList,
       } = state
+
+      if (eventType === 'search' && searchText && searchText.length < 3) return
+
       const max_price = filterList[11][0]
       const vendor = filterList[5][0]
 
@@ -54,6 +57,7 @@ class Products extends PureComponent {
             return max_price
           case 'vendor':
             return vendor
+          case 'search_text':
           default:
             return state[key]
         }
@@ -84,8 +88,8 @@ class Products extends PureComponent {
     const { onTableChange } = this
     const {
       products = [],
-      getSearchAutocomplete,
-      searchAutocomleteList,
+      // getSearchAutocomplete,
+      // searchAutocomleteList,
       config,
       vendors,
     } = this.props
@@ -170,16 +174,16 @@ class Products extends PureComponent {
           title='Товары'
           options={{
             ...options,
-            customSearchRender: (searchText, handleSearch, hideSearch, options) => (
-              <SearchComponent
-                searchText={searchText}
-                handleSearch={handleSearch}
-                inputChanged={getSearchAutocomplete}
-                hideSearch={hideSearch}
-                list={searchAutocomleteList}
-                options={options}
-              />
-            ),
+            // customSearchRender: (searchText, handleSearch, hideSearch, options) => (
+            //   <SearchComponent
+            //     searchText={searchText}
+            //     handleSearch={handleSearch}
+            //     inputChanged={getSearchAutocomplete}
+            //     hideSearch={hideSearch}
+            //     list={searchAutocomleteList}
+            //     options={options}
+            //   />
+            // ),
           }}
         />
       </Paper>
@@ -189,16 +193,16 @@ class Products extends PureComponent {
 
 Products.defaultProps = {
   products: [],
-  searchAutocomleteList: [],
+  // searchAutocomleteList: [],
   config: {},
   vendors: [],
 }
 
 Products.propTypes = {
   getProductList: PropTypes.func.isRequired,
-  getSearchAutocomplete: PropTypes.func.isRequired,
+  // getSearchAutocomplete: PropTypes.func.isRequired,
   products: PropTypes.array,
-  searchAutocomleteList: PropTypes.array,
+  // searchAutocomleteList: PropTypes.array,
   config: PropTypes.object,
   vendors: PropTypes.array,
 }
