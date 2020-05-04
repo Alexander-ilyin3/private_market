@@ -23,13 +23,12 @@ export const getProfile = () => async (dispatch) => {
     if (err && err.response && err.response.status === 401) {
       dispatch(logout())
     }
-    throw new Error(err)
+    if (err && err.response && err.response.data) dispatch({ error: err.response.data.message })
   }
 }
 
 export const updateProfile = async (userData) => {
   try {
-    console.log(userData)
     const res = await instance.put(apiprofileUpdatePath, convertToSnakecase(userData))
     if (res) {
       return res
@@ -38,7 +37,6 @@ export const updateProfile = async (userData) => {
     const { response = {} } = err || {}
     const { data = {} } = response
     const { message = {} } = data
-    console.log(message)
     if (typeof message === 'string') {
       throw new Error(message)
     }
