@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core'
 import { connect } from 'react-redux'
 
-import { getProfile } from 'services/profile.service'
+import { getProfile } from 'services/api/profile.service'
 import { userData } from 'storage/selectors/userData.selector'
 
 import UserView from './UserView'

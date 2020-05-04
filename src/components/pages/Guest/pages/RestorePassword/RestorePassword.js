@@ -11,7 +11,7 @@ import {
 import { Security } from '@material-ui/icons'
 import classNames from 'classnames'
 
-import { checkToken, resetPassword } from 'services/login.service'
+import { checkToken, resetPassword } from 'services/api/login.service'
 import { signInPath } from 'config/routes'
 
 import {
@@ -20,9 +20,9 @@ import {
   FormControl,
   validators,
 } from 'components/parts/ReactiveForm'
+import PasswordInputRender from 'components/parts/FormParts/PasswordInputRender'
 
 import BrokenToken from './BrokenToken'
-import PasswordInputRender from './PasswordInputRender'
 
 const {
   required,

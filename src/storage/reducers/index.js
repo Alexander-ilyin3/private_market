@@ -6,12 +6,17 @@ import loginData from './loginData'
 import isLoading from './isLoading'
 import userData from './userData'
 import menuItem from './menu'
+import productCategories from './productCategories'
+import { productSearchAutocomplete, productsData } from './products'
 
 const reducer = combineReducers({
   loginData,
   isLoading,
   userData,
   menuItem,
+  productCategories,
+  productSearchAutocomplete,
+  productsData,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

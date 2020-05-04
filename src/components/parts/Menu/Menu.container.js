@@ -8,7 +8,7 @@ import Menu from './Menu'
 import { styles } from './Menu.styles'
 
 const mapStateToProps = state => ({
-  menuItem: menuItemSelector(state)
+  menuItem: menuItemSelector(state),
 })
 
 export default connect(mapStateToProps)(withRouter(withStyles(styles, { withTheme: true })(Menu)))

@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 import { recoveryPasswordSuccessPath, signInPath } from 'config/routes'
-import { recovery } from 'services/login.service'
+import { recovery } from 'services/api/login.service'
 import { emailValidator, required } from 'components/parts/ReactiveForm/validators'
 
 

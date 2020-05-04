@@ -33,7 +33,15 @@ export class Control {
   }
 
   setValue = (event) => {
-    const { value } = event.target
+    const { type } = event.target
+    let value = null
+    if (type === 'checkbox') {
+      const { checked } = event.target
+      value = checked
+    } else if (['password', 'text'].indexOf(type) > -1) {
+      const { target } = event
+      value = target.value
+    }
     this.value = value
     this.validate()
     this.onUpdated(this.name, this.value)
