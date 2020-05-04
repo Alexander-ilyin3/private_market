@@ -29,10 +29,10 @@ class Products extends PureComponent {
     if (['changeRowsPerPage', 'changePage', 'search', 'filterChange', 'onFilterDialogClose'].indexOf(eventType) > -1) {
       const { config } = this.props
       const {
+        filterList,
         page,
         rowsPerPage,
         searchText,
-        filterList,
       } = state
 
       if (eventType === 'search' && searchText && searchText.length < 3) return
