@@ -171,7 +171,7 @@ class Products extends PureComponent {
         <DataTable
           columns={columns}
           data={products}
-          title='Товары'
+          title='СПИСОК ТОВАРОВ'
           options={{
             ...options,
             // customSearchRender: (searchText, handleSearch, hideSearch, options) => (

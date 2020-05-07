@@ -10,13 +10,20 @@ export default createMuiTheme({
     secondary: { main: '#18c5a9' },
     warning: { main: '#f39c12' },
     error: { main: red[600] },
-    text: { primary: '#979797', secondary: '#b4bcc8' },
+    text: { primary: '#34495f', secondary: '#b4bcc8' },
     contrastThreshold: 3,
     tonalOffset: 0.2,
     menuBackground: '#304357',
   },
   typography: {
     useNextVariants: true,
+    fontFamily: [
+      'Ubuntu',
+      'Cantarell',
+      'Open Sans',
+      'Helvetica Neue',
+      'sans-serif',
+    ].join(','),
 
   },
   overrides: {
@@ -57,6 +64,25 @@ export default createMuiTheme({
         [theme.breakpoints.down('xs')]: {
           marginRight: 8,
         },
+      },
+    },
+    MuiTableCell: {
+      root: {
+        fontFamily: 'inherit',
+      },
+      body: {
+        color: '#34495f',
+      },
+    },
+    MUIDataTableHeadCell: {
+      root: {
+        backgroundColor: '#ebedee',
+        color: '#495057',
+        fontSize: '14px',
+        fontWeight: 700,
+      },
+      fixedHeaderCommon: {
+        backgroundColor: '#ebedee',
       },
     },
     MUIDataTableBodyCell: {

@@ -42,7 +42,6 @@ class AppDrawer extends Component {
     const { max, mobileOpen } = this.state
     return (
       <div className={classes.root}>
-        <CssBaseline />
         <AppBar
           position='fixed'
           // className={classes.appBar}
