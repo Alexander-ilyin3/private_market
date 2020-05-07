@@ -1,4 +1,4 @@
-import { SET_SEARCH_AUTOCOMPLETE, SET_PRODUCTS } from '../constants/products.constants'
+import { SET_SEARCH_AUTOCOMPLETE, SET_PRODUCTS, SET_PRODUCT } from '../constants/products.constants'
 
 
 export const productSearchAutocomplete = (state = [], action) => {
@@ -24,6 +24,22 @@ const productsDefaultState = {
 export const productsData = (state = productsDefaultState, action) => {
   if (action.type === SET_PRODUCTS) {
     return action.payload
+  }
+  return state
+}
+
+
+const singleProductInitialState = {
+  error: null,
+  data: {},
+}
+
+export const productInfo = (state = singleProductInitialState, action) => {
+  if (action.type === SET_PRODUCT) {
+    return {
+      error: null,
+      ...action.payload,
+    }
   }
   return state
 }
