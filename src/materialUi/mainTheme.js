@@ -27,6 +27,13 @@ export default createMuiTheme({
 
   },
   overrides: {
+
+    MuiChip: {
+      root: {
+        borderRadius: 3,
+      },
+    },
+
     MuiButton: {
 
       raised: {
