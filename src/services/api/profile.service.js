@@ -16,14 +16,18 @@ export const getProfile = () => async (dispatch) => {
       const { data = {} } = res || {}
       const { success = false, customer = {} } = data
       if (success) {
-        dispatch(userDataActions.setUserData(convertToCamelcase(customer)))
+        return dispatch(userDataActions.setUserData(convertToCamelcase(customer)))
       }
     }
   } catch (err) {
     if (err && err.response && err.response.status === 401) {
-      dispatch(logout())
+      return dispatch(logout())
     }
-    if (err && err.response && err.response.data) dispatch({ error: err.response.data.message })
+    if (err && err.response && err.response.data) {
+      return dispatch(userDataActions.setUserData(convertToCamelcase(
+        { error: err.response.data.message || 'Что то пошло не-так' },
+      )))
+    }
   }
 }
 
