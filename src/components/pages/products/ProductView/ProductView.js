@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import {
   Paper,
@@ -21,7 +22,6 @@ export default class ProductView extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { classes, product = {} } = this.props
     const { data = {} } = product
     const {
@@ -54,7 +54,7 @@ export default class ProductView extends Component {
               </Grid>
             </Grid>
             <Grid item xs={12} className={classes.detailItem}>
-              <Typography>Категории:</Typography>
+              <Typography> Категории: </Typography>
               <Chip
                 component={Link}
                 label={category_name}
@@ -87,4 +87,15 @@ export default class ProductView extends Component {
       </Paper>
     )
   }
+}
+
+ProductView.propTypes = {
+  classes: PropTypes.object.isRequired,
+  getData: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  product: PropTypes.object,
+}
+
+ProductView.defaultProps = {
+  product: {},
 }
