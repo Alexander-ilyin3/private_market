@@ -10,6 +10,7 @@ import DataTable from 'mui-datatables'
 import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
+import { productViewPath } from 'config/routes'
 
 // import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
@@ -83,13 +84,16 @@ class Products extends PureComponent {
     }
   }
 
+  navigateToProductPage = (row) => {
+    const { history } = this.props
+    history.push(productViewPath.replace(':id', row[0]))
+  }
 
   render() {
     const { onTableChange } = this
     const {
       products = [],
       // getSearchAutocomplete,
-      // searchAutocomleteList,
       config,
       vendors,
     } = this.props
@@ -164,6 +168,7 @@ class Products extends PureComponent {
       textLabels,
       serverSideFilterList,
       searchText,
+      onRowClick: this.navigateToProductPage,
     }
 
     return (
@@ -202,7 +207,7 @@ Products.propTypes = {
   getProductList: PropTypes.func.isRequired,
   // getSearchAutocomplete: PropTypes.func.isRequired,
   products: PropTypes.array,
-  // searchAutocomleteList: PropTypes.array,
+  history: PropTypes.object.isRequired,
   config: PropTypes.object,
   vendors: PropTypes.array,
 }
