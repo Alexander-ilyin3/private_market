@@ -2,10 +2,11 @@ import {
   apiCategoriesPath,
   apiProductSearchAutocompletePath,
   apiProductsPath,
+  apiProductDetailsPath,
 } from 'config/apiPath'
 import { setProductCategoriesAction } from 'storage/actions/productCategories.action'
 
-import { setProductSearchAutocompleteAction, setProducts } from 'storage/actions/products.actions'
+import { setProductSearchAutocompleteAction, setProducts, setProduct } from 'storage/actions/products.actions'
 
 import { convertToCamelcase } from '../functions'
 
@@ -93,5 +94,36 @@ export const getProductList = config => async (dispatch) => {
       dispatch(setProductCategoriesAction(convertToCamelcase({ err: message })))
     }
     dispatch(setProductCategoriesAction(convertToCamelcase({ err: 'Failed' })))
+  }
+}
+
+export const getProductDetails = id => async (dispatch) => {
+  try {
+    const res = await instance.get(apiProductDetailsPath.replace(':id', id))
+    if (res) {
+      const { data = {} } = res || {}
+      const {
+        success = false,
+        product = {},
+        message,
+      } = data
+      if (success) {
+        return dispatch(setProduct({
+          error: null,
+          data: product,
+        }))
+      }
+      return dispatch(setProduct({
+        error: message || 'Failed',
+      }))
+    }
+  } catch (err) {
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message = {} } = data
+    if (typeof message === 'string') {
+      dispatch(setProduct({ error: message }))
+    }
+    dispatch(setProduct({ error: 'Failed' }))
   }
 }

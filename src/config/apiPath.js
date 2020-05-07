@@ -13,3 +13,4 @@ export const apiProductSearchAutocompletePath = 'product_autocomplete/'
 export const apiOrders = 'orders/'
 export const apiPaymentLog = 'paymentlog/'
 export const apiResetPasswordPath = `${apiCustomer}password_reset/`
+export const apiProductDetailsPath = 'product/:id'
