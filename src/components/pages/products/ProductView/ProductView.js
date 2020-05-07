@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   Paper,
@@ -9,6 +10,8 @@ import {
   TextField,
 } from '@material-ui/core'
 import { CheckCircle } from '@material-ui/icons'
+
+import { productsCategoriesPath } from 'config/routes'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -53,8 +56,10 @@ export default class ProductView extends Component {
             <Grid item xs={12} className={classes.detailItem}>
               <Typography>Категории:</Typography>
               <Chip
+                component={Link}
                 label={category_name}
                 color='primary'
+                to={`${productsCategoriesPath}?category=${category_name}`}
               />
             </Grid>
             <Grid item sm={12} md={8} className={classes.detailItem}>

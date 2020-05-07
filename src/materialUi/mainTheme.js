@@ -31,6 +31,8 @@ export default createMuiTheme({
     MuiChip: {
       root: {
         borderRadius: 3,
+        cursor: 'pointer',
+        textDecoration: 'none',
       },
     },
 
