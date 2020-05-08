@@ -6,8 +6,8 @@ const theme = defaultTheme
 
 export default createMuiTheme({
   palette: {
-    primary: { main: '#4a5ab9' },
-    secondary: { main: '#18c5a9' },
+    primary: { main: '#4a5ab9', contrastText: '#fff' },
+    secondary: { main: '#18c5a9', contrastText: '#fff' },
     warning: { main: '#f39c12' },
     error: { main: red[600] },
     text: { primary: '#34495f', secondary: '#b4bcc8' },

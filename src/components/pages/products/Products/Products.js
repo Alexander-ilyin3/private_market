@@ -15,6 +15,7 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 import { productViewPath } from 'config/routes'
+import BagesMap from './Bages'
 
 // import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
@@ -192,16 +193,24 @@ class Products extends PureComponent {
       { name: 'uktz', label: 'УКТЗ', options: { filter: false } },
       {
         name: 'price',
-        label: 'Цена',
+        label: 'РЦЦ',
         options: {
           filterList: [max_price],
           filterType: 'custom',
           filterOptions: {
             logic: () => false,
             display: (list, onChange, index, column) => (
-              <TextField defaultValue={list[11][0]} label='Цена (до)' onInput={e => onChange([e.target.value], index, column)} />
+              <TextField defaultValue={list[11][0]} label='РЦЦ (до)' onInput={e => onChange([e.target.value], index, column)} />
             ),
           },
+        },
+      },
+      { name: '', label: 'Цена', options: { filter: false } },
+      {
+        name: 'inStock',
+        label: 'В наличии',
+        options: {
+          customBodyRender: val => <BagesMap value={val} />,
         },
       },
     ]
