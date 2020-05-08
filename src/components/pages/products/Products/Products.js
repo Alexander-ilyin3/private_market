@@ -22,6 +22,26 @@ import BagesMap from './Bages'
 
 
 class Products extends PureComponent {
+  state = {
+    diplayed: {
+      barcode: true,
+      category_name: true,
+      external_id: true,
+      id: false,
+      image: true,
+      inStock: true,
+      name: true,
+      pr: true,
+      price: true,
+      toOrder: true,
+      uktz: true,
+      vendor_code: true,
+      vendor_name: true,
+      volume: true,
+      weight: true,
+    },
+  }
+
   throttledChanges = debounce((value) => {
     const { getProductList } = this.props
     getProductList(value)
@@ -43,6 +63,9 @@ class Products extends PureComponent {
 
   onTableChange = (eventType, state) => {
     if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
+      const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
+      console.log(diplayed)
+      this.setState({ diplayed })
       const { config } = this.props
       const {
         filterList,
@@ -127,6 +150,8 @@ class Products extends PureComponent {
       category_id,
     } = config
 
+    const { diplayed } = this.state
+
     const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
     const selectedCategory = categories.find(cat => cat.id === Number(category_id))
     serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
@@ -134,21 +159,23 @@ class Products extends PureComponent {
     serverSideFilterList[11] = max_price ? [max_price] : []
 
     const columns = [
-      { name: 'id', label: 'id', options: { display: 'false', filter: false } },
-      { name: 'external_id', label: 'Внутрений номер товара', options: { filter: false } },
+      { name: 'id', label: 'id', options: { display: diplayed.id, filter: false } },
+      { name: 'external_id', label: 'Внутрений номер товара', options: { display: diplayed.external_id, filter: false } },
       {
         name: 'image',
         label: 'Изображение товара',
         options: {
+          display: diplayed.image,
           filter: false,
           customBodyRender: value => <img alt='Картинка' height='50' src={value} />,
         },
       },
-      { name: 'name', label: 'Название', options: { filter: false } },
+      { name: 'name', label: 'Название', options: { display: diplayed.name, filter: false } },
       {
         name: 'category_name',
         label: 'Категория',
         options: {
+          display: diplayed.category_name,
           filterList: [Number(category_id)],
           customFilterListOptions: {
             render: v => v.name,
@@ -181,21 +208,23 @@ class Products extends PureComponent {
         name: 'vendor_name',
         label: 'Вендор',
         options: {
+          display: diplayed.vendor_name,
           filterList: [vendor],
           filterOptions: {
             names: vendors,
           },
         },
       },
-      { name: 'vendor_code', label: 'Код вендора', options: { filter: false } },
-      { name: 'barcode', label: 'Баркод', options: { filter: false } },
-      { name: 'volume', label: 'Объем', options: { filter: false } },
-      { name: 'weight', label: 'Вес', options: { filter: false } },
-      { name: 'uktz', label: 'УКТЗ', options: { filter: false } },
+      { name: 'vendor_code', label: 'Код вендора', options: { display: diplayed.vendor_code, filter: false } },
+      { name: 'barcode', label: 'Баркод', options: { display: diplayed.barcode, filter: false } },
+      { name: 'volume', label: 'Объем', options: { display: diplayed.volume, filter: false } },
+      { name: 'weight', label: 'Вес', options: { display: diplayed.weight, filter: false } },
+      { name: 'uktz', label: 'УКТЗ', options: { display: diplayed.uktz, filter: false } },
       {
         name: 'price',
         label: 'РЦЦ',
         options: {
+          display: diplayed.price,
           filterList: [max_price],
           filterType: 'custom',
           filterOptions: {
@@ -206,19 +235,23 @@ class Products extends PureComponent {
           },
         },
       },
-      { name: '', label: 'Цена', options: { filter: false } },
+      { name: 'pr', label: 'Цена', options: { display: diplayed.pr, filter: false } },
       {
         name: 'inStock',
         label: 'В наличии',
         options: {
+          display: diplayed.inStock,
           customBodyRender: val => <BagesMap value={val} />,
+          filter: false,
         },
       },
       {
         name: 'toOrder',
         label: 'В заказ',
         options: {
+          display: diplayed.toOrder,
           customBodyRender: () => <ToOrderInput buttonColor='secondary' buttonContent='+' />,
+          filter: false,
         },
       },
     ]
