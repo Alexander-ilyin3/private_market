@@ -20,4 +20,9 @@ export const styles = _theme => ({
     display: 'flex',
     flexDirection: 'row',
   },
+  inStock: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 })
