@@ -4,6 +4,10 @@ import PropTypes from 'prop-types'
 import {
   Paper,
   TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core'
 
 import DataTable from 'mui-datatables'
@@ -22,12 +26,21 @@ class Products extends PureComponent {
   }, 500)
 
   componentDidMount() {
-    const { getProductList } = this.props
-    getProductList({ page: 1, limit: 10, searchText: null })
+    const { getProductList, location } = this.props
+    const { search } = location
+    const paramsEntries = search.slice(1).split('&').map(item => item.split('='))
+    const paramsMap = Object.fromEntries(paramsEntries)
+    const { category_id } = paramsMap
+    getProductList({
+      page: 1,
+      limit: 10,
+      searchText: null,
+      category_id,
+    })
   }
 
   onTableChange = (eventType, state) => {
-    if (['changeRowsPerPage', 'changePage', 'search', 'filterChange', 'onFilterDialogClose'].indexOf(eventType) > -1) {
+    if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
       const { config } = this.props
       const {
         filterList,
@@ -40,6 +53,7 @@ class Products extends PureComponent {
 
       const max_price = filterList[11][0]
       const vendor = filterList[5][0]
+      const category_id = filterList[4]
 
       const dependenciesKeys = [
         'page',
@@ -48,8 +62,8 @@ class Products extends PureComponent {
         'max_price',
         'searchText',
         'vendor',
+        'category_id',
       ]
-
       const mapconfigToState = (key) => {
         switch (key) {
           case 'limit':
@@ -58,7 +72,8 @@ class Products extends PureComponent {
             return max_price
           case 'vendor':
             return vendor
-          case 'search_text':
+          case 'category_id':
+            return category_id
           default:
             return state[key]
         }
@@ -79,6 +94,7 @@ class Products extends PureComponent {
           search_text: searchText,
           max_price,
           vendor,
+          category_id,
         })
       }
     }
@@ -96,7 +112,9 @@ class Products extends PureComponent {
       // getSearchAutocomplete,
       config,
       vendors,
+      categories = [],
     } = this.props
+
     const {
       page,
       limit,
@@ -104,7 +122,14 @@ class Products extends PureComponent {
       max_price,
       searchText,
       vendor,
+      category_id,
     } = config
+
+    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
+    const selectedCategory = categories.find(cat => cat.id === Number(category_id))
+    serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
+    serverSideFilterList[5] = vendor ? [vendor] : []
+    serverSideFilterList[11] = max_price ? [max_price] : []
 
     const columns = [
       { name: 'id', label: 'id', options: { display: 'false', filter: false } },
@@ -118,7 +143,38 @@ class Products extends PureComponent {
         },
       },
       { name: 'name', label: 'Название', options: { filter: false } },
-      { name: 'category_name', label: 'Категория', options: { filter: false } },
+      {
+        name: 'category_name',
+        label: 'Категория',
+        options: {
+          filterList: [Number(category_id)],
+          customFilterListOptions: {
+            render: v => v.name,
+          },
+          filterOptions: {
+            display: (filterList, onChange, index, column) => (
+              <FormControl>
+                <InputLabel htmlFor='select-multiple-chip'>
+                  Категория
+                </InputLabel>
+                <Select
+                  defaultValue={filterList[4][0] || ''}
+                  onChange={(event) => {
+                    onChange(event.target.value, index, column)
+                  }}
+                >
+                  {categories.map(item => (
+                    <MenuItem key={item.category_id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ),
+          },
+          filterType: 'custom',
+        },
+      },
       {
         name: 'vendor_name',
         label: 'Вендор',
@@ -150,9 +206,6 @@ class Products extends PureComponent {
       },
     ]
 
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
-    serverSideFilterList[5] = vendor ? [vendor] : []
-    serverSideFilterList[11] = max_price ? [max_price] : []
 
     const options = {
       download: false,
@@ -201,6 +254,7 @@ Products.defaultProps = {
   // searchAutocomleteList: [],
   config: {},
   vendors: [],
+  categories: [],
 }
 
 Products.propTypes = {
@@ -210,6 +264,8 @@ Products.propTypes = {
   history: PropTypes.object.isRequired,
   config: PropTypes.object,
   vendors: PropTypes.array,
+  categories: PropTypes.array,
+  location: PropTypes.object.isRequired,
 }
 
 export default Products
