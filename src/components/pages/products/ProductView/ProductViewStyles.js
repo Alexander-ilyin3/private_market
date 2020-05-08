@@ -19,12 +19,5 @@ export const styles = _theme => ({
   countContainer: {
     display: 'flex',
     flexDirection: 'row',
-    '& *': {
-      maxWidth: 150,
-    },
-  },
-  toOrderButon: {
-    whiteSpace: 'nowrap',
-    marginRight: '-12px',
   },
 })

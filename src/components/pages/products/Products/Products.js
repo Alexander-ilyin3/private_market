@@ -15,6 +15,7 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 import { productViewPath } from 'config/routes'
+import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 import BagesMap from './Bages'
 
 // import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
@@ -211,6 +212,13 @@ class Products extends PureComponent {
         label: 'В наличии',
         options: {
           customBodyRender: val => <BagesMap value={val} />,
+        },
+      },
+      {
+        name: 'toOrder',
+        label: 'В заказ',
+        options: {
+          customBodyRender: () => <ToOrderInput buttonColor='secondary' buttonContent='+' />,
         },
       },
     ]

@@ -13,6 +13,7 @@ import {
 import { CheckCircle } from '@material-ui/icons'
 
 import { productsPath } from 'config/routes'
+import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -64,7 +65,7 @@ export default class ProductView extends Component {
               />
             </Grid>
             <Grid item sm={12} md={8} className={classes.detailItem}>
-              <Typography>Описние:</Typography>
+              <Typography>Описание:</Typography>
               <Typography>Здесь когда ни будь будет описание</Typography>
             </Grid>
             <Grid container className={classes.detailItem}>
@@ -73,13 +74,7 @@ export default class ProductView extends Component {
               </Grid>
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
-                  <TextField
-                    variant='outlined'
-                    type='number'
-                    InputProps={{
-                      endAdornment: <Button variant='contained' color='primary' className={classes.toOrderButon}>В заказ</Button>,
-                    }}
-                  />
+                  <ToOrderInput buttonColor='primary' buttonContent='В заказ' onAdd={(count) => { console.log(count) }} />
                 </div>
               </Grid>
             </Grid>
