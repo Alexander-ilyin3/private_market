@@ -52,7 +52,7 @@ export default class ProductView extends Component {
               </Grid>
               <Grid item xs={12} sm={5}>
                 <Typography>Артикул:</Typography>
-                <Typography variant='caption'>{barcode}</Typography>
+                <Typography>{barcode}</Typography>
               </Grid>
             </Grid>
             <Grid item xs={12} className={classes.detailItem}>
@@ -70,7 +70,7 @@ export default class ProductView extends Component {
             </Grid>
             <Grid container className={classes.detailItem}>
               <Grid item sm={8} xs={12}>
-                <Typography><CheckCircle fontSize='large' color='primary' /> В наличии</Typography>
+                <Typography className={classes.inStock}><CheckCircle fontSize='large' color='primary' /> В наличии</Typography>
               </Grid>
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
