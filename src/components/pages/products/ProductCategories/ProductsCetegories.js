@@ -10,14 +10,16 @@ import DataTable from 'mui-datatables'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 
-const columns = [
-  { name: 'id', label: 'id', options: { display: 'false', sort: false } },
-  { name: 'externalId', label: 'Внутрений номер категории', options: { sort: false } },
-  { name: 'name', label: 'Название', options: { sort: false } },
-  { name: 'parentName', label: 'Родительская категория', options: { sort: false } },
-]
-
 class ProductsCetegories extends Component {
+  state = {
+    diplayed: {
+      id: false,
+      externalId: true,
+      name: true,
+      parentName: true,
+    },
+  }
+
   componentDidMount() {
     const { getProductCategories } = this.props
     getProductCategories({ page: 1, limit: 10 })
@@ -32,11 +34,20 @@ class ProductsCetegories extends Component {
     const { getProductCategories } = this.props
     const { page, rowsPerPage } = state
     if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
+      const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
+      this.setState({ diplayed })
       getProductCategories({ page: page + 1, limit: rowsPerPage })
     }
   }
 
   render() {
+    const { diplayed } = this.state
+    const columns = [
+      { name: 'id', label: 'id', options: { display: diplayed.id, sort: false } },
+      { name: 'externalId', label: 'Внутрений номер категории', options: { display: diplayed.externalId, sort: false } },
+      { name: 'name', label: 'Название', options: { display: diplayed.name, sort: false } },
+      { name: 'parentName', label: 'Родительская категория', options: { display: diplayed.parentName, sort: false } },
+    ]
     const { onTableChange } = this
     const { productCategories = {} } = this.props
     const { categories = [], config = {}, err } = productCategories

@@ -4,29 +4,67 @@ import PropTypes from 'prop-types'
 import {
   Paper,
   TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core'
 
 import DataTable from 'mui-datatables'
 import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
+import { productViewPath } from 'config/routes'
+import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+import BagesMap from './Bages'
 
 // import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
 
 class Products extends PureComponent {
+  state = {
+    diplayed: {
+      barcode: true,
+      category_name: true,
+      external_id: true,
+      id: false,
+      image: true,
+      inStock: true,
+      name: true,
+      pr: true,
+      price: true,
+      toOrder: true,
+      uktz: true,
+      vendor_code: true,
+      vendor_name: true,
+      volume: true,
+      weight: true,
+    },
+  }
+
   throttledChanges = debounce((value) => {
     const { getProductList } = this.props
     getProductList(value)
   }, 500)
 
   componentDidMount() {
-    const { getProductList } = this.props
-    getProductList({ page: 1, limit: 10, searchText: null })
+    const { getProductList, location } = this.props
+    const { search } = location
+    const paramsEntries = search.slice(1).split('&').map(item => item.split('='))
+    const paramsMap = Object.fromEntries(paramsEntries)
+    const { category_id } = paramsMap
+    getProductList({
+      page: 1,
+      limit: 10,
+      searchText: null,
+      category_id,
+    })
   }
 
   onTableChange = (eventType, state) => {
-    if (['changeRowsPerPage', 'changePage', 'search', 'filterChange', 'onFilterDialogClose'].indexOf(eventType) > -1) {
+    if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
+      const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
+      this.setState({ diplayed })
       const { config } = this.props
       const {
         filterList,
@@ -39,6 +77,7 @@ class Products extends PureComponent {
 
       const max_price = filterList[11][0]
       const vendor = filterList[5][0]
+      const category_id = filterList[4]
 
       const dependenciesKeys = [
         'page',
@@ -47,8 +86,8 @@ class Products extends PureComponent {
         'max_price',
         'searchText',
         'vendor',
+        'category_id',
       ]
-
       const mapconfigToState = (key) => {
         switch (key) {
           case 'limit':
@@ -57,7 +96,8 @@ class Products extends PureComponent {
             return max_price
           case 'vendor':
             return vendor
-          case 'search_text':
+          case 'category_id':
+            return category_id
           default:
             return state[key]
         }
@@ -78,21 +118,27 @@ class Products extends PureComponent {
           search_text: searchText,
           max_price,
           vendor,
+          category_id,
         })
       }
     }
   }
 
+  navigateToProductPage = (row) => {
+    const { history } = this.props
+    history.push(productViewPath.replace(':id', row[0]))
+  }
 
   render() {
     const { onTableChange } = this
     const {
       products = [],
       // getSearchAutocomplete,
-      // searchAutocomleteList,
       config,
       vendors,
+      categories = [],
     } = this.props
+
     const {
       page,
       limit,
@@ -100,55 +146,115 @@ class Products extends PureComponent {
       max_price,
       searchText,
       vendor,
+      category_id,
     } = config
 
+    const { diplayed } = this.state
+
+    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
+    const selectedCategory = categories.find(cat => cat.id === Number(category_id))
+    serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
+    serverSideFilterList[5] = vendor ? [vendor] : []
+    serverSideFilterList[11] = max_price ? [max_price] : []
+
     const columns = [
-      { name: 'id', label: 'id', options: { display: 'false', filter: false } },
-      { name: 'external_id', label: 'Внутрений номер товара', options: { filter: false } },
+      { name: 'id', label: 'id', options: { display: diplayed.id, filter: false } },
+      { name: 'external_id', label: 'Внутрений номер товара', options: { display: diplayed.external_id, filter: false } },
       {
         name: 'image',
         label: 'Изображение товара',
         options: {
+          display: diplayed.image,
           filter: false,
           customBodyRender: value => <img alt='Картинка' height='50' src={value} />,
         },
       },
-      { name: 'name', label: 'Название', options: { filter: false } },
-      { name: 'category_name', label: 'Категория', options: { filter: false } },
+      { name: 'name', label: 'Название', options: { display: diplayed.name, filter: false } },
+      {
+        name: 'category_name',
+        label: 'Категория',
+        options: {
+          display: diplayed.category_name,
+          filterList: [Number(category_id)],
+          customFilterListOptions: {
+            render: v => v.name,
+          },
+          filterOptions: {
+            display: (filterList, onChange, index, column) => (
+              <FormControl>
+                <InputLabel htmlFor='select-multiple-chip'>
+                  Категория
+                </InputLabel>
+                <Select
+                  defaultValue={filterList[4][0] || ''}
+                  onChange={(event) => {
+                    onChange(event.target.value, index, column)
+                  }}
+                >
+                  {categories.map(item => (
+                    <MenuItem key={item.category_id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ),
+          },
+          filterType: 'custom',
+        },
+      },
       {
         name: 'vendor_name',
         label: 'Вендор',
         options: {
+          display: diplayed.vendor_name,
           filterList: [vendor],
           filterOptions: {
             names: vendors,
           },
         },
       },
-      { name: 'vendor_code', label: 'Код вендора', options: { filter: false } },
-      { name: 'barcode', label: 'Баркод', options: { filter: false } },
-      { name: 'volume', label: 'Объем', options: { filter: false } },
-      { name: 'weight', label: 'Вес', options: { filter: false } },
-      { name: 'uktz', label: 'УКТЗ', options: { filter: false } },
+      { name: 'vendor_code', label: 'Код вендора', options: { display: diplayed.vendor_code, filter: false } },
+      { name: 'barcode', label: 'Баркод', options: { display: diplayed.barcode, filter: false } },
+      { name: 'volume', label: 'Объем', options: { display: diplayed.volume, filter: false } },
+      { name: 'weight', label: 'Вес', options: { display: diplayed.weight, filter: false } },
+      { name: 'uktz', label: 'УКТЗ', options: { display: diplayed.uktz, filter: false } },
       {
         name: 'price',
-        label: 'Цена',
+        label: 'РЦЦ',
         options: {
+          display: diplayed.price,
           filterList: [max_price],
           filterType: 'custom',
           filterOptions: {
             logic: () => false,
             display: (list, onChange, index, column) => (
-              <TextField defaultValue={list[11][0]} label='Цена (до)' onInput={e => onChange([e.target.value], index, column)} />
+              <TextField defaultValue={list[11][0]} label='РЦЦ (до)' onInput={e => onChange([e.target.value], index, column)} />
             ),
           },
         },
       },
+      { name: 'pr', label: 'Цена', options: { display: diplayed.pr, filter: false } },
+      {
+        name: 'inStock',
+        label: 'В наличии',
+        options: {
+          display: diplayed.inStock,
+          customBodyRender: val => <BagesMap value={val} />,
+          filter: false,
+        },
+      },
+      {
+        name: 'toOrder',
+        label: 'В заказ',
+        options: {
+          display: diplayed.toOrder,
+          customBodyRender: () => <ToOrderInput buttonColor='secondary' buttonContent='+' />,
+          filter: false,
+        },
+      },
     ]
 
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
-    serverSideFilterList[5] = vendor ? [vendor] : []
-    serverSideFilterList[11] = max_price ? [max_price] : []
 
     const options = {
       download: false,
@@ -164,6 +270,7 @@ class Products extends PureComponent {
       textLabels,
       serverSideFilterList,
       searchText,
+      onRowClick: this.navigateToProductPage,
     }
 
     return (
@@ -171,7 +278,7 @@ class Products extends PureComponent {
         <DataTable
           columns={columns}
           data={products}
-          title='Товары'
+          title='СПИСОК ТОВАРОВ'
           options={{
             ...options,
             // customSearchRender: (searchText, handleSearch, hideSearch, options) => (
@@ -196,15 +303,18 @@ Products.defaultProps = {
   // searchAutocomleteList: [],
   config: {},
   vendors: [],
+  categories: [],
 }
 
 Products.propTypes = {
   getProductList: PropTypes.func.isRequired,
   // getSearchAutocomplete: PropTypes.func.isRequired,
   products: PropTypes.array,
-  // searchAutocomleteList: PropTypes.array,
+  history: PropTypes.object.isRequired,
   config: PropTypes.object,
   vendors: PropTypes.array,
+  categories: PropTypes.array,
+  location: PropTypes.object.isRequired,
 }
 
 export default Products

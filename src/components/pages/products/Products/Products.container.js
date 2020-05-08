@@ -4,6 +4,7 @@ import {
   products,
   config,
   vendors,
+  categories,
 } from 'storage/selectors/products.selector'
 import { getProductList, getSearchAutocomplete } from 'services/api/products.service'
 
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
   config: config(state),
   searchAutocomleteList: searchAutocomleteList(state),
   vendors: vendors(state),
+  categories: categories(state),
 })
 
 const mapDispatchToProps = dispatch => ({
