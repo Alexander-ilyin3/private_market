@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { CheckCircle } from '@material-ui/icons'
 
-import { productsCategoriesPath } from 'config/routes'
+import { productsPath } from 'config/routes'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -30,6 +30,7 @@ export default class ProductView extends Component {
       image,
       name,
       price,
+      category_id,
     } = data
     return (
       <Paper className={classes.ProductPage}>
@@ -59,7 +60,7 @@ export default class ProductView extends Component {
                 component={Link}
                 label={category_name}
                 color='primary'
-                to={`${productsCategoriesPath}?category=${category_name}`}
+                to={`${productsPath}?category_id=${category_id}`}
               />
             </Grid>
             <Grid item sm={12} md={8} className={classes.detailItem}>
