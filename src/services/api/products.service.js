@@ -71,6 +71,7 @@ export const getProductList = config => async (dispatch) => {
         products = [],
         config = {},
         vendors,
+        categories,
       } = data
 
       const { page } = config
@@ -78,6 +79,7 @@ export const getProductList = config => async (dispatch) => {
         dispatch(setProducts({
           products,
           vendors,
+          categories,
           config: {
             ...config,
             page: page - 1,
