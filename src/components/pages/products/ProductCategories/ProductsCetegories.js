@@ -51,7 +51,6 @@ class ProductsCetegories extends Component {
     const { diplayed } = this.state
     const columns = [
       { name: 'id', label: 'id', options: { display: diplayed.id, sort: false } },
-      { name: 'externalId', label: 'Внутрений номер категории', options: { display: diplayed.externalId, sort: false } },
       { name: 'name', label: 'Название', options: { display: diplayed.name, sort: false } },
       { name: 'parentName', label: 'Родительская категория', options: { display: diplayed.parentName, sort: false } },
     ]

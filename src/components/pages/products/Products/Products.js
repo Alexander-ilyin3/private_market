@@ -75,9 +75,9 @@ class Products extends PureComponent {
 
       if (eventType === 'search' && searchText && searchText.length < 3) return
 
-      const max_price = filterList[11][0]
-      const vendor = filterList[5][0]
-      const category_id = filterList[4]
+      const max_price = filterList[10][0]
+      const vendor = filterList[4][0]
+      const category_id = filterList[3]
 
       const dependenciesKeys = [
         'page',
@@ -151,15 +151,14 @@ class Products extends PureComponent {
 
     const { diplayed } = this.state
 
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], [], []]
+    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
     const selectedCategory = categories.find(cat => cat.id === Number(category_id))
-    serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
-    serverSideFilterList[5] = vendor ? [vendor] : []
-    serverSideFilterList[11] = max_price ? [max_price] : []
+    serverSideFilterList[3] = selectedCategory ? [selectedCategory] : []
+    serverSideFilterList[4] = vendor ? [vendor] : []
+    serverSideFilterList[10] = max_price ? [max_price] : []
 
     const columns = [
       { name: 'id', label: 'id', options: { display: diplayed.id, filter: false } },
-      { name: 'external_id', label: 'Внутрений номер товара', options: { display: diplayed.external_id, filter: false } },
       {
         name: 'image',
         label: 'Изображение товара',
@@ -186,7 +185,7 @@ class Products extends PureComponent {
                   Категория
                 </InputLabel>
                 <Select
-                  defaultValue={filterList[4][0] || ''}
+                  defaultValue={filterList[3][0] || ''}
                   onChange={(event) => {
                     onChange(event.target.value, index, column)
                   }}
