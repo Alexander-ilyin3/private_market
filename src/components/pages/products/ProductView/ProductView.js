@@ -26,7 +26,7 @@ export default class ProductView extends Component {
     const { classes, product = {} } = this.props
     const { data = {} } = product
     const {
-      barcode,
+      vendor_code,
       category_name,
       image,
       name,
@@ -52,7 +52,7 @@ export default class ProductView extends Component {
               </Grid>
               <Grid item xs={12} sm={5}>
                 <Typography>Артикул:</Typography>
-                <Typography>{barcode}</Typography>
+                <Typography>{vendor_code}</Typography>
               </Grid>
             </Grid>
             <Grid item xs={12} className={classes.detailItem}>
