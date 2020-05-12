@@ -41,6 +41,7 @@ const ToOrderInput = (props) => {
         })
       }
       onClick={e => e.stopPropagation()}
+      defaultValue={1}
       InputProps={{
         endAdornment: (
           <Button
@@ -52,6 +53,10 @@ const ToOrderInput = (props) => {
             {buttonContent}
           </Button>
         ),
+      }}
+      inputProps={{
+        min: 1,
+        step: 1,
       }}
     />
   )
