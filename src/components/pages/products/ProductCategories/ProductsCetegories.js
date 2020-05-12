@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core'
 import DataTable from 'mui-datatables'
 
+import { productsPath } from 'config/routes'
+
 import { textLabels } from 'config/tableConfig/textLabels'
 
 class ProductsCetegories extends Component {
@@ -40,6 +42,11 @@ class ProductsCetegories extends Component {
     }
   }
 
+  toProductsCategory(id) {
+    const { history } = this.props
+    history.push(`${productsPath}?category_id=${id}`)
+  }
+
   render() {
     const { diplayed } = this.state
     const columns = [
@@ -67,6 +74,9 @@ class ProductsCetegories extends Component {
       rowsPerPageOptions: [5, 10, 15],
       onTableChange,
       textLabels,
+      onRowClick: (row) => {
+        this.toProductsCategory(row[0])
+      },
     }
 
     return (
@@ -93,6 +103,7 @@ class ProductsCetegories extends Component {
 ProductsCetegories.propTypes = {
   productCategories: PropTypes.object.isRequired,
   getProductCategories: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default ProductsCetegories
