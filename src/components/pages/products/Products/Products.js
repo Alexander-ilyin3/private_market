@@ -63,8 +63,10 @@ class Products extends PureComponent {
 
   onTableChange = (eventType, state) => {
     if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
-      const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
-      this.setState({ diplayed })
+      if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
+        const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
+        this.setState({ diplayed })
+      }
       const { config } = this.props
       const {
         filterList,
