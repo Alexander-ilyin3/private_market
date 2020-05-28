@@ -10,6 +10,7 @@ import {
   signInPath,
   productsCategoriesPath,
   productViewPath,
+  preorderPath,
 } from 'config/routes'
 import { ROOT_DOMAIN } from 'config/constants'
 
@@ -18,6 +19,7 @@ import Products from 'components/pages/products/Products'
 import ProductCategories from 'components/pages/products/ProductCategories'
 import NewOrder from 'components/pages/NewOrder/NewOrder'
 import ProductView from 'components/pages/products/ProductView'
+import Preorder from 'components/pages/Preorder'
 
 const AuthRouter = () => (
   <Switch>
@@ -28,6 +30,7 @@ const AuthRouter = () => (
     <Route path={productsCategoriesPath} component={ProductCategories} />
     <Route path={productViewPath} component={ProductView} />
     <Route path={newOrderPath} component={NewOrder} />
+    <Route path={preorderPath} component={Preorder} />
     <Redirect path={ROOT_DOMAIN} to={profilePath} />
   </Switch>
 )
