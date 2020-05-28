@@ -5,9 +5,11 @@ import { BrowserRouter } from 'react-router-dom'
 import Guest from 'components/pages/Guest'
 import AppDrawer from 'components/AppDrawer'
 import { loginDataSelector } from 'storage/selectors'
+import { getCartFromStorage, clearCart } from 'services/cart/cartService'
 
 const App = (props) => {
   const { isLoggedIn } = props
+  getCartFromStorage()
   if (isLoggedIn/* true */) {
     return (
       <BrowserRouter>
@@ -15,6 +17,7 @@ const App = (props) => {
       </BrowserRouter>
     )
   }
+  clearCart()
   return (
     <Guest />
   )
