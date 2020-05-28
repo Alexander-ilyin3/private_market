@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -31,6 +31,7 @@ const ToOrderInput = (props) => {
     buttonContent,
     onAdd,
   } = props
+  const [count, setCount] = useState(1)
   return (
     <TextField
       variant='outlined'
@@ -40,13 +41,14 @@ const ToOrderInput = (props) => {
           [classes.textWithSingleCharButton]: (typeof buttonContent === 'string') && buttonContent.length < 2,
         })
       }
+      onInput={e => setCount(e.target.value)}
       onClick={e => e.stopPropagation()}
       defaultValue={1}
       InputProps={{
         endAdornment: (
           <Button
             variant='contained'
-            onClick={onAdd}
+            onClick={() => onAdd(count)}
             color={buttonColor}
             className={classNames(classes.toOrderButon, { [classes.singleChar]: (typeof buttonContent === 'string') && buttonContent.length < 2 })}
           >
