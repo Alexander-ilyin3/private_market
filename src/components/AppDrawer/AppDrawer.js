@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
 import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
@@ -13,6 +12,7 @@ import Button from '@material-ui/core/Button'
 
 import Menu from 'components/parts/Menu'
 import Preloader from 'components/assets/preloader'
+import CartIndicator from 'components/parts/CartIndicator'
 
 import AuthRouter from './AuthRouter'
 
@@ -67,6 +67,7 @@ class AppDrawer extends Component {
               <MenuIcon />
             </IconButton>
             <div className={classes.grow} />
+            <CartIndicator />
             <Button
               size='small'
               color='inherit'
