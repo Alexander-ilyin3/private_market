@@ -8,6 +8,7 @@ import userData from './userData'
 import menuItem from './menu'
 import productCategories from './productCategories'
 import { productSearchAutocomplete, productsData, productInfo } from './products'
+import cart from './cart'
 
 const reducer = combineReducers({
   loginData,
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   productSearchAutocomplete,
   productsData,
   productInfo,
+  cart,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
