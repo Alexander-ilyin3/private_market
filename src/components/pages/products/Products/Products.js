@@ -15,7 +15,7 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 import { productViewPath } from 'config/routes'
-import { setProduct } from 'services/cart/cartService'
+import { addProduct } from 'services/cart/cartService'
 
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 
@@ -262,7 +262,7 @@ class Products extends PureComponent {
             <ToOrderInput
               buttonColor='secondary'
               buttonContent='+'
-              onAdd={count => setProduct({ count, product: this.getProductByRow(row.rowIndex) })}
+              onAdd={count => addProduct({ count, product: this.getProductByRow(row.rowIndex) })}
             />
           ),
           filter: false,

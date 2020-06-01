@@ -25,7 +25,7 @@ export const getCartFromStorage = () => {
   return null
 }
 
-export const setProduct = (event) => {
+export const addProduct = (event) => {
   const { product, count } = event
   const storeCart = getCart(store.getState())
   if (storeCart.find(stored => stored.product.id === product.id)) {
@@ -38,6 +38,20 @@ export const setProduct = (event) => {
     return fullUpdateCart(newCart)
   }
   return fullUpdateCart([...storeCart, event])
+}
+
+export const setCount = (event) => {
+  const { product, count } = event
+  const storeCart = getCart(store.getState())
+  if (storeCart.find(stored => stored.product.id === product.id)) {
+    const newCart = storeCart.map((stored) => {
+      if (stored.product.id === product.id) {
+        return { count, product }
+      }
+      return stored
+    })
+    return fullUpdateCart(newCart)
+  }
 }
 
 export const removeFromCart = (id) => {
