@@ -14,6 +14,7 @@ const AppDatePicker = ({ value, onChange }) => (
       onChange={onChange}
       inputVariant='outlined'
       autoOk
+      fullWidth
       InputAdornmentProps={{
         position: 'start',
       }}
