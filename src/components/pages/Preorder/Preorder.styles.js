@@ -1,4 +1,7 @@
 export const styles = theme => ({
+  orderButton: {
+    margin: 8,
+  },
   Attributes: {
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
