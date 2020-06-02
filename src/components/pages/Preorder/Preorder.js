@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import { Grid } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
@@ -305,6 +306,18 @@ const Preorder = (props) => {
       </Grid>
     </Grid>
   )
+}
+
+Preorder.defaultProps = {
+  cart: {},
+  user: {},
+  classes: {},
+}
+
+Preorder.propTypes = {
+  cart: PropTypes.object,
+  user: PropTypes.object,
+  classes: PropTypes.object,
 }
 
 export default Preorder
