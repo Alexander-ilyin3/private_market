@@ -15,7 +15,9 @@ export const overrides = {
   },
 
   MuiButton: {
-
+    root: {
+      fontSize: 12,
+    },
     // raised: {
     //   fontWeight: 400,
     // },
