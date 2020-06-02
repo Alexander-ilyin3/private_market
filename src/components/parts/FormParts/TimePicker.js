@@ -16,6 +16,7 @@ const AppTimePicker = ({ value, onChange }) => (
       onChange={onChange}
       inputVariant='outlined'
       ampm={false}
+      fullWidth
       InputProps={{
         startAdornment: (
           <InputAdornment position='start'>
