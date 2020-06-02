@@ -11,12 +11,15 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import DeleteForever from '@material-ui/icons/DeleteForever'
 
 import { calculateCartTotal } from 'services/cart/cartHelpers'
 import { overrides } from 'materialUi/mainTheme'
-import { setCount, clearCart } from 'services/cart/cartService'
+import { setCount, clearCart, removeFromCart } from 'services/cart/cartService'
 import AppTimePicker from 'components/parts/FormParts/TimePicker'
 import AppDatePicker from 'components/parts/FormParts/DatePicker'
+import MaskedPhone from 'components/assets/MaskedPhone'
+
 
 const themePaperWithoutShadow = () => createMuiTheme({
   overrides: {
@@ -37,8 +40,9 @@ const calculateFull = (cart, field) => cart.reduce(
   0,
 )
 
+
 const Preorder = (props) => {
-  const { cart, classes } = props
+  const { cart, classes, user } = props
   const cartData = cart.map(item => ({
     ...item.product,
     count: item.count,
@@ -60,7 +64,24 @@ const Preorder = (props) => {
     new Date(Date.now()),
   )
 
+  const renderColumnItems = items => items.map(item => (
+    <Grid key={item.label} container spacing={0}>
+      <Grid item xs={4} className={classes.paymentItem}>
+        {item.label}
+      </Grid>
+      <Grid item xs={8}>
+        {item.value}
+      </Grid>
+    </Grid>
+  ))
+  const getProductByRowMeta = (meta) => {
+    const { rowData } = meta
+    const id = rowData[0]
+    return cart.find(item => item.product.id === id).product
+  }
+
   const columns = [
+    { name: 'id', label: '', options: { display: false } },
     { name: 'name', label: 'Название' },
     {
       name: 'image',
@@ -80,9 +101,8 @@ const Preorder = (props) => {
             variant='outlined'
             onChange={(e) => {
               const { value } = e.target
-              const { rowIndex } = meta
-              const product = cart[rowIndex].product
-              setCount({ count: value, product })
+              const product = getProductByRowMeta(meta)
+              setCount({ count: +value, product })
             }}
           />
         ),
@@ -90,20 +110,35 @@ const Preorder = (props) => {
     },
     { name: 'price', label: 'Цена' },
     { name: 'total', label: 'Всего' },
+    {
+      name: 'delete',
+      label: 'Удалить',
+      options: {
+        customBodyRender: (_row, meta) => {
+          const product = getProductByRowMeta(meta)
+          return (
+            <IconButton onClick={() => { removeFromCart(product.id) }}>
+              <DeleteForever />
+            </IconButton>
+          )
+        },
+
+      },
+    },
   ]
 
   const paymentAndDelivery = [
-    { label: 'Итоговая цена', value: <Typography style={{ color: '#ff4081' }} variant='h5'>{calculateCartTotal(cart).toLocaleString()}</Typography> },
+    { label: 'Итоговая цена:', value: <Typography style={{ color: '#ff4081' }} variant='h5'>{calculateCartTotal(cart).toLocaleString()}</Typography> },
     {
-      label: 'Дата отправки',
+      label: 'Дата отправки:',
       value: <AppDatePicker value={selectedDate} onChange={setSelectedDate} />,
     },
     {
-      label: 'Время отправки',
+      label: 'Время отправки:',
       value: <AppTimePicker value={selectedDate} onChange={setSelectedDate} />,
     },
     {
-      label: 'Доставка',
+      label: 'Доставка:',
       value: (
         <FormControl
           fullWidth
@@ -120,9 +155,9 @@ const Preorder = (props) => {
         </FormControl>
       ),
     },
-    { label: 'ТТН', value: <TextField variant='outlined' label='ТТН' margin='normal' fullWidth /> },
+    { label: 'ТТН:', value: <TextField variant='outlined' label='ТТН' margin='normal' fullWidth /> },
     {
-      label: 'Оплата',
+      label: 'Оплата:',
       value: (
         <FormControl
           fullWidth
@@ -138,6 +173,53 @@ const Preorder = (props) => {
             <MenuItem value={4}>Наложенный платеж</MenuItem>
           </Select>
         </FormControl>
+      ),
+    },
+  ]
+
+  const recipient = [
+    {
+      label: 'Имя:',
+      value: (
+        <TextField
+          fullWidth
+          margin='normal'
+          variant='outlined'
+          defaultValue={`${user.customerName} ${user.customerLastname}`}
+        />
+      ),
+    },
+    {
+      label: 'Адрес:',
+      value: (
+        <Typography paragraph>
+          {
+            [
+              user.city,
+              user.street,
+              user.houseNumber,
+              user.officeNumber,
+            ].filter(item => !!item).join(', ')
+          }
+        </Typography>
+      ),
+    },
+    {
+      label: 'Email:',
+      value: <Typography paragraph>{user.customerEmail}</Typography>,
+    },
+    {
+      label: 'Телефон:',
+      value: (
+        <TextField
+          fullWidth
+          margin='normal'
+          variant='outlined'
+          InputProps={{
+            inputComponent: MaskedPhone,
+          }}
+          defaultValue={user.customerPhone}
+        />
       ),
     },
   ]
@@ -181,7 +263,10 @@ const Preorder = (props) => {
             <Grid item xs={12} sm={6}>
               <Typography variant='h5' align='right'>
                 <span className={classes.Attributes}>
-                  Сумма: <span className={classes.value}>{calculateCartTotal(cart).toLocaleString()}</span>
+                  Сумма:
+                  <span className={classes.value}>
+                    {calculateCartTotal(cart).toLocaleString()}
+                  </span>
                 </span>
               </Typography>
               <Typography align='right'>
@@ -205,16 +290,7 @@ const Preorder = (props) => {
               <Typography variant='h5'>
                 Оплата и доставка
               </Typography>
-              {paymentAndDelivery.map(item => (
-                <Grid key={item.label} container spacing={0}>
-                  <Grid item xs={4} className={classes.paymentItem}>
-                    {item.label}
-                  </Grid>
-                  <Grid item xs={8}>
-                    {item.value}
-                  </Grid>
-                </Grid>
-              ))}
+              {renderColumnItems(paymentAndDelivery)}
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -222,6 +298,7 @@ const Preorder = (props) => {
               <Typography variant='h5'>
                 Получатель
               </Typography>
+              {(user.customerEmail) && renderColumnItems(recipient)}
             </Paper>
           </Grid>
         </Grid>
