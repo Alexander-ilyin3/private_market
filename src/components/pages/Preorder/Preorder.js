@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import DeleteForever from '@material-ui/icons/DeleteForever'
+import Button from '@material-ui/core/Button'
 
 import { calculateCartTotal } from 'services/cart/cartHelpers'
 import { overrides } from 'materialUi/mainTheme'
@@ -283,6 +284,25 @@ const Preorder = (props) => {
             </Grid>
           </Grid>
         </Paper>
+        <Grid style={{ marginTop: 8, marginBottom: 8 }} container spacing={1}>
+          <Grid item xs={12} sm={6} xl={3}>
+            <Button variant='contained' color='primary' fullWidth>Оформить</Button>
+          </Grid>
+          <Grid item xs={12} sm={6} xl={3}>
+            <Button variant='contained' color='primary' fullWidth>Зарезерваировать</Button>
+          </Grid>
+          <Grid item xs={12} sm={6} xl={3}>
+            <Button variant='contained' color='primary' fullWidth>Выписать Счет</Button>
+          </Grid>
+          <Grid item xs={12} sm={6} xl={3}>
+            <Button variant='contained' color='primary' fullWidth>Сохранить Шаблон</Button>
+          </Grid>
+          <Grid item xs={false} md={3} xl={4} />
+          <Grid item xs={12} md={6} xl={4}>
+            <Button variant='contained' fullWidth color='primary'>Оплатить и Оформить</Button>
+          </Grid>
+          <Grid item xs={false} md={3} xl={4} />
+        </Grid>
       </Grid>
       <Grid item xs={12} lg={5}>
         <Grid container spacing={2}>
@@ -309,13 +329,13 @@ const Preorder = (props) => {
 }
 
 Preorder.defaultProps = {
-  cart: {},
+  cart: [],
   user: {},
   classes: {},
 }
 
 Preorder.propTypes = {
-  cart: PropTypes.object,
+  cart: PropTypes.array,
   user: PropTypes.object,
   classes: PropTypes.object,
 }
