@@ -26,12 +26,12 @@ const mapStockBages = (props) => {
   const { classes } = props
   const allowedStatuses = [1, 2, 3]
 
-  if (!allowedStatuses.includes(value)) value = 1
+  if (!allowedStatuses.includes(value)) value = 3
 
   const bages = {
-    1: <Badge color='error' className={classes.inlineBage} badgeContent='Нет на складе' />,
+    3: <Badge color='error' className={classes.inlineBage} badgeContent='Нет на складе' />,
     2: <Badge color='warning' className={classNames(classes.warningBage, classes.inlineBage)} badgeContent='Заканчивается' />,
-    3: <Badge color='secondary' className={classes.inlineBage} badgeContent='В наличии' />,
+    1: <Badge color='secondary' className={classes.inlineBage} badgeContent='В наличии' />,
   }
   return bages[value]
 }
