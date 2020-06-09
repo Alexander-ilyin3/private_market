@@ -245,7 +245,7 @@ class Products extends PureComponent {
       },
       { name: 'pr', label: 'Цена', options: { display: diplayed.pr, filter: false } },
       {
-        name: 'inStock',
+        name: 'status',
         label: 'В наличии',
         options: {
           display: diplayed.inStock,
