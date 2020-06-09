@@ -15,7 +15,10 @@ import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
 import { productViewPath } from 'config/routes'
+import { addProduct } from 'services/cart/cartService'
+
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+
 import BagesMap from './Bages'
 
 // import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
@@ -129,6 +132,11 @@ class Products extends PureComponent {
   navigateToProductPage = (row) => {
     const { history } = this.props
     history.push(productViewPath.replace(':id', row[0]))
+  }
+
+  getProductByRow = (rowIndex) => {
+    const { products = [] } = this.props
+    return products[rowIndex]
   }
 
   render() {
@@ -250,7 +258,13 @@ class Products extends PureComponent {
         label: 'В заказ',
         options: {
           display: diplayed.toOrder,
-          customBodyRender: () => <ToOrderInput buttonColor='secondary' buttonContent='+' />,
+          customBodyRender: (_val, row) => (
+            <ToOrderInput
+              buttonColor='secondary'
+              buttonContent='+'
+              onAdd={count => addProduct({ count, product: this.getProductByRow(row.rowIndex) })}
+            />
+          ),
           filter: false,
         },
       },
