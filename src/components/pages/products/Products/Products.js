@@ -42,6 +42,7 @@ class Products extends PureComponent {
       vendor_name: true,
       volume: true,
       weight: true,
+      status: true,
     },
   }
 
@@ -245,10 +246,10 @@ class Products extends PureComponent {
       },
       { name: 'pr', label: 'Цена', options: { display: diplayed.pr, filter: false } },
       {
-        name: 'inStock',
+        name: 'status',
         label: 'В наличии',
         options: {
-          display: diplayed.inStock,
+          display: diplayed.status,
           customBodyRender: val => <BagesMap value={val} />,
           filter: false,
         },
