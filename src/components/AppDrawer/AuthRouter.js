@@ -1,5 +1,9 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import {
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import {
   newOrderPath,
   statisticPath,
@@ -13,6 +17,18 @@ import {
   preorderPath,
 } from 'config/routes'
 import { ROOT_DOMAIN } from 'config/constants'
+import {
+  user,
+  superAdmin,
+  newUser,
+  clientManager,
+  client,
+  admin,
+  clientAccountant,
+  purchasingManager,
+  forAll,
+  declineRoles,
+} from 'config/roles'
 
 import UserView from 'components/pages/UserView'
 import Products from 'components/pages/products/Products'
@@ -21,18 +37,41 @@ import NewOrder from 'components/pages/NewOrder/NewOrder'
 import ProductView from 'components/pages/products/ProductView'
 import Preorder from 'components/pages/Preorder'
 
+import PrivateRouter from 'components/parts/PrivateRoute'
+
 const AuthRouter = () => (
   <Switch>
     <Redirect path={signInPath} to={profilePath} />
     <Redirect exact path={ROOT_DOMAIN} to={newOrderPath} />
-    <Route path={profilePath} component={UserView} />
-    <Route path={productsPath} component={Products} />
-    <Route path={productsCategoriesPath} component={ProductCategories} />
-    <Route path={productViewPath} component={ProductView} />
-    <Route path={newOrderPath} component={NewOrder} />
-    <Route path={preorderPath} component={Preorder} />
+    <PrivateRouter path={profilePath} component={UserView} allowedRoles={[]} />
+    <PrivateRouter
+      path={productsPath}
+      component={Products}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={productsCategoriesPath}
+      component={ProductCategories}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={productViewPath}
+      component={ProductView}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={newOrderPath}
+      component={NewOrder}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={preorderPath}
+      component={Preorder}
+      allowedRoles={declineRoles([newUser])}
+    />
     <Redirect path={ROOT_DOMAIN} to={profilePath} />
   </Switch>
 )
+
 
 export default AuthRouter
