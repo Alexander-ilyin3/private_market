@@ -21,6 +21,18 @@ import {
   statisticPath,
   productsCategoriesPath,
 } from 'config/routes'
+import {
+  user,
+  superAdmin,
+  newUser,
+  clientManager,
+  client,
+  admin,
+  clientAccountant,
+  purchasingManager,
+  forAll,
+  declineRoles,
+} from 'config/roles'
 
 const menuSelectDispatcher = dispatch => ({
   select: item => dispatch(selectMenuAction(item)),
@@ -28,49 +40,63 @@ const menuSelectDispatcher = dispatch => ({
 
 const menuConfig = [
   {
+    idx: 0,
     primary: 'Статистика',
     icon: () => <IconHome />,
     path: statisticPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 1,
     primary: 'Товары',
     icon: () => <ShopIcon />,
     path: productsPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 2,
     primary: 'Категории Товаров',
     icon: () => <Category />,
     path: productsCategoriesPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 3,
     primary: 'Заказы',
     icon: () => <BagIcon />,
     path: ordersPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 4,
     primary: 'Журнал оплат',
     icon: () => <CreditCardIcon />,
     path: paymentLogPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 5,
     primary: 'Новый заказ',
     icon: () => <IconAdd />,
     path: newOrderPath,
+    allowedRoles: declineRoles([newUser]),
   },
   {
+    idx: 6,
     primary: 'Мой профиль',
     iconFontSize: 'large',
     icon: () => <AccountIcon />,
     path: profilePath,
+    allowedRoles: declineRoles([newUser]),
   },
 ]
 
 const RouterListener = connect(null, menuSelectDispatcher)(withRouter(({ history, select }) => {
   useEffect(() => {
-    select(menuConfig.findIndex(item => item.path === history.location.pathname))
+    select(menuConfig.find(item => item.path === history.location.pathname).idx)
     history.listen((url) => {
       const { pathname } = url
-      select(menuConfig.findIndex(item => item.path === pathname))
+      select(menuConfig.find(item => item.path === pathname).idx)
     })
   }, [])
   return <></>
