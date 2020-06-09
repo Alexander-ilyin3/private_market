@@ -12,11 +12,19 @@ import classNames from 'classnames'
 import {
   newOrderPath,
 } from 'config/routes'
+import {
+  checkAlloved,
+} from 'config/roles'
+
 import { menuConfig, RouterListener } from './menuConfig'
 
 
 const Menu = (props) => {
-  const { classes, history, menuItem } = props
+  const {
+    classes,
+    history,
+    menuItem,
+  } = props
   return (
     <div className={classes.root}>
       <div className={classes.toolbar}>
@@ -46,30 +54,32 @@ const Menu = (props) => {
       <Divider />
       <List>
         {
-          menuConfig.map((item, index) => (
-            <ListItem
-              key={index}
-              button
-              selected={menuItem === index}
-              onClick={() => {
-                history.push(item.path)
-              }}
-              classes={{
-                selected: classes.focus,
-                default: index === 0 && classes.defaultItem,
-              }}
-            >
-              <ListItemIcon className={classes.menuIcon}>
-                {item.icon()}
-              </ListItemIcon>
-              <ListItemText
-                primaryTypographyProps={{
-                  color: 'inherit',
+          menuConfig
+            .filter(item => checkAlloved({ allowedRoles: item.allowedRoles }))
+            .map(item => (
+              <ListItem
+                key={item.idx}
+                button
+                selected={menuItem === item.idx}
+                onClick={() => {
+                  history.push(item.path)
                 }}
-                primary={item.primary}
-              />
-            </ListItem>
-          ))
+                classes={{
+                  selected: classes.focus,
+                  default: item.idx === 0 && classes.defaultItem,
+                }}
+              >
+                <ListItemIcon className={classes.menuIcon}>
+                  {item.icon()}
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={{
+                    color: 'inherit',
+                  }}
+                  primary={item.primary}
+                />
+              </ListItem>
+            ))
         }
       </List>
       <RouterListener />
