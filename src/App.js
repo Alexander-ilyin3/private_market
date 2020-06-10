@@ -8,6 +8,7 @@ import { loginDataSelector } from 'storage/selectors'
 import { userData } from 'storage/selectors/userData.selector'
 import { clearCart } from 'services/cart/cartService'
 import { initApp } from 'services/appInit'
+import ShowSnack from 'components/parts/ShowSnack'
 
 const App = (props) => {
   const { isLoggedIn, init, user } = props
@@ -19,15 +20,17 @@ const App = (props) => {
     }
   }, [isLoggedIn])
 
-  if (isLoggedIn) {
-    return user && user.roles ? (
-      <BrowserRouter>
-        <AppDrawer />
-      </BrowserRouter>
-    ) : null
-  }
   return (
-    <Guest />
+    <>
+      <ShowSnack />
+      {isLoggedIn ? (
+        user && user.roles && (
+          <BrowserRouter>
+            <AppDrawer />
+          </BrowserRouter>
+        )
+      ) : <Guest />}
+    </>
   )
 }
 
