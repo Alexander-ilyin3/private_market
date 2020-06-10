@@ -14,8 +14,10 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import DeleteForever from '@material-ui/icons/DeleteForever'
 import Button from '@material-ui/core/Button'
+import { format } from 'date-fns'
 
 import { calculateCartTotal } from 'services/cart/cartHelpers'
+import { checkout } from 'services/api/order.service'
 import { overrides } from 'materialUi/mainTheme'
 import { setCount, clearCart, removeFromCart } from 'services/cart/cartService'
 import AppTimePicker from 'components/parts/FormParts/TimePicker'
@@ -66,6 +68,12 @@ const Preorder = (props) => {
     new Date(Date.now()),
   )
 
+  const [recipienName, setRecipienName] = useState(`${user.customerName} ${user.customerLastname}`)
+  const [recipientPhone, setRecipientPhone] = useState(user.customerPhone)
+  const [ttn, setTtn] = useState('')
+  const [delivery, setDelivery] = useState(3)
+  const [payment, setPayment] = useState(4)
+
   const renderColumnItems = items => items.map(item => (
     <Grid key={item.label} container spacing={0}>
       <Grid item xs={4} className={classes.paymentItem}>
@@ -81,6 +89,23 @@ const Preorder = (props) => {
     const id = rowData[0]
     return cart.find(item => item.product.id === id).product
   }
+
+  const getDataForSend = () => ({
+    recipient_name: recipienName,
+    recipient_email: user.customerEmail,
+    recipient_adress: [
+      user.city,
+      user.street,
+      user.houseNumber,
+      user.officeNumber,
+    ].filter(item => !!item).join(', '),
+    recipient_phone: recipientPhone.replace(/\D+/g, ''),
+    delivery,
+    ttn,
+    payment_delivery: payment,
+    date_delivery: format(selectedDate, 'yyyy-MM-dd HH:mm:ss'),
+    products: cartData.map(product => ({ id: product.id, count: product.count })),
+  })
 
   const columns = [
     { name: 'id', label: '', options: { display: false } },
@@ -149,6 +174,8 @@ const Preorder = (props) => {
           <InputLabel>Доставка</InputLabel>
           <Select
             label='Доставка'
+            onInput={e => setDelivery(e.target.value)}
+            defaultValue={delivery}
           >
             <MenuItem value={1}>Новая почта</MenuItem>
             <MenuItem value={2}>Интайм</MenuItem>
@@ -157,7 +184,18 @@ const Preorder = (props) => {
         </FormControl>
       ),
     },
-    { label: 'ТТН:', value: <TextField variant='outlined' label='ТТН' margin='normal' fullWidth /> },
+    {
+      label: 'ТТН:',
+      value: (
+        <TextField
+          variant='outlined'
+          onInput={e => setTtn(e.target.value)}
+          label='ТТН'
+          margin='normal'
+          fullWidth
+        />
+      ),
+    },
     {
       label: 'Оплата:',
       value: (
@@ -168,6 +206,8 @@ const Preorder = (props) => {
           <InputLabel>Доставка</InputLabel>
           <Select
             label='Доставка'
+            onChange={e => setPayment(e.target.value)}
+            defaultValue={payment}
           >
             <MenuItem value={1}>Visa</MenuItem>
             <MenuItem value={2}>Mastercard</MenuItem>
@@ -188,6 +228,7 @@ const Preorder = (props) => {
           margin='normal'
           variant='outlined'
           defaultValue={`${user.customerName} ${user.customerLastname}`}
+          onChange={e => setRecipienName(e.target.value)}
         />
       ),
     },
@@ -217,6 +258,7 @@ const Preorder = (props) => {
           fullWidth
           margin='normal'
           variant='outlined'
+          onInput={e => setRecipientPhone(e.target.value)}
           InputProps={{
             inputComponent: MaskedPhone,
           }}
@@ -286,20 +328,20 @@ const Preorder = (props) => {
         </Paper>
         <Grid style={{ marginTop: 8, marginBottom: 8 }} container spacing={1}>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Оформить</Button>
+            <Button variant='contained' color='primary' fullWidth onClick={() => setTimeout(() => checkout(getDataForSend()))}>Оформить</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Зарезерваировать</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Зарезерваировать</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Выписать Счет</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Выписать Счет</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Сохранить Шаблон</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Сохранить Шаблон</Button>
           </Grid>
           <Grid item xs={false} md={3} xl={4} />
           <Grid item xs={12} md={6} xl={4}>
-            <Button variant='contained' fullWidth color='primary'>Оплатить и Оформить</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Оплатить и Оформить</Button>
           </Grid>
           <Grid item xs={false} md={3} xl={4} />
         </Grid>

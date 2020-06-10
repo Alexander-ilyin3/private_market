@@ -35,7 +35,7 @@ import {
 } from 'config/roles'
 
 const menuSelectDispatcher = dispatch => ({
-  select: item => dispatch(selectMenuAction(item)),
+  select: item => dispatch(selectMenuAction(item ? item.idx || -1 : -1)),
 })
 
 const menuConfig = [
@@ -93,10 +93,10 @@ const menuConfig = [
 
 const RouterListener = connect(null, menuSelectDispatcher)(withRouter(({ history, select }) => {
   useEffect(() => {
-    select(menuConfig.find(item => item.path === history.location.pathname).idx)
+    select(menuConfig.find(item => item.path === history.location.pathname))
     history.listen((url) => {
       const { pathname } = url
-      select(menuConfig.find(item => item.path === pathname).idx)
+      select(menuConfig.find(item => item.path === pathname))
     })
   }, [])
   return <></>
