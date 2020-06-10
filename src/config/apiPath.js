@@ -14,3 +14,4 @@ export const apiOrders = 'orders/'
 export const apiPaymentLog = 'paymentlog/'
 export const apiResetPasswordPath = `${apiCustomer}password_reset/`
 export const apiProductDetailsPath = 'product/:id'
+export const apiCheckoutOrderPath = 'order/'
