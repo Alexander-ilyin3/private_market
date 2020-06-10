@@ -289,17 +289,17 @@ const Preorder = (props) => {
             <Button variant='contained' color='primary' fullWidth>Оформить</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Зарезерваировать</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Зарезерваировать</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Выписать Счет</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Выписать Счет</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth>Сохранить Шаблон</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Сохранить Шаблон</Button>
           </Grid>
           <Grid item xs={false} md={3} xl={4} />
           <Grid item xs={12} md={6} xl={4}>
-            <Button variant='contained' fullWidth color='primary'>Оплатить и Оформить</Button>
+            <Button variant='contained' color='primary' disabled fullWidth>Оплатить и Оформить</Button>
           </Grid>
           <Grid item xs={false} md={3} xl={4} />
         </Grid>
