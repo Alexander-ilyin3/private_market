@@ -126,6 +126,10 @@ const Preorder = (props) => {
             defaultValue={value}
             type='number'
             variant='outlined'
+            inputProps={{
+              min: 1,
+              step: 1,
+            }}
             onChange={(e) => {
               const { value } = e.target
               const product = getProductByRowMeta(meta)

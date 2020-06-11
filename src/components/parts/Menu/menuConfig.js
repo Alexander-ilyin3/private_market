@@ -6,6 +6,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCardOutlined'
 import AccountIcon from '@material-ui/icons/AccountBoxOutlined'
 import IconAdd from '@material-ui/icons/Add'
 import Category from '@material-ui/icons/Category'
+import People from '@material-ui/icons/People'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -20,6 +21,7 @@ import {
   profilePath,
   statisticPath,
   productsCategoriesPath,
+  userListPath,
 } from 'config/routes'
 import {
   user,
@@ -88,6 +90,14 @@ const menuConfig = [
     icon: () => <AccountIcon />,
     path: profilePath,
     allowedRoles: declineRoles([newUser]),
+  },
+  {
+    idx: 7,
+    primary: 'Пользователи',
+    iconFontSize: 'large',
+    icon: () => <People />,
+    path: userListPath,
+    allowedRoles: [admin, superAdmin, user],
   },
 ]
 
