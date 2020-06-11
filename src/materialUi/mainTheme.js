@@ -4,7 +4,7 @@ import red from '@material-ui/core/colors/red'
 
 const theme = defaultTheme
 
-export const overrides = {
+export const overrides = appTheme => ({
 
   MuiChip: {
     root: {
@@ -17,6 +17,14 @@ export const overrides = {
   MuiButton: {
     root: {
       fontSize: 12,
+      '&.error': {
+        backgroundColor: appTheme.palette.error.main,
+        // color: appTheme.palette.text.secondary,
+      },
+      '&.warning': {
+        backgroundColor: appTheme.palette.warning.main,
+        // color: appTheme.palette.text.secondary,
+      },
     },
     // raised: {
     //   fontWeight: 400,
@@ -118,9 +126,9 @@ export const overrides = {
       },
     },
   },
-}
+})
 
-export default createMuiTheme({
+const appTheme = {
   palette: {
     primary: { main: '#4a5ab9', contrastText: '#fff' },
     secondary: { main: '#18c5a9', contrastText: '#fff' },
@@ -142,8 +150,11 @@ export default createMuiTheme({
     ].join(','),
 
   },
-  overrides,
   mixins: {
 
   },
-})
+}
+
+appTheme.overrides = overrides(appTheme)
+
+export default createMuiTheme(appTheme)
