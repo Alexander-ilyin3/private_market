@@ -15,6 +15,7 @@ import {
   productsCategoriesPath,
   productViewPath,
   preorderPath,
+  userListPath,
 } from 'config/routes'
 import { ROOT_DOMAIN } from 'config/constants'
 import {
@@ -36,6 +37,7 @@ import ProductCategories from 'components/pages/products/ProductCategories'
 import NewOrder from 'components/pages/NewOrder/NewOrder'
 import ProductView from 'components/pages/products/ProductView'
 import Preorder from 'components/pages/Preorder'
+import UserList from 'components/pages/UserList'
 
 import PrivateRouter from 'components/parts/PrivateRoute'
 
@@ -68,6 +70,11 @@ const AuthRouter = () => (
       path={preorderPath}
       component={Preorder}
       allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={userListPath}
+      component={UserList}
+      allowedRoles={[admin, superAdmin, user]}
     />
     <Redirect path={ROOT_DOMAIN} to={profilePath} />
   </Switch>
