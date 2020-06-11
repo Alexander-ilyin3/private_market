@@ -97,7 +97,7 @@ const menuConfig = [
     iconFontSize: 'large',
     icon: () => <People />,
     path: userListPath,
-    allowedRoles: [admin, superAdmin, user],
+    allowedRoles: [admin, superAdmin],
   },
 ]
 

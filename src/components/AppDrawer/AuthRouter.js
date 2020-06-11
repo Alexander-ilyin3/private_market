@@ -74,7 +74,7 @@ const AuthRouter = () => (
     <PrivateRouter
       path={userListPath}
       component={UserList}
-      allowedRoles={[admin, superAdmin, user]}
+      allowedRoles={[admin, superAdmin]}
     />
     <Redirect path={ROOT_DOMAIN} to={profilePath} />
   </Switch>
