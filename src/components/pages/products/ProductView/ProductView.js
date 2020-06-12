@@ -11,6 +11,8 @@ import {
   TextField,
 } from '@material-ui/core'
 import { CheckCircle } from '@material-ui/icons'
+import Error from '@material-ui/icons/Error'
+import Cancel from '@material-ui/icons/Cancel'
 
 import { productsPath } from 'config/routes'
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
@@ -32,6 +34,7 @@ export default class ProductView extends Component {
       name,
       price,
       category_id,
+      status,
     } = data
     return (
       <Paper className={classes.ProductPage}>
@@ -70,7 +73,11 @@ export default class ProductView extends Component {
             </Grid>
             <Grid container className={classes.detailItem}>
               <Grid item sm={8} xs={12}>
-                <Typography className={classes.inStock}><CheckCircle fontSize='large' color='primary' /> В наличии</Typography>
+                <Typography className={classes.inStock}>
+                  {status === 1 && <><CheckCircle fontSize='large' color='secondary' /> В наличии</>}
+                  {status === 2 && <><Error fontSize='large' className='warning' /> Заканчивается</>}
+                  {status === 3 && <><Cancel fontSize='large' color='error' /> Нет в наличии</>}
+                </Typography>
               </Grid>
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
