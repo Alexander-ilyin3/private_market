@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Paper from '@material-ui/core/Paper'
 import DataTable from 'mui-datatables'
+import PropTypes from 'prop-types'
 
 
 import { textLabels } from 'config/tableConfig/textLabels'
@@ -48,7 +49,6 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     }
   }
 
-  console.log(localConfig)
 
   const options = {
     download: false,
@@ -96,6 +96,40 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
       />
     </Paper>
   )
+}
+
+
+OrderList.defaultProps = {
+  orderListInfo: {
+    orders: [],
+    config: {},
+  },
+}
+
+OrderList.propTypes = {
+  orderListInfo: PropTypes.shape({
+    config: PropTypes.shape({
+      count: PropTypes.number,
+    }),
+    orders: PropTypes.arrayOf(PropTypes.shape({
+      created_at: PropTypes.string,
+      customer_id: PropTypes.number,
+      date_delivery: PropTypes.string,
+      delivery: PropTypes.number,
+      id: PropTypes.number,
+      payment_delivery: PropTypes.number,
+      recipient_adress: PropTypes.string,
+      recipient_email: PropTypes.string,
+      recipient_name: PropTypes.string,
+      recipient_phone: PropTypes.number,
+      total_price: PropTypes.number,
+      ttn: PropTypes.string,
+      updated_at: PropTypes.string,
+      volume: PropTypes.number,
+      weight: PropTypes.number,
+    })),
+  }),
+  getOrderList: PropTypes.func.isRequired,
 }
 
 export default OrderList
