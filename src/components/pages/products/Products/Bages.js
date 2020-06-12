@@ -3,6 +3,7 @@ import React from 'react'
 import { Badge } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
 const styles = ({ palette, breakpoints }) => ({
   inlineBage: {
@@ -21,7 +22,7 @@ const styles = ({ palette, breakpoints }) => ({
   },
 })
 
-const mapStockBages = (props) => {
+const MapStockBages = (props) => {
   let { value } = props
   const { classes } = props
   const allowedStatuses = [1, 2, 3]
@@ -36,5 +37,8 @@ const mapStockBages = (props) => {
   return bages[value]
 }
 
-
-export default withStyles(styles)(mapStockBages)
+MapStockBages.propTypes = {
+  value: PropTypes.number.isRequired,
+  classes: PropTypes.object.isRequired,
+}
+export default withStyles(styles)(MapStockBages)
