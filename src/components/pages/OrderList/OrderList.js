@@ -70,21 +70,21 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   }
 
   const columns = [
-    { name: 'id', label: '', options: { sort: false, display: displayed.id } },
-    { name: 'customer_id', label: '', options: { sort: false, display: displayed.customer_id } },
-    { name: 'created_at', label: '', options: { sort: false, display: displayed.created_at } },
-    { name: 'date_delivery', label: '', options: { sort: false, display: displayed.date_delivery } },
-    { name: 'delivery', label: '', options: { sort: false, display: displayed.delivery } },
-    { name: 'payment_delivery', label: '', options: { sort: false, display: displayed.payment_delivery } },
-    { name: 'recipient_adress', label: '', options: { sort: false, display: displayed.recipient_adress } },
-    { name: 'recipient_email', label: '', options: { sort: false, display: displayed.recipient_email } },
-    { name: 'recipient_name', label: '', options: { sort: false, display: displayed.recipient_name } },
-    { name: 'recipient_phone', label: '', options: { sort: false, display: displayed.recipient_phone } },
-    { name: 'total_price', label: '', options: { sort: false, display: displayed.total_price } },
-    { name: 'ttn', label: '', options: { sort: false, display: displayed.ttn } },
-    { name: 'updated_at', label: '', options: { sort: false, display: displayed.updated_at } },
-    { name: 'volume', label: '', options: { sort: false, display: displayed.volume } },
-    { name: 'weight', label: '', options: { sort: false, display: displayed.weight } },
+    { name: 'id', label: 'ID', options: { sort: false, display: displayed.id } },
+    { name: 'customer_id', label: 'ID клиента', options: { sort: false, display: displayed.customer_id } },
+    { name: 'created_at', label: 'Создан', options: { sort: false, display: displayed.created_at } },
+    { name: 'date_delivery', label: 'Дата отправки', options: { sort: false, display: displayed.date_delivery } },
+    { name: 'delivery', label: 'Способ отправки', options: { sort: false, display: displayed.delivery } },
+    { name: 'payment_delivery', label: 'Способ оплаты', options: { sort: false, display: displayed.payment_delivery } },
+    { name: 'recipient_adress', label: 'Адрес получателя', options: { sort: false, display: displayed.recipient_adress } },
+    { name: 'recipient_email', label: 'Email получателя', options: { sort: false, display: displayed.recipient_email } },
+    { name: 'recipient_name', label: 'Имя получателя', options: { sort: false, display: displayed.recipient_name } },
+    { name: 'recipient_phone', label: 'Телефон получателя', options: { sort: false, display: displayed.recipient_phone } },
+    { name: 'total_price', label: 'Итоговая цена', options: { sort: false, display: displayed.total_price } },
+    { name: 'ttn', label: 'ТТН', options: { sort: false, display: displayed.ttn } },
+    { name: 'updated_at', label: 'Обновлен', options: { sort: false, display: displayed.updated_at } },
+    { name: 'volume', label: 'Объем', options: { sort: false, display: displayed.volume } },
+    { name: 'weight', label: 'Вес', options: { sort: false, display: displayed.weight } },
   ]
 
   return (
