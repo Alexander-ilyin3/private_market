@@ -14,6 +14,14 @@ export const overrides = appTheme => ({
     },
   },
 
+  MuiSvgIcon: {
+    root: {
+      '&.warning': {
+        color: appTheme.palette.warning.main,
+      },
+    },
+  },
+
   MuiButton: {
     root: {
       fontSize: 12,
