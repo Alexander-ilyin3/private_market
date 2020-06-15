@@ -2,6 +2,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
+import { LOG_OUT } from '../constants'
 import loginData from './loginData'
 import isLoading from './isLoading'
 import userData from './userData'
@@ -11,6 +12,7 @@ import { productSearchAutocomplete, productsData, productInfo } from './products
 import cart from './cart'
 import snackInfo from './snack'
 import userListInfo from './user'
+import { orderList } from './order'
 
 const reducer = combineReducers({
   loginData,
@@ -24,8 +26,16 @@ const reducer = combineReducers({
   cart,
   snackInfo,
   userListInfo,
+  orderList,
 })
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+const rootReducer = (state, action) => {
+  if (action.type === LOG_OUT) {
+    state = { loginData: loginData(state.loginData, action) }
+  }
+
+  return reducer(state, action)
+}
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
 
 export default store

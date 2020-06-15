@@ -38,6 +38,7 @@ import NewOrder from 'components/pages/NewOrder/NewOrder'
 import ProductView from 'components/pages/products/ProductView'
 import Preorder from 'components/pages/Preorder'
 import UserList from 'components/pages/UserList'
+import OrderList from 'components/pages/OrderList'
 
 import PrivateRouter from 'components/parts/PrivateRoute'
 
@@ -69,6 +70,11 @@ const AuthRouter = () => (
     <PrivateRouter
       path={preorderPath}
       component={Preorder}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
+      path={ordersPath}
+      component={OrderList}
       allowedRoles={declineRoles([newUser])}
     />
     <PrivateRouter
