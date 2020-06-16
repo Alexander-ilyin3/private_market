@@ -16,23 +16,20 @@ const EmailConfirm = ({
   const token = location.search.slice(location.search.indexOf('=') + 1)
   const [receivedResp, setReceivedResp] = useState(false)
   const [logged, setLogged] = useState(false)
-  const [count, setCount] = useState(10)
 
   useEffect(() => {
     conFirmEmail(token).then((res) => {
       setReceivedResp(true)
-      if (res) {
+      if (res === true) {
         setLogged(true)
-        const subscribtion = setInterval(() => {
-          setCount(count - 1)
-          if (count < 0) {
-            clearInterval(subscribtion)
-            history.push('/')
-          }
-        }, 1000)
+        setTimeout(() => {
+          console.log(123)
+          history.push('/')
+        }, 3000)
       }
     })
-  }, [token, conFirmEmail, ])
+  }, [token, conFirmEmail])
+
 
   return (
     <div className={classes.root}>
@@ -57,7 +54,7 @@ const EmailConfirm = ({
                 color='secondary'
               >
                 Ваш почтовый ящик подтвержден успешно.
-                Через {count} секунд вы будете перенаправлены на <Link to='/' className={classes.link}>наш сайт</Link>
+                Через 3 секунд вы будете перенаправлены на <Link to='/' className={classes.link}>основную страницу</Link>
               </Typography>
             </div>
           </Paper>
