@@ -147,11 +147,13 @@ export const confirmEmail = token => async (dispatch) => {
     access_token,
   } = res.data
   if (success && access_token) {
-    dispatch(logout())
-    dispatch(loginAaction({
-      isLoggedIn: true,
-      token: `${token_type} ${access_token}`,
-    }))
+    await dispatch(logout())
+    setTimeout(() => {
+      dispatch(loginAaction({
+        isLoggedIn: true,
+        token: `${token_type} ${access_token}`,
+      }))
+    })
     return true
   }
   showSnack({
