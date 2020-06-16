@@ -4,7 +4,7 @@ import { store, actions } from 'storage'
 import {
   apiProductSearchAutocompletePath,
 } from 'config/apiPath'
-import { convertToSnakecase } from '../functions'
+import { showSnack } from 'storage/actions/snack.actions'
 
 
 import { apiBaseURL } from '../../config/constants'
@@ -29,6 +29,13 @@ instance.interceptors.response.use(
     return res
   }, (err) => {
     dispatch(loadingStop())
+    const { response = {} } = err || {}
+    const { data = {} } = response
+    const { message } = data
+    showSnack({
+      variant: 'error',
+      message,
+    })
     return Promise.reject(err)
   },
 )
