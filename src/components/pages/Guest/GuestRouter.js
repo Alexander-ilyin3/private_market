@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  BrowserRouter,
   Route,
   Switch,
   Redirect,
@@ -25,16 +24,14 @@ import RestorePassword from './pages/RestorePassword'
 
 export default function () {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path={signUpPath} component={SignUp} />
-        <Route exact path={registerSuccessPath} component={AfterReg} />
-        <Route exact path={recoveryPasswordPath} component={Recovery} />
-        <Route exact path={recoveryPasswordSuccessPath} component={RecoverySuccess} />
-        <Route path={signInPath} component={SignIn} />
-        <Route path={resetPassword} component={RestorePassword} />
-        <Redirect path={ROOT_DOMAIN} to={signInPath} />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path={signUpPath} component={SignUp} />
+      <Route exact path={registerSuccessPath} component={AfterReg} />
+      <Route exact path={recoveryPasswordPath} component={Recovery} />
+      <Route exact path={recoveryPasswordSuccessPath} component={RecoverySuccess} />
+      <Route path={signInPath} component={SignIn} />
+      <Route path={resetPassword} component={RestorePassword} />
+      <Redirect path={ROOT_DOMAIN} to={signInPath} />
+    </Switch>
   )
 }
