@@ -19,3 +19,4 @@ export const apiAdminPath = 'admin/'
 export const apiUserListPath = `${apiAdminPath}customers/`
 export const apiAdminCustomer = `${apiAdminPath}customer/`
 export const apiSetUserStatusPath = `${apiAdminCustomer}status/`
+export const apiEmailConfirmPath = `${apiCustomer}email_confirmation/`

@@ -4,8 +4,10 @@ import {
   apiRecoveryPasswordPath,
   apiResetPasswordPath,
   apiLogoutPath,
+  apiEmailConfirmPath,
 } from 'config/apiPath'
 import { loginAaction, logoutAction } from 'storage/actions/login.actions'
+import { showSnack } from 'storage/actions/snack.actions'
 import instance from './axiosProvider'
 
 
@@ -134,4 +136,29 @@ export const logout = () => async (dispatch) => {
   } finally {
     dispatch(logoutAction())
   }
+}
+
+export const confirmEmail = token => async (dispatch) => {
+  const res = await instance.post(apiEmailConfirmPath, { token })
+  const {
+    success,
+    message,
+    token_type,
+    access_token,
+  } = res.data
+  if (success && access_token) {
+    await dispatch(logout())
+    setTimeout(() => {
+      dispatch(loginAaction({
+        isLoggedIn: true,
+        token: `${token_type} ${access_token}`,
+      }))
+    })
+    return true
+  }
+  showSnack({
+    variant: 'error',
+    message,
+  })
+  return false
 }
