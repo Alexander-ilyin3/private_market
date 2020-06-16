@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-
-import Guest from 'components/pages/Guest'
-import AppDrawer from 'components/AppDrawer'
 import { loginDataSelector } from 'storage/selectors'
 import { userData } from 'storage/selectors/userData.selector'
 import { clearCart } from 'services/cart/cartService'
 import { initApp } from 'services/appInit'
 import ShowSnack from 'components/parts/ShowSnack'
+import Router from 'components/parts/Router/RouterDecider'
 
 const App = (props) => {
   const { isLoggedIn, init, user } = props
@@ -23,13 +20,7 @@ const App = (props) => {
   return (
     <>
       <ShowSnack />
-      {isLoggedIn ? (
-        user && user.roles && (
-          <BrowserRouter>
-            <AppDrawer />
-          </BrowserRouter>
-        )
-      ) : <Guest />}
+      <Router isLoggedIn={isLoggedIn} user={user} />
     </>
   )
 }
