@@ -139,35 +139,24 @@ export const logout = () => async (dispatch) => {
 }
 
 export const confirmEmail = token => async (dispatch) => {
-  try {
-    const res = await instance.post(apiEmailConfirmPath, { token })
-    const {
-      success,
-      message,
-      token_type,
-      access_token,
-    } = res.data
-    if (success) {
-      dispatch(logout())
-      dispatch(loginAaction({
-        isLoggedIn: true,
-        token: `${token_type} ${access_token}`,
-      }))
-      return success
-    }
-    showSnack({
-      variant: 'error',
-      message,
-    })
-    return success
-  } catch (err) {
-    const { response = {} } = err || {}
-    const { data = {} } = response
-    const { message } = data
-    showSnack({
-      variant: 'error',
-      message,
-    })
-    return false
+  const res = await instance.post(apiEmailConfirmPath, { token })
+  const {
+    success,
+    message,
+    token_type,
+    access_token,
+  } = res.data
+  if (success && access_token) {
+    dispatch(logout())
+    dispatch(loginAaction({
+      isLoggedIn: true,
+      token: `${token_type} ${access_token}`,
+    }))
+    return true
   }
+  showSnack({
+    variant: 'error',
+    message,
+  })
+  return false
 }
