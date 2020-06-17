@@ -5,6 +5,7 @@ import {
   apiProductSearchAutocompletePath,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
+import { logoutAction } from 'storage/actions/login.actions'
 
 
 import { apiBaseURL } from '../../config/constants'
@@ -30,7 +31,10 @@ instance.interceptors.response.use(
   }, (err) => {
     dispatch(loadingStop())
     const { response = {} } = err || {}
-    const { data = {} } = response
+    const { data = {}, status } = response
+    if (status === 401) {
+      dispatch(logoutAction())
+    }
     const { message } = data
     showSnack({
       variant: 'error',
