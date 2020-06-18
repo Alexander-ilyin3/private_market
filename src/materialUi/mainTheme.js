@@ -6,6 +6,23 @@ const theme = defaultTheme
 
 export const overrides = appTheme => ({
 
+  MuiPaper: {
+    root: {
+      '& .padded': {
+        padding: 16,
+        [theme.breakpoints.down('sm')]: {
+          padding: 6,
+        },
+      },
+    },
+  },
+
+  MuiGrid: {
+    root: {
+      width: '100%',
+    },
+  },
+
   MuiChip: {
     root: {
       borderRadius: 3,
