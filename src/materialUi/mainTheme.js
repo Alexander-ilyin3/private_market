@@ -137,6 +137,18 @@ export const overrides = appTheme => ({
         height: 'auto',
         borderBottom: 'none',
         boxSizing: 'border-box',
+        textAlign: 'left',
+      },
+    },
+    stackedCommon: {
+      [theme.breakpoints.down('sm')]: {
+        width: '50%',
+        textAlign: 'end',
+        height: 'auto',
+        borderBottom: 'none',
+        wordWrap: 'break-word',
+        whiteSpace: 'unset',
+        boxSizing: 'border-box',
       },
     },
     responsiveStackedSmall: {
