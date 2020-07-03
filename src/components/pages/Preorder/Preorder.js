@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import { format } from 'date-fns'
 
 import { checkout } from 'services/api/order.service'
+import { FormGroup, ControlGroup } from 'components/parts/ReactiveForm'
 
 import Table from './Table'
 
@@ -13,40 +14,70 @@ import Table from './Table'
 import Delivery from './Delivery'
 import Recipient from './Recipient'
 
+const form = new ControlGroup({
+  dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
+  deliveryType: { value: 3, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [] },
+  city: { meta: { label: 'Город', withLabel: true, hide: true }, validators: [] },
+  warehouse: { meta: { label: 'Склад', withLabel: true, hide: true }, validators: [] },
+  toDoor: {
+    value: false,
+    meta: {
+      label: 'Адресная доставка',
+      align: 'left',
+      withLabel: true,
+      hide: true,
+      type: 'checkbox',
+    },
+    validators: [],
+  },
+  deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
+})
+
+const cityFormItem = form.get('city')
+const warehouseFormItem = form.get('warehouse')
+const toDoorFormItem = form.get('toDoor')
+const deliveryAddressFormItem = form.get('deliveryAddress')
+
+toDoorFormItem.valueChanges((val) => {
+  deliveryAddressFormItem.setMeta({ hide: !val })
+  warehouseFormItem.setMeta({ hide: val })
+})
+
+form.get('deliveryType').valueChanges((val) => {
+  cityFormItem.setMeta({ hide: val !== 1 })
+  warehouseFormItem.setMeta({ hide: val !== 1 || toDoorFormItem.value })
+  toDoorFormItem.setMeta({ hide: val !== 1 })
+  deliveryAddressFormItem.setMeta({ hide: val !== 1 || !toDoorFormItem.value })
+})
 
 const Preorder = (props) => {
   const { cart, user } = props
-  const cartData = cart.map(item => ({
-    ...item.product,
-    count: item.count,
-    total: (Number(item.product.price.replace(',', '')) * item.count).toLocaleString(),
-  }))
+  // const cartData = cart.map(item => ({
+  //   ...item.product,
+  //   count: item.count,
+  //   total: (Number(item.product.price.replace(',', '')) * item.count).toLocaleString(),
+  // }))
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(Date.now()),
-  )
 
   const [recipienName, setRecipienName] = useState(`${user.customerName} ${user.customerLastname}`)
   const [recipientPhone, setRecipientPhone] = useState(user.customerPhone)
 
-  const [delivery, setDelivery] = useState({ type: 3 })
-  const [payment, setPayment] = useState(4)
 
 
   const getDataForSend = () => ({
-    recipient_name: recipienName,
-    recipient_email: user.customerEmail,
-    recipient_adress: [
-      user.city,
-      user.street,
-      user.houseNumber,
-      user.officeNumber,
-    ].filter(item => !!item).join(', '),
-    recipient_phone: recipientPhone.replace(/\D+/g, ''),
-    delivery,
-    payment_delivery: payment,
-    date_delivery: format(selectedDate, 'yyyy-MM-dd HH:mm:ss'),
-    products: cartData.map(product => ({ id: product.id, count: product.count })),
+    // recipient_name: recipienName,
+    // recipient_email: user.customerEmail,
+    // recipient_adress: [
+    //   user.city,
+    //   user.street,
+    //   user.houseNumber,
+    //   user.officeNumber,
+    // ].filter(item => !!item).join(', '),
+    // recipient_phone: recipientPhone.replace(/\D+/g, ''),
+    // delivery,
+    // payment_delivery: payment,
+    // date_delivery: format(selectedDate, 'yyyy-MM-dd HH:mm:ss'),
+    // products: cartData.map(product => ({ id: product.id, count: product.count })),
   })
 
 
@@ -75,23 +106,25 @@ const Preorder = (props) => {
         </Grid>
       </Grid>
       <Grid item xs={12} lg={5}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Delivery
-              delivery={delivery}
-              setDelivery={setDelivery}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Recipient
-              user={user}
-              setRecipienName={setRecipienName}
-              setRecipientPhone={setRecipientPhone}
-            />
-          </Grid>
-        </Grid>
+        <FormGroup
+          controlGroup={form}
+          render={({ valid, submited, submit }) => (
+            <form>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Delivery />
+                </Grid>
+                <Grid item xs={12}>
+                  <Recipient
+                    user={user}
+                    setRecipienName={setRecipienName}
+                    setRecipientPhone={setRecipientPhone}
+                  />
+                </Grid>
+              </Grid>
+            </form>
+          )}
+        />
       </Grid>
     </Grid>
   )
