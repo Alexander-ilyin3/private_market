@@ -8,6 +8,7 @@ export default React.memo((props) => {
     invalid,
     onInput,
     onBlur,
+    onChange,
     render = () => {},
     meta,
   } = props
@@ -21,6 +22,7 @@ export default React.memo((props) => {
         handlers: {
           onInput,
           onBlur,
+          onChange,
         },
         meta,
       })}
