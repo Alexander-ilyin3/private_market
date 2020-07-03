@@ -1,67 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { TextField } from '@material-ui/core'
+import DefaultInputRender from './DefaultInputRrnder'
 
-const defaultMeta = {
-  variant: 'outlined',
-  fullWidth: true,
+const passwordMeta = {
   type: 'password',
 }
 
-const PasswordInputRender = ({
-  value,
-  errors,
-  touched,
-  invalid,
-  handlers,
-  meta,
-}) => {
-  meta = { ...defaultMeta, ...meta }
-  const {
-    label,
-    placeholder,
-    variant,
-    fullWidth,
-    type,
-  } = meta
-  return (
-    <TextField
-      label={label}
-      {...handlers}
-      defaultValue={value}
-      error={touched && invalid}
-      variant={variant || 'outlined'}
-      fullWidth={fullWidth}
-      margin='normal'
-      type={type}
-      placeholder={placeholder || label}
-      helperText={
-        touched && invalid && (
-          (errors.required && 'Поле обязательно к заполнению')
-          || (errors.passwordInvalid && 'Некоректный пароль')
-          || (errors.notMatched && 'Пароли не совпадают')
-        )
-      }
-    />
-  )
+const PasswordInputRender = (props) => {
+  const { meta } = props
+  const newProps = { ...props, meta: { ...meta, ...passwordMeta } }
+  return <DefaultInputRender {...newProps} />
 }
 
 PasswordInputRender.defaultProps = {
-  value: '',
-  errors: {},
-  touched: false,
-  invalid: false,
-  handlers: {},
   meta: {},
 }
 
 PasswordInputRender.propTypes = {
-  value: PropTypes.string,
-  errors: PropTypes.object,
-  touched: PropTypes.bool,
-  invalid: PropTypes.bool,
-  handlers: PropTypes.object,
   meta: PropTypes.object,
 }
 
