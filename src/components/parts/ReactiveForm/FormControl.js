@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
+import Grid from '@material-ui/core/Grid'
+
 import { FormContext } from './formContext'
 import MemoizedControl from './MemoizedControl'
 
@@ -26,6 +28,24 @@ const FormControl = ({ name, render }) => {
     onInput: controls[name].setValue,
     onBlur: controls[name].blur,
     meta,
+  }
+  if (['select', 'picker', 'checkbox'].includes(meta.type)) {
+    props.onChange = controls[name].setValue
+  }
+  if (meta.hide) return <></>
+  if (meta.withLabel) {
+    return (
+      <Grid key={meta.label} container spacing={0}>
+        <Grid item xs={4} style={{ display: 'flex', alignItems: 'center' }}>
+          {meta.label}
+        </Grid>
+        <Grid item xs={8}>
+          <MemoizedControl
+            {...props}
+          />
+        </Grid>
+      </Grid>
+    )
   }
   return (
     <MemoizedControl
