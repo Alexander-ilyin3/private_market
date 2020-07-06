@@ -56,7 +56,7 @@ export class Control {
       if (type === 'checkbox') {
         const { checked } = event.target
         value = checked
-      } else if (!type || ['password', 'text'].find(type)) {
+      } else if (!type || ['password', 'text'].includes(type)) {
         const { target } = event
         value = target.value
       }
