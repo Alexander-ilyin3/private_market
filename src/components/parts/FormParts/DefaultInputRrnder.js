@@ -9,6 +9,20 @@ const defaultMeta = {
   type: 'text',
 }
 
+const getHelperText = (errors = {}, errorMessages) => {
+  if (errorMessages) {
+    const existErrors = Object.keys(errors).filter(key => errors[key])
+    return errorMessages[existErrors[0]]
+  }
+  return (
+    <>
+      {(errors.required && 'Поле обязательно к заполнению')
+      || (errors.passwordInvalid && 'Некоректный пароль')
+      || (errors.notMatched && 'Пароли не совпадают')}
+    </>
+  )
+}
+
 const PasswordInputRender = ({
   value,
   errors,
@@ -16,6 +30,7 @@ const PasswordInputRender = ({
   invalid,
   handlers,
   meta,
+  InputProps,
 }) => {
   meta = { ...defaultMeta, ...meta }
   const {
@@ -25,6 +40,7 @@ const PasswordInputRender = ({
     fullWidth,
     type,
     disabled,
+    errorMessages,
   } = meta
   return (
     <TextField
@@ -38,12 +54,9 @@ const PasswordInputRender = ({
       margin='normal'
       type={type || 'text'}
       placeholder={placeholder || label}
+      InputProps={InputProps}
       helperText={
-        touched && invalid && (
-          (errors.required && 'Поле обязательно к заполнению')
-          || (errors.passwordInvalid && 'Некоректный пароль')
-          || (errors.notMatched && 'Пароли не совпадают')
-        )
+        touched && invalid && getHelperText(errors, errorMessages)
       }
     />
   )
@@ -56,6 +69,7 @@ PasswordInputRender.defaultProps = {
   invalid: false,
   handlers: {},
   meta: {},
+  InputProps: {},
 }
 
 PasswordInputRender.propTypes = {
@@ -65,6 +79,7 @@ PasswordInputRender.propTypes = {
   invalid: PropTypes.bool,
   handlers: PropTypes.object,
   meta: PropTypes.object,
+  InputProps: PropTypes.object,
 }
 
 export default PasswordInputRender
