@@ -11,6 +11,7 @@ const Selector = ({
   handlers,
   meta,
   items,
+  style,
 }) => {
   const {
     label,
@@ -20,17 +21,15 @@ const Selector = ({
     <FormControl
       fullWidth
       variant={variant}
+      style={style}
     >
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}
-        value={value || ''}
+        value={!value ? '' : parseFloat(value)}
         {...handlers}
       >
-        {items.map(item => <MenuItem value={item.value}>{item.label}</MenuItem>)}
-        {/* <MenuItem value={1}>Новая почта</MenuItem>
-        <MenuItem value={2}>Интайм</MenuItem>
-        <MenuItem value={3}>Самовывоз</MenuItem> */}
+        {items.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
       </Select>
     </FormControl>
   )
@@ -39,13 +38,15 @@ const Selector = ({
 Selector.defaultProps = {
   value: 0,
   meta: {},
+  style: {},
 }
 
 Selector.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handlers: PropTypes.object.isRequired,
   meta: PropTypes.object,
   items: PropTypes.array.isRequired,
+  style: PropTypes.object,
 }
 
 export default Selector
