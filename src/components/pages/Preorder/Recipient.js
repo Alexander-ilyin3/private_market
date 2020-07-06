@@ -5,8 +5,13 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 
+import { FormControl as RFormControl } from 'components/parts/ReactiveForm'
+import DefaultInputRender from 'components/parts/FormParts/DefaultInputRrnder'
+import CheckBoxRender from 'components/parts/FormParts/CheckBoxRender'
+import SelectorRender from 'components/parts/FormParts/Selector'
 
-import RenderColumnItems from 'components/parts/RenderColumnItems'
+
+import RenderColumnItem from 'components/parts/RenderColumnItem'
 import MaskedPhone from 'components/assets/MaskedPhone'
 
 const Recipient = ({ user, setRecipienName, setRecipientPhone }) => {
@@ -63,7 +68,31 @@ const Recipient = ({ user, setRecipienName, setRecipientPhone }) => {
       <Typography variant='h5'>
         Получатель
       </Typography>
-      {(user.customerEmail) && <RenderColumnItems items={recipient} />}
+      <RenderColumnItem
+        label={
+          (
+            <RFormControl
+              name='customerType'
+              render={
+                props => (
+                  <SelectorRender
+                    {...props}
+                    style={{ marginTop: 8, marginRight: 7 }}
+                    items={[
+                      { value: 1, label: 'Юр. илицо' },
+                      { value: 2, label: 'ФИО' },
+                    ]}
+                  />
+                )
+              }
+            />
+          )
+        }
+        value={
+          <RFormControl name='name' render={DefaultInputRender} />
+        }
+      />
+      {/* {(user.customerEmail) && <RenderColumnItems items={recipient} />} */}
     </Paper>
   )
 }

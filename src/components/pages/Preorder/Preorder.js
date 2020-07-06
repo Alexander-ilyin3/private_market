@@ -31,6 +31,9 @@ const form = new ControlGroup({
     validators: [],
   },
   deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
+
+  customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' } },
+  name: { meta: { label: 'Название / ФИО' } },
 })
 
 const cityFormItem = form.get('city')
