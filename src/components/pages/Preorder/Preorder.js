@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import { format } from 'date-fns'
 
 import { checkout } from 'services/api/order.service'
 import { FormGroup, ControlGroup } from 'components/parts/ReactiveForm'
@@ -13,6 +12,7 @@ import Table from './Table'
 
 import Delivery from './Delivery'
 import Recipient from './Recipient'
+import Payment from './Payment'
 
 const form = new ControlGroup({
   dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
@@ -35,6 +35,12 @@ const form = new ControlGroup({
   customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' } },
   name: { meta: { label: 'Название / ФИО' } },
   phone: { value: '0', meta: { label: 'Телефон', withLabel: true } },
+  paymentType: { meta: { label: 'Способ оплаты', type: 'select' } },
+  pymentAmount: { meta: { label: 'Сумма' } },
+  deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' } },
+  CODPayer: { meta: { label: 'Плательщик за наложку', type: 'select' } },
+  insuranceAmount: { meta: { label: 'Сумма страховки' } },
+  insurancePayment: { meta: { label: 'Способ оплаты страховки', type: 'select' } },
 })
 
 const cityFormItem = form.get('city')
@@ -61,12 +67,6 @@ const Preorder = (props) => {
   //   count: item.count,
   //   total: (Number(item.product.price.replace(',', '')) * item.count).toLocaleString(),
   // }))
-
-
-  const [recipienName, setRecipienName] = useState(`${user.customerName} ${user.customerLastname}`)
-  const [recipientPhone, setRecipientPhone] = useState(user.customerPhone)
-
-
 
   const getDataForSend = () => ({
     // recipient_name: recipienName,
@@ -121,9 +121,10 @@ const Preorder = (props) => {
                 <Grid item xs={12}>
                   <Recipient
                     user={user}
-                    setRecipienName={setRecipienName}
-                    setRecipientPhone={setRecipientPhone}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <Payment />
                 </Grid>
               </Grid>
             </form>
