@@ -3,12 +3,12 @@ import Grid from '@material-ui/core/Grid'
 
 import PropTypes from 'prop-types'
 
-const RenderColumnItem = ({ label, value }) => (
+const RenderColumnItem = ({ label, value, labelWeight }) => (
   <Grid key={label} container spacing={0}>
-    <Grid item xs={4} style={{ display: 'flex', alignItems: 'center' }}>
+    <Grid item xs={12} sm={labelWeight || 4} style={{ display: 'flex', alignItems: 'center' }}>
       {label}
     </Grid>
-    <Grid item xs={8}>
+    <Grid item xs={12} sm={labelWeight ? 12 - labelWeight : 8}>
       {value}
     </Grid>
   </Grid>
@@ -17,6 +17,7 @@ const RenderColumnItem = ({ label, value }) => (
 RenderColumnItem.defaultProps = {
   label: '',
   value: '',
+  labelWeight: null,
 }
 
 RenderColumnItem.propTypes = {
@@ -30,6 +31,7 @@ RenderColumnItem.propTypes = {
     PropTypes.node,
     PropTypes.element,
   ]),
+  labelWeight: PropTypes.number,
 }
 
 export default RenderColumnItem
