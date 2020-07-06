@@ -8,7 +8,7 @@ import { FormControl as RFormControl } from 'components/parts/ReactiveForm'
 import DefaultInputRender from 'components/parts/FormParts/DefaultInputRrnder'
 import SelectorRender from 'components/parts/FormParts/Selector'
 
-
+import InputAsLabel from 'components/parts/FormParts/InputAsLabel'
 import RenderColumnItem from 'components/parts/RenderColumnItem'
 import MaskedPhone from 'components/assets/MaskedPhone'
 
@@ -20,21 +20,22 @@ const Recipient = ({ user }) => (
     <RenderColumnItem
       label={
         (
-          <RFormControl
-            name='customerType'
-            render={
-              props => (
-                <SelectorRender
-                  {...props}
-                  style={{ marginTop: 8, marginRight: 7 }}
-                  items={[
-                    { value: 1, label: 'Юр. илицо' },
-                    { value: 2, label: 'ФИО' },
-                  ]}
-                />
-              )
-            }
-          />
+          <InputAsLabel>
+            <RFormControl
+              name='customerType'
+              render={
+                props => (
+                  <SelectorRender
+                    {...props}
+                    items={[
+                      { value: 1, label: 'Юр. илицо' },
+                      { value: 2, label: 'ФИО' },
+                    ]}
+                  />
+                )
+              }
+            />
+          </InputAsLabel>
         )
       }
       value={
@@ -63,8 +64,6 @@ Recipient.defaultProps = {
 
 Recipient.propTypes = {
   user: PropTypes.object,
-  setRecipienName: PropTypes.func.isRequired,
-  setRecipientPhone: PropTypes.func.isRequired,
 }
 
 export default Recipient
