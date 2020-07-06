@@ -34,6 +34,7 @@ const form = new ControlGroup({
 
   customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' } },
   name: { meta: { label: 'Название / ФИО' } },
+  phone: { value: '0', meta: { label: 'Телефон', withLabel: true } },
 })
 
 const cityFormItem = form.get('city')
