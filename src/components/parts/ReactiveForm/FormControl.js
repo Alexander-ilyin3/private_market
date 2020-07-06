@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
-import Grid from '@material-ui/core/Grid'
+import RenderColumnItem from 'components/parts/RenderColumnItem'
 
 import { FormContext } from './formContext'
 import MemoizedControl from './MemoizedControl'
@@ -34,18 +34,7 @@ const FormControl = ({ name, render }) => {
   }
   if (meta.hide) return <></>
   if (meta.withLabel) {
-    return (
-      <Grid key={meta.label} container spacing={0}>
-        <Grid item xs={4} style={{ display: 'flex', alignItems: 'center' }}>
-          {meta.label}
-        </Grid>
-        <Grid item xs={8}>
-          <MemoizedControl
-            {...props}
-          />
-        </Grid>
-      </Grid>
-    )
+    return <RenderColumnItem key={name} label={meta.label} value={<MemoizedControl {...props} />} />
   }
   return (
     <MemoizedControl
