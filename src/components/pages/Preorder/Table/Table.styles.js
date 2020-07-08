@@ -21,8 +21,4 @@ export const styles = theme => ({
       height: '100%',
     },
   },
-  paymentItem: {
-    display: 'flex',
-    alignItems: 'center',
-  },
 })

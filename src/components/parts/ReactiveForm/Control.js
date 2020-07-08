@@ -1,6 +1,13 @@
 export class Control {
-  constructor(controlName, configs, onUpdated) {
+  constructor(
+    controlName,
+    configs,
+    onUpdated,
+    configUpdate,
+  ) {
+    this.configUpdate = configUpdate
     this.onUpdated = onUpdated
+    this.onValueChanged = () => {}
     const {
       validators = [],
       render,
@@ -18,6 +25,14 @@ export class Control {
     this.meta = meta
   }
 
+  valueChanges = (cb) => {
+    this.onValueChanged = cb
+  }
+
+  setMeta = (meta) => {
+    this.meta = { ...this.meta, ...meta }
+    this.configUpdate()
+  }
 
   validate = () => {
     let newErrors = {}
@@ -33,18 +48,24 @@ export class Control {
   }
 
   setValue = (event) => {
-    const { type } = event.target
     let value = null
-    if (type === 'checkbox') {
-      const { checked } = event.target
-      value = checked
-    } else if (['password', 'text'].indexOf(type) > -1) {
-      const { target } = event
-      value = target.value
+    if (typeof event === 'string' || typeof event === 'number' || event instanceof Date) {
+      value = event
+    } else {
+      const { type } = event.target
+      if (type === 'checkbox') {
+        const { checked } = event.target
+        value = checked
+      } else if (!type || ['password', 'text'].includes(type)) {
+        const { target } = event
+        value = target.value
+      }
     }
+
     this.value = value
     this.validate()
     this.onUpdated(this.name, this.value)
+    this.onValueChanged(value)
   }
 
   addValidator = (newValidator) => {

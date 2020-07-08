@@ -7,7 +7,7 @@ const defaultMeta = {
   align: 'right',
 }
 
-const PasswordInputRender = ({
+const CheckboxInputRender = ({
   value,
   errors,
   touched,
@@ -20,6 +20,7 @@ const PasswordInputRender = ({
     label,
     variant,
     align,
+    withLabel,
   } = meta
   return (
     <div>
@@ -27,13 +28,13 @@ const PasswordInputRender = ({
         align={align}
       >
         <FormControlLabel
-          label={label}
+          label={withLabel ? '' : label}
           labelPlacement='start'
           control={(
             <Checkbox
               label={label}
               {...handlers}
-              defaultChecked={value}
+              checked={value}
               variant={variant || 'outlined'}
             />
           )}
@@ -50,7 +51,7 @@ const PasswordInputRender = ({
   )
 }
 
-PasswordInputRender.defaultProps = {
+CheckboxInputRender.defaultProps = {
   value: '',
   errors: {},
   touched: false,
@@ -59,7 +60,7 @@ PasswordInputRender.defaultProps = {
   meta: {},
 }
 
-PasswordInputRender.propTypes = {
+CheckboxInputRender.propTypes = {
   value: PropTypes.string,
   errors: PropTypes.object,
   touched: PropTypes.bool,
@@ -68,4 +69,4 @@ PasswordInputRender.propTypes = {
   meta: PropTypes.object,
 }
 
-export default PasswordInputRender
+export default CheckboxInputRender

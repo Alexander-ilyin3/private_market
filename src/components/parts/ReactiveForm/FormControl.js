@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
+import RenderColumnItem from 'components/parts/RenderColumnItem'
+
 import { FormContext } from './formContext'
 import MemoizedControl from './MemoizedControl'
 
@@ -26,6 +28,13 @@ const FormControl = ({ name, render }) => {
     onInput: controls[name].setValue,
     onBlur: controls[name].blur,
     meta,
+  }
+  if (['select', 'picker', 'checkbox'].includes(meta.type)) {
+    props.onChange = controls[name].setValue
+  }
+  if (meta.hide) return <></>
+  if (meta.withLabel) {
+    return <RenderColumnItem key={name} label={meta.label} value={<MemoizedControl {...props} />} />
   }
   return (
     <MemoizedControl

@@ -5,7 +5,12 @@ export class ControlGroup {
   constructor(controls = []) {
     this.keys = Object.keys(controls)
     this.controls = Object.fromEntries(this.keys.map(
-      controlName => [controlName, new Control(controlName, controls[controlName], this.onUpdated)],
+      controlName => [controlName, new Control(
+        controlName,
+        controls[controlName],
+        this.onUpdated,
+        this.configUpdate,
+      )],
     ))
     this.subscriber = () => {}
     this.touched = false
@@ -28,6 +33,9 @@ export class ControlGroup {
     if (this.valid) this.submitHandler(this)
   }
 
+  configUpdate = () => {
+    this.subscriber(this)
+  }
 
   onUpdated = (name, value) => {
     this.touched = true
