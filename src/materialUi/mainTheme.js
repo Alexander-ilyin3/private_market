@@ -73,9 +73,21 @@ export const overrides = appTheme => ({
     root: {
       color: '#34495f',
       '&$hover:hover': {
-        color: appTheme.palette.secondary.main,
-        cursor: 'pointer',
       },
+    },
+  },
+  MuiToolbar: {
+    root: {
+      justifyContent: 'end',
+    },
+  },
+  MUIDataTableToolbar: {
+    actions: {
+      flex: 'unset',
+    },
+    left: {
+      justifyContent: 'flex-end',
+      display: 'flex',
     },
   },
   MuiTablePagination: {
