@@ -18,6 +18,7 @@ import { productViewPath } from 'config/routes'
 import { addProduct } from 'services/cart/cartService'
 
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+import SearchInput from 'components/parts/SearchInput'
 
 import BagesMap from './Bages'
 
@@ -50,15 +51,14 @@ class Products extends PureComponent {
   }, 500)
 
   componentDidMount() {
-    const { getProductList, location } = this.props
+    const { location } = this.props
     const { search } = location
     const paramsEntries = search.slice(1).split('&').map(item => item.split('='))
     const paramsMap = Object.fromEntries(paramsEntries)
     const { category_id } = paramsMap
-    getProductList({
+    this.throttledChanges({
       page: 1,
       limit: 10,
-      searchText: null,
       category_id,
     })
   }
@@ -68,16 +68,15 @@ class Products extends PureComponent {
       const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
       this.setState({ diplayed })
     }
-    if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
+    if (['changeRowsPerPage', 'changePage', 'filterChange'].indexOf(eventType) > -1) {
       const { config } = this.props
       const {
         filterList,
         page,
         rowsPerPage,
-        searchText,
       } = state
 
-      if (eventType === 'search' && searchText && searchText.length < 3) return
+      // if (eventType === 'search' && searchText && searchText.length < 3) return
 
       const max_price = filterList[10][0]
       const vendor = filterList[5][0]
@@ -87,7 +86,7 @@ class Products extends PureComponent {
         'limit',
         'count',
         'max_price',
-        'searchText',
+        // 'searchText',
         'vendor',
         'category_id',
       ]
@@ -116,9 +115,9 @@ class Products extends PureComponent {
         return config[key] !== mapconfigToState(key)
       })) {
         this.throttledChanges({
+          ...config,
           page: page + 1,
           limit: rowsPerPage,
-          search_text: searchText,
           max_price,
           vendor,
           category_id,
@@ -127,9 +126,17 @@ class Products extends PureComponent {
     }
   }
 
-  navigateToProductPage = (row) => {
+  onSearch = (value) => {
+    const { config } = this.props
+    this.throttledChanges({
+      ...config,
+      search_text: value,
+    })
+  }
+
+  navigateToProductPage = ({ rowData }) => {
     const { history } = this.props
-    history.push(productViewPath.replace(':id', row[0]))
+    history.push(productViewPath.replace(':id', rowData[0]))
   }
 
   getProductByRow = (rowIndex) => {
@@ -145,6 +152,7 @@ class Products extends PureComponent {
       config,
       vendors,
       categories = [],
+      classes,
     } = this.props
 
     const {
@@ -152,7 +160,6 @@ class Products extends PureComponent {
       limit,
       count,
       max_price,
-      searchText,
       vendor,
       category_id,
     } = config
@@ -168,11 +175,35 @@ class Products extends PureComponent {
           customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>,
           display: diplayed.image,
           filter: false,
-          customBodyRender: value => <img alt='Картинка' height='50' src={value} />,
+          customBodyRender: (value, row) => (
+            <img
+              onClick={() => this.navigateToProductPage(row)}
+              className={classes.hover}
+              alt='Картинка'
+              height='50'
+              src={value}
+            />
+          ),
         },
       },
       { name: 'vendor_code', label: 'Артикул', options: { display: diplayed.vendor_code, filter: false } },
-      { name: 'name', label: 'Название', options: { customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>, display: diplayed.name, filter: false } },
+      {
+        name: 'name',
+        label: 'Название',
+        options: {
+          customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>,
+          display: diplayed.name,
+          filter: false,
+          customBodyRender: (value, row) => (
+            <div
+              onClick={() => this.navigateToProductPage(row)}
+              className={classes.hover}
+            >
+              {value}
+            </div>
+          ),
+        },
+      },
       {
         name: 'category_name',
         label: 'Категория',
@@ -286,8 +317,8 @@ class Products extends PureComponent {
       onTableChange,
       textLabels,
       serverSideFilterList,
-      searchText,
-      onRowClick: this.navigateToProductPage,
+      search: false,
+      // onRowClick: this.navigateToProductPage,
     }
 
     return (
@@ -295,19 +326,9 @@ class Products extends PureComponent {
         <DataTable
           columns={columns}
           data={products}
-          title='СПИСОК ТОВАРОВ'
+          title={<SearchInput onSearch={this.onSearch} />}
           options={{
             ...options,
-            // customSearchRender: (searchText, handleSearch, hideSearch, options) => (
-            //   <SearchComponent
-            //     searchText={searchText}
-            //     handleSearch={handleSearch}
-            //     inputChanged={getSearchAutocomplete}
-            //     hideSearch={hideSearch}
-            //     list={searchAutocomleteList}
-            //     options={options}
-            //   />
-            // ),
           }}
         />
       </Paper>
@@ -321,6 +342,7 @@ Products.defaultProps = {
   config: {},
   vendors: [],
   categories: [],
+  classes: {},
 }
 
 Products.propTypes = {
@@ -332,6 +354,7 @@ Products.propTypes = {
   vendors: PropTypes.array,
   categories: PropTypes.array,
   location: PropTypes.object.isRequired,
+  classes: PropTypes.object,
 }
 
 export default Products

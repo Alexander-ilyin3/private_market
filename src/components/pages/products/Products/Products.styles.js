@@ -1,22 +1,28 @@
-const styles = _theme => ({
-  Bar: {
-    padding: '20px 50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  rightmenuElements: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'spacearound',
-    alignItems: 'center',
-  },
-  searchBar: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+const styles = theme => ({
+  // Bar: {
+  //   padding: '20px 50px',
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  // },
+  // rightmenuElements: {
+  //   display: 'flex',
+  //   flexDirection: 'row',
+  //   justifyContent: 'spacearound',
+  //   alignItems: 'center',
+  // },
+  // searchBar: {
+  //   display: 'flex',
+  //   flexDirection: 'row',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  hover: {
+    '&:hover': {
+      color: theme.palette.secondary.main,
+      cursor: 'pointer',
+    },
   },
 })
 
-export { styles }
+export default styles
