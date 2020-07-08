@@ -10,7 +10,7 @@ import {
   InputLabel,
 } from '@material-ui/core'
 
-import DataTable from 'mui-datatables'
+import DataTable, { TableHeadCell } from 'mui-datatables'
 import debounce from 'lodash/debounce'
 
 import { textLabels } from 'config/tableConfig/textLabels'
@@ -64,11 +64,11 @@ class Products extends PureComponent {
   }
 
   onTableChange = (eventType, state) => {
+    if (eventType === 'columnViewChange') {
+      const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
+      this.setState({ diplayed })
+    }
     if (['changeRowsPerPage', 'changePage', 'search', 'filterChange'].indexOf(eventType) > -1) {
-      if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
-        const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
-        this.setState({ diplayed })
-      }
       const { config } = this.props
       const {
         filterList,
@@ -80,9 +80,8 @@ class Products extends PureComponent {
       if (eventType === 'search' && searchText && searchText.length < 3) return
 
       const max_price = filterList[10][0]
-      const vendor = filterList[4][0]
-      const category_id = filterList[3]
-
+      const vendor = filterList[5][0]
+      const category_id = filterList[4]
       const dependenciesKeys = [
         'page',
         'limit',
@@ -160,24 +159,20 @@ class Products extends PureComponent {
 
     const { diplayed } = this.state
 
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
-    const selectedCategory = categories.find(cat => cat.id === Number(category_id))
-    serverSideFilterList[3] = selectedCategory ? [selectedCategory] : []
-    serverSideFilterList[4] = vendor ? [vendor] : []
-    serverSideFilterList[10] = max_price ? [max_price] : []
-
     const columns = [
       { name: 'id', label: 'id', options: { display: diplayed.id, filter: false } },
       {
         name: 'image',
-        label: 'Изображение товара',
+        label: 'Изображение',
         options: {
+          customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>,
           display: diplayed.image,
           filter: false,
           customBodyRender: value => <img alt='Картинка' height='50' src={value} />,
         },
       },
-      { name: 'name', label: 'Название', options: { display: diplayed.name, filter: false } },
+      { name: 'vendor_code', label: 'Артикул', options: { display: diplayed.vendor_code, filter: false } },
+      { name: 'name', label: 'Название', options: { customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>, display: diplayed.name, filter: false } },
       {
         name: 'category_name',
         label: 'Категория',
@@ -194,7 +189,7 @@ class Products extends PureComponent {
                   Категория
                 </InputLabel>
                 <Select
-                  defaultValue={filterList[3][0] || ''}
+                  defaultValue={filterList[4][0] || ''}
                   onChange={(event) => {
                     onChange(event.target.value, index, column)
                   }}
@@ -213,7 +208,7 @@ class Products extends PureComponent {
       },
       {
         name: 'vendor_name',
-        label: 'Вендор',
+        label: 'Бренд',
         options: {
           display: diplayed.vendor_name,
           filterList: [vendor],
@@ -222,8 +217,7 @@ class Products extends PureComponent {
           },
         },
       },
-      { name: 'vendor_code', label: 'Артикул', options: { display: diplayed.vendor_code, filter: false } },
-      { name: 'barcode', label: 'Баркод', options: { display: diplayed.barcode, filter: false } },
+      { name: 'barcode', label: 'Штрихкод', options: { display: diplayed.barcode, filter: false } },
       { name: 'volume', label: 'Объем', options: { display: diplayed.volume, filter: false } },
       { name: 'weight', label: 'Вес', options: { display: diplayed.weight, filter: false } },
       { name: 'uktz', label: 'УКТЗ', options: { display: diplayed.uktz, filter: false } },
@@ -247,6 +241,9 @@ class Products extends PureComponent {
         name: 'status',
         label: 'В наличии',
         options: {
+          customHeadRender: props => (
+            <TableHeadCell {...props} options={{}}><div style={{ minWidth: 60 }} /></TableHeadCell>
+          ),
           display: diplayed.status,
           customBodyRender: val => <BagesMap value={val} />,
           filter: false,
@@ -268,6 +265,12 @@ class Products extends PureComponent {
         },
       },
     ]
+
+    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
+    const selectedCategory = categories.find(cat => cat.id === Number(category_id))
+    serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
+    serverSideFilterList[5] = vendor ? [vendor] : []
+    serverSideFilterList[10] = max_price ? [max_price] : []
 
 
     const options = {
