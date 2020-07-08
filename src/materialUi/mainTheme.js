@@ -5,7 +5,6 @@ import red from '@material-ui/core/colors/red'
 const theme = defaultTheme
 
 export const overrides = appTheme => ({
-
   MuiPaper: {
     root: {
       '& .padded': {
@@ -70,6 +69,15 @@ export const overrides = appTheme => ({
       transform: 'translate(14px, 13px) scale(1)',
     },
   },
+  MuiTableRow: {
+    root: {
+      color: '#34495f',
+      '&$hover:hover': {
+        color: appTheme.palette.secondary.main,
+        cursor: 'pointer',
+      },
+    },
+  },
   MuiTablePagination: {
     toolbar: {
       [theme.breakpoints.down('xs')]: {
@@ -93,7 +101,7 @@ export const overrides = appTheme => ({
       fontFamily: 'inherit',
     },
     body: {
-      color: '#34495f',
+      color: 'inherit',
     },
   },
   MUIDataTableHeadCell: {
@@ -194,4 +202,7 @@ const appTheme = {
 
 appTheme.overrides = overrides(appTheme)
 
-export default createMuiTheme(appTheme)
+const newTheme = createMuiTheme(appTheme)
+newTheme.overrides = overrides(newTheme)
+
+export default newTheme
