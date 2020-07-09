@@ -1,9 +1,9 @@
 import { store } from 'storage'
 import { updateCart } from 'storage/actions/cart.actions'
+import { showSnack } from 'storage/actions/snack.actions'
 import { getCart } from 'storage/selectors/cart.selector'
 
 import { getStorageItem, setStorageItem } from '../storage'
-
 
 const CART_STORAGE_ITEM_NAME = 'CART'
 
@@ -26,7 +26,13 @@ export const getCartFromStorage = () => {
 }
 
 export const addProduct = (event) => {
+  if (!event) return showSnack({ variant: 'error', message: 'Нечего добавлять' })
   const { product, count } = event
+  showSnack({
+    variant: 'success',
+    message: `Готово!
+              Товар добавлен в корзину`,
+  })
   const storeCart = getCart(store.getState())
   if (storeCart.find(stored => stored.product.id === product.id)) {
     const newCart = storeCart.map((stored) => {
