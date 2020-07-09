@@ -1,22 +1,21 @@
-import { CLOSE_SNACK, OPEN_SNACK } from 'storage/constants/snack.constants'
+import { OPEN_SNACK, SLICE_STACK } from 'storage/constants/snack.constants'
 
-const initialState = {
-  open: false,
-}
+const initialState = []
 
 export default function isLoading(state = initialState, { type, payload }) {
   if (type === OPEN_SNACK) {
-    return {
-      open: true,
-      message: payload.message,
-      variant: payload.variant,
-    }
-  }
-  if (type === CLOSE_SNACK) {
-    return {
+    return [
       ...state,
-      open: false,
-    }
+      {
+        open: true,
+        message: payload.message,
+        variant: payload.variant,
+        key: new Date().getTime(),
+      },
+    ]
+  }
+  if (type === SLICE_STACK) {
+    return state.slice(1)
   }
   return state
 }
