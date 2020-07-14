@@ -18,6 +18,8 @@ const styles = theme => ({
   //   alignItems: 'center',
   // },
   hover: {
+    display: 'flex',
+    alignItems: 'center',
     '&:hover': {
       color: theme.palette.secondary.main,
       cursor: 'pointer',
