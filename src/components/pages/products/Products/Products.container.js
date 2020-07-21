@@ -7,8 +7,10 @@ import {
   categories,
 } from 'storage/selectors/products.selector'
 import { getProductList, getSearchAutocomplete } from 'services/api/products.service'
+import { withStyles } from '@material-ui/styles'
 
 import Products from './Products'
+import styles from './Products.styles'
 
 const mapStateToProps = state => ({
   products: products(state),
@@ -23,4 +25,4 @@ const mapDispatchToProps = dispatch => ({
   getSearchAutocomplete: searchText => dispatch(getSearchAutocomplete(searchText)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products))

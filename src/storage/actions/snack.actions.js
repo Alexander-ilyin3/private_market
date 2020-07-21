@@ -1,9 +1,10 @@
-import { CLOSE_SNACK, OPEN_SNACK } from 'storage/constants/snack.constants'
+import { OPEN_SNACK, SLICE_STACK } from 'storage/constants/snack.constants'
 import { store } from 'storage'
 
-export const hideSnack = () => store.dispatch({ type: CLOSE_SNACK })
+export const sliceStack = () => {
+  store.dispatch({ type: SLICE_STACK })
+}
 
 export const showSnack = (payload) => {
-  // hideSnack()
   store.dispatch({ type: OPEN_SNACK, payload })
 }

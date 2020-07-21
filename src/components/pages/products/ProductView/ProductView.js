@@ -7,8 +7,6 @@ import {
   Grid,
   Typography,
   Chip,
-  Button,
-  TextField,
 } from '@material-ui/core'
 import { CheckCircle } from '@material-ui/icons'
 import Error from '@material-ui/icons/Error'
@@ -16,6 +14,7 @@ import Cancel from '@material-ui/icons/Cancel'
 
 import { productsPath } from 'config/routes'
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+import { addProduct } from 'services/cart/cartService'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -81,7 +80,7 @@ export default class ProductView extends Component {
               </Grid>
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
-                  <ToOrderInput buttonColor='primary' buttonContent='В заказ' onAdd={(count) => { console.log(count) }} />
+                  <ToOrderInput buttonColor='primary' buttonContent='В заказ' onAdd={(count) => { addProduct({ count, product: data }) }} />
                 </div>
               </Grid>
             </Grid>

@@ -41,13 +41,13 @@ const menuSelectDispatcher = dispatch => ({
 })
 
 const menuConfig = [
-  {
-    idx: 0,
-    primary: 'Статистика',
-    icon: () => <IconHome />,
-    path: statisticPath,
-    allowedRoles: declineRoles([newUser]),
-  },
+  // {
+  //   idx: 0,
+  //   primary: 'Статистика',
+  //   icon: () => <IconHome />,
+  //   path: statisticPath,
+  //   allowedRoles: declineRoles([newUser]),
+  // },
   {
     idx: 1,
     primary: 'Товары',
@@ -60,7 +60,7 @@ const menuConfig = [
     primary: 'Категории Товаров',
     icon: () => <Category />,
     path: productsCategoriesPath,
-    allowedRoles: declineRoles([newUser]),
+    allowedRoles: [],
   },
   {
     idx: 3,
@@ -76,13 +76,13 @@ const menuConfig = [
     path: paymentLogPath,
     allowedRoles: declineRoles([newUser]),
   },
-  {
-    idx: 5,
-    primary: 'Новый заказ',
-    icon: () => <IconAdd />,
-    path: newOrderPath,
-    allowedRoles: declineRoles([newUser]),
-  },
+  // {
+  //   idx: 5,
+  //   primary: 'Новый заказ',
+  //   icon: () => <IconAdd />,
+  //   path: newOrderPath,
+  //   allowedRoles: declineRoles([newUser]),
+  // },
   {
     idx: 6,
     primary: 'Мой профиль',

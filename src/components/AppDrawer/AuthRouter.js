@@ -46,7 +46,7 @@ const AuthRouter = () => (
   <Switch>
     <Redirect path={signInPath} to={profilePath} />
     <Redirect exact path={ROOT_DOMAIN} to={newOrderPath} />
-    <PrivateRouter path={profilePath} component={UserView} allowedRoles={[]} />
+    <PrivateRouter path={profilePath} component={UserView} allowedRoles={declineRoles([newUser])} />
     <PrivateRouter
       path={productsPath}
       component={Products}

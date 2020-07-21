@@ -4,7 +4,7 @@ import { snackInfo } from 'storage/selectors/snack.selector'
 import ShowSnack from './ShowSnack'
 
 const mapStateToProps = state => ({
-  snackInfo: snackInfo(state),
+  snackPack: snackInfo(state),
 })
 
 export default connect(mapStateToProps)(ShowSnack)

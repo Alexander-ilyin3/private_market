@@ -1,2 +1,2 @@
 export const OPEN_SNACK = 'OPEN_SNACK'
-export const CLOSE_SNACK = 'CLOSE_SNACK'
+export const SLICE_STACK = 'SLICE_STACK'

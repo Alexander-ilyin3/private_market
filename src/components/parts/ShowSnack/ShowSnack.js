@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 
-import { hideSnack } from 'storage/actions/snack.actions'
+import { sliceStack } from 'storage/actions/snack.actions'
 
 const Alert = props => <MuiAlert elevation={6} variant='filled' {...props} />
 
@@ -36,22 +36,48 @@ Snack.propTypes = {
   message: PropTypes.string,
 }
 
-const ShowSnack = ({ snackInfo }) => {
-  const { open } = snackInfo
+const ShowSnack = ({ snackPack }) => {
+  const [open, setOpen] = React.useState(false)
+  const [messageInfo, setMessageInfo] = React.useState(undefined)
+
+  useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      setMessageInfo({ ...snackPack[0] })
+      sliceStack()
+      setOpen(true)
+    } else if (snackPack.length && messageInfo && open) {
+      setOpen(false)
+    }
+  }, [snackPack, messageInfo, open])
+
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setOpen(false)
+  }
+
+  const handleExited = () => {
+    setMessageInfo(undefined)
+  }
+
   return (
     <Snackbar
+      key={messageInfo ? messageInfo.key : undefined}
       open={open}
       autoHideDuration={6000}
-      onClose={hideSnack}
+      onClose={handleClose}
+      onExited={handleExited}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
-      <Snack {...snackInfo} />
+      <Snack {...messageInfo} />
     </Snackbar>
   )
 }
 
 ShowSnack.propTypes = {
-  snackInfo: PropTypes.object.isRequired,
+  snackPack: PropTypes.array.isRequired,
 }
 
 export default ShowSnack
