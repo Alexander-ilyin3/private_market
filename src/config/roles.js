@@ -28,7 +28,7 @@ export const declineRoles = filter => forAll.filter(role => !filter.includes(rol
 export const checkAlloved = ({ allowedRoles }) => {
   const userRoles = roles(store.getState())
   if (!allowedRoles) return true
-  if (allowedRoles.length <= 0) return true
+  // if (allowedRoles.length <= 0) return true
   if (!userRoles) return false
   return userRoles.find(role => allowedRoles.includes(role.name))
 }
