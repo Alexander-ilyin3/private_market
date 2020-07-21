@@ -60,7 +60,7 @@ const menuConfig = [
     primary: 'Категории Товаров',
     icon: () => <Category />,
     path: productsCategoriesPath,
-    allowedRoles: declineRoles([newUser]),
+    allowedRoles: [],
   },
   {
     idx: 3,
