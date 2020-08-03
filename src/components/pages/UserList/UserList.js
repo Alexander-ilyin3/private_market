@@ -5,14 +5,20 @@ import Button from '@material-ui/core/Button'
 import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 
-
 import { textLabels } from 'config/tableConfig/textLabels'
+
+import TokenDialog from './tokenDialog'
 
 const throttledChanges = debounce((value, getUserList) => {
   getUserList(value)
 }, 500)
 
-const UserList = ({ userData = {}, getUserList, setStatus }) => {
+const UserList = ({
+  userData = {},
+  getUserList,
+  setStatus,
+  openTokenDialog,
+}) => {
   // console.log(userData)
   const { customers = [], config = {} } = userData
   const [localConfig, setconfig] = useState({
@@ -79,6 +85,7 @@ const UserList = ({ userData = {}, getUserList, setStatus }) => {
     }
   }
 
+
   const columns = [
     { name: 'id_customer', label: 'id', options: { display: displayed.id_customer, sort: false } },
     { name: 'customer_email', label: 'Email', options: { display: displayed.customer_email, sort: false } },
@@ -122,6 +129,7 @@ const UserList = ({ userData = {}, getUserList, setStatus }) => {
   const statusIndex = columns.findIndex(column => column.name === 'status')
   const idIndex = columns.findIndex(column => column.name === 'id_customer')
   const actionsIndex = columns.findIndex(column => column.name === 'actions')
+  const tokenIndex = columns.findIndex(column => column.name === 'token')
   if (columns[actionsIndex]) {
     columns[actionsIndex].options = {
       ...columns[actionsIndex].options,
@@ -132,6 +140,7 @@ const UserList = ({ userData = {}, getUserList, setStatus }) => {
             <Button
               color='secondary'
               variant='contained'
+              size='small'
               fullWidth
               style={{ marginBottom: 4 }}
               disabled={!!rowData[statusIndex]}
@@ -140,9 +149,21 @@ const UserList = ({ userData = {}, getUserList, setStatus }) => {
               Активировать
             </Button>
             <Button
+              color='primary'
+              variant='contained'
+              fullWidth
+              size='small'
+              style={{ marginBottom: 4 }}
+              disabled={!rowData[statusIndex]}
+              onClick={() => openTokenDialog(rowData[tokenIndex])}
+            >
+              Токен
+            </Button>
+            <Button
               className='warning'
               variant='contained'
               fullWidth
+              size='small'
               disabled={!rowData[statusIndex]}
               onClick={() => setStatus({ id: rowData[idIndex], status: 0 })}
             >
@@ -174,6 +195,7 @@ const UserList = ({ userData = {}, getUserList, setStatus }) => {
 
   return (
     <Paper>
+      <TokenDialog />
       <DataTable
         data={customers}
         options={options}
@@ -191,6 +213,7 @@ UserList.propTypes = {
   userData: PropTypes.object,
   getUserList: PropTypes.func.isRequired,
   setStatus: PropTypes.func.isRequired,
+  openTokenDialog: PropTypes.func.isRequired,
 }
 
 export default UserList
