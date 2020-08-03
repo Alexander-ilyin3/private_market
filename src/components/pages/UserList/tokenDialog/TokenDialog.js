@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
@@ -7,7 +8,15 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-export default function FormDialog({ open, token, close }) {
+import { setToken } from 'services/api/token'
+
+export default function FormDialog({
+  open,
+  token,
+  close,
+  userId,
+  onSuccess,
+}) {
   const [newToken, setNewToken] = useState(token || '')
 
 
@@ -16,8 +25,10 @@ export default function FormDialog({ open, token, close }) {
   }
 
   const handleSave = async () => {
-    console.log(newToken)
-    handleClose()
+    if (await setToken({ userId, token: newToken })) {
+      handleClose()
+      onSuccess()
+    }
   }
 
   return (
@@ -49,4 +60,18 @@ export default function FormDialog({ open, token, close }) {
       </Dialog>
     </div>
   )
+}
+
+FormDialog.defaultProps = {
+  open: false,
+  token: '',
+  userId: null,
+}
+
+FormDialog.propTypes = {
+  open: PropTypes.bool,
+  token: PropTypes.string,
+  close: PropTypes.func.isRequired,
+  userId: PropTypes.number,
+  onSuccess: PropTypes.func.isRequired,
 }
