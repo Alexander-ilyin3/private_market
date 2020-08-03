@@ -54,12 +54,20 @@ const UserList = ({
     actions: true,
   })
 
-  useEffect(() => {
+  const request = () => {
     throttledChanges({
       page,
       limit,
       search_text: searchText,
     }, getUserList)
+  }
+
+  const handleTokenUpdated = () => {
+    request()
+  }
+
+  useEffect(() => {
+    request()
   }, [limit, page, searchText, getUserList])
 
 
@@ -155,7 +163,10 @@ const UserList = ({
               size='small'
               style={{ marginBottom: 4 }}
               disabled={!rowData[statusIndex]}
-              onClick={() => openTokenDialog(rowData[tokenIndex])}
+              onClick={() => openTokenDialog({
+                token: rowData[tokenIndex],
+                userId: rowData[idIndex],
+              })}
             >
               Токен
             </Button>
@@ -195,7 +206,7 @@ const UserList = ({
 
   return (
     <Paper>
-      <TokenDialog />
+      <TokenDialog onSuccess={handleTokenUpdated} />
       <DataTable
         data={customers}
         options={options}
