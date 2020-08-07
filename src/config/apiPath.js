@@ -21,3 +21,4 @@ export const apiAdminCustomer = `${apiAdminPath}customer/`
 export const apiSetUserStatusPath = `${apiAdminCustomer}status/`
 export const apiSetTokenPath = `${apiUserListPath}token1c/:id `
 export const apiEmailConfirmPath = `${apiCustomer}email_confirmation/`
+export const apiDeliveryTypeList = `${apiOrders}shipping_method/`
