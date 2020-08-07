@@ -70,4 +70,4 @@ export const setStatus = status => async (dispatch) => {
       message,
     })
   }
-} 
+}

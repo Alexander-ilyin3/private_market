@@ -13,6 +13,7 @@ import cart from './cart'
 import snackInfo from './snack'
 import userListInfo from './user'
 import { orderList } from './order'
+import userTokenDialog from './userTokenDialog'
 
 const reducer = combineReducers({
   loginData,
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   snackInfo,
   userListInfo,
   orderList,
+  userTokenDialog,
 })
 
 const rootReducer = (state, action) => {
