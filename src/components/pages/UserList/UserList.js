@@ -137,7 +137,7 @@ const UserList = ({
   const statusIndex = columns.findIndex(column => column.name === 'status')
   const idIndex = columns.findIndex(column => column.name === 'id_customer')
   const actionsIndex = columns.findIndex(column => column.name === 'actions')
-  const tokenIndex = columns.findIndex(column => column.name === 'token')
+  const getUserById = id => customers.find(customer => customer.id_customer === id) || {}
   if (columns[actionsIndex]) {
     columns[actionsIndex].options = {
       ...columns[actionsIndex].options,
@@ -164,7 +164,7 @@ const UserList = ({
               style={{ marginBottom: 4 }}
               disabled={!rowData[statusIndex]}
               onClick={() => openTokenDialog({
-                token: rowData[tokenIndex],
+                token: getUserById(rowData[idIndex]).token_1c,
                 userId: rowData[idIndex],
               })}
             >
