@@ -1,9 +1,11 @@
 import {
   apiCheckoutOrderPath,
   apiOrders,
+  apiDeliveryTypeList,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList } from 'storage/actions/order.actions'
+import { setDeliveryMethods } from 'storage/actions/deliveryMethods'
 
 import instance from './axiosProvider'
 
@@ -72,4 +74,10 @@ export const getOrderList = params => async (reduce) => {
       message: error,
     })
   }
+}
+
+export const getDeliveryMethods = async (dispatch) => {
+  const res = await instance.get(apiDeliveryTypeList)
+  const { delivery } = res.data
+  dispatch(setDeliveryMethods(delivery))
 }
