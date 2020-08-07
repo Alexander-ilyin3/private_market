@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
@@ -15,8 +15,8 @@ import Recipient from './Recipient'
 import Payment from './Payment'
 
 const form = new ControlGroup({
-  dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
-  deliveryType: { value: 3, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [] },
+  // dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
+  deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [] },
   city: { meta: { label: 'Город', withLabel: true, hide: true }, validators: [] },
   warehouse: { meta: { label: 'Склад', withLabel: true, hide: true }, validators: [] },
   toDoor: {
@@ -54,19 +54,28 @@ toDoorFormItem.valueChanges((val) => {
 })
 
 form.get('deliveryType').valueChanges((val) => {
-  cityFormItem.setMeta({ hide: val !== 1 })
-  warehouseFormItem.setMeta({ hide: val !== 1 || toDoorFormItem.value })
-  toDoorFormItem.setMeta({ hide: val !== 1 })
-  deliveryAddressFormItem.setMeta({ hide: val !== 1 || !toDoorFormItem.value })
+  cityFormItem.setMeta({ hide: val !== 2 })
+  warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
+  toDoorFormItem.setMeta({ hide: val !== 2 })
+  deliveryAddressFormItem.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
 })
 
 const Preorder = (props) => {
-  const { cart, user } = props
+  const {
+    cart,
+    user,
+    deliveryMethods,
+    getDeliveryMethods,
+  } = props
   // const cartData = cart.map(item => ({
   //   ...item.product,
   //   count: item.count,
   //   total: (Number(item.product.price.replace(',', '')) * item.count).toLocaleString(),
   // }))
+
+  useEffect(() => {
+    getDeliveryMethods()
+  }, [])
 
   const getDataForSend = () => ({
     // recipient_name: recipienName,
@@ -116,7 +125,9 @@ const Preorder = (props) => {
             <form>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Delivery />
+                  <Delivery
+                    deliveryMethods={deliveryMethods}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Recipient
