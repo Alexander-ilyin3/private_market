@@ -42,10 +42,10 @@ const Recipient = ({ user }) => (
         <RFormControl name='name' render={DefaultInputRender} />
       }
     />
-    <RenderColumnItem
+    {/* <RenderColumnItem
       label='Email:'
       value={<Typography paragraph>{user.customerEmail}</Typography>}
-    />
+    /> */}
     <RFormControl
       name='phone'
       render={props => (
