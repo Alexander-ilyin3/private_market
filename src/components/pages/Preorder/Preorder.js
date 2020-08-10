@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import { FormGroup } from 'components/parts/ReactiveForm'
 
@@ -59,8 +60,9 @@ class Preorder extends Component {
         <Grid item xs={12} lg={5}>
           <FormGroup
             controlGroup={this.form}
-            render={({ valid, submited, submit }) => (
+            render={({ valid, submited, formError }) => (
               <form>
+                {submited && !valid && formError && <Typography variant='caption' color='error'>{formError}</Typography>}
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Delivery
