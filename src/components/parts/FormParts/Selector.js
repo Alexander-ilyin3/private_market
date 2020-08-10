@@ -6,6 +6,8 @@ import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 
+const renderItem = item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+
 const Selector = ({
   value,
   handlers,
@@ -16,6 +18,7 @@ const Selector = ({
   const {
     label,
     variant = 'outlined',
+    itemsList,
   } = meta
   return (
     <FormControl
@@ -26,10 +29,11 @@ const Selector = ({
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}
-        value={!value ? '' : parseFloat(value)}
+        value={value}
         {...handlers}
       >
-        {items.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
+        {items && items.length > 0 && items.map(renderItem)}
+        {itemsList && itemsList.length > 0 && itemsList.map(renderItem)}
       </Select>
     </FormControl>
   )
@@ -39,13 +43,14 @@ Selector.defaultProps = {
   value: 0,
   meta: {},
   style: {},
+  items: [],
 }
 
 Selector.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   handlers: PropTypes.object.isRequired,
   meta: PropTypes.object,
-  items: PropTypes.array.isRequired,
+  items: PropTypes.array,
   style: PropTypes.object,
 }
 
