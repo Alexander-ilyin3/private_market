@@ -13,6 +13,7 @@ export const apiProductSearchAutocompletePath = 'product_autocomplete/'
 export const apiOrders = 'orders/'
 export const apiDeliveryCitiesList = `${apiOrders}shipping_cities/`
 export const apiDeliveryWarehousList = `${apiOrders}shipping_warehous/`
+export const apiPaymentMethodList = `${apiOrders}payment_method/`
 export const apiPaymentLog = 'paymentlog/'
 export const apiResetPasswordPath = `${apiCustomer}password_reset/`
 export const apiProductDetailsPath = 'product/:id'
