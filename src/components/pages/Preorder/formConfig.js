@@ -1,7 +1,12 @@
 import { warehouseAutocomplete } from 'services/api/order.service'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
 
-const { required, phoneValidator, minValue } = validators
+const {
+  required,
+  phoneValidator,
+  minValue,
+  onlyInteger,
+} = validators
 
 export const createForm = () => {
   const form = new ControlGroup({
@@ -52,25 +57,40 @@ export const createForm = () => {
     },
     paymentType: { meta: { label: 'Способ оплаты', type: 'select' }, validators: [required] },
     pymentAmount: {
-      value: 300,
       meta: {
         label: 'Сумма',
+        errorMessages: {
+          lessThenMin: 'Не может быть меньше 0',
+          onlyInteger: 'Только целые числа',
+        },
+      },
+      validators: [required, minValue(0), onlyInteger],
+    },
+    deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
+    CODPayer: { meta: { label: 'Платит за наложку', type: 'select', hide: true }, validators: [required] },
+    insuranceAmount: {
+      value: 300,
+      meta: {
+        label: 'Страховка',
         errorMessages: {
           lessThenMin: 'Не может быть меньше чем 300',
         },
       },
       validators: [required, minValue(300)],
     },
-    deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
-    CODPayer: { meta: { label: 'Платит за наложку', type: 'select' } },
-    insuranceAmount: { meta: { label: 'Сумма страховки' } },
-    insurancePayment: { meta: { label: 'Способ оплаты страховки', type: 'select' } },
+    insurancePayment: { meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
   })
 
   const cityFormItem = form.get('city')
   const warehouseFormItem = form.get('warehouse')
   // const toDoorFormItem = form.get('toDoor')
   const deliveryAddressFormItem = form.get('deliveryAddress')
+  const paymentTypeFormItem = form.get('paymentType')
+  const CODPayerFormItem = form.get('CODPayer')
+
+  paymentTypeFormItem.valueChanges((val) => {
+    CODPayerFormItem.setMeta({ hide: val !== 1 })
+  })
 
   // toDoorFormItem.valueChanges((val) => {
   //   deliveryAddressFormItem.setMeta({ hide: !val })
