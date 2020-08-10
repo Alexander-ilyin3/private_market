@@ -1,7 +1,7 @@
 import { warehouseAutocomplete } from 'services/api/order.service'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
 
-const { required, phoneValidator } = validators
+const { required, phoneValidator, minValue } = validators
 
 export const form = new ControlGroup({
   // dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
@@ -49,8 +49,17 @@ export const form = new ControlGroup({
     },
     validators: [required, phoneValidator],
   },
-  paymentType: { meta: { label: 'Способ оплаты', type: 'select' } },
-  pymentAmount: { meta: { label: 'Сумма' } },
+  paymentType: { meta: { label: 'Способ оплаты', type: 'select' }, validators: [required] },
+  pymentAmount: {
+    value: 300,
+    meta: {
+      label: 'Сумма',
+      errorMessages: {
+        lessThenMin: 'Не может быть меньше чем 300',
+      },
+    },
+    validators: [required, minValue(300)],
+  },
   deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' } },
   CODPayer: { meta: { label: 'Плательщик за наложку', type: 'select' } },
   insuranceAmount: { meta: { label: 'Сумма страховки' } },
