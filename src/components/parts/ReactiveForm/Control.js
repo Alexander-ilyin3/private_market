@@ -49,7 +49,12 @@ export class Control {
 
   setValue = (event) => {
     let value = null
-    if (typeof event === 'string' || typeof event === 'number' || event instanceof Date) {
+    if (
+      typeof event === 'string'
+      || typeof event === 'number'
+      || event instanceof Date
+      || this.meta.type === 'autocomplete'
+    ) {
       value = event
     } else {
       const { type } = event.target

@@ -29,7 +29,7 @@ const FormControl = ({ name, render }) => {
     onBlur: controls[name].blur,
     meta,
   }
-  if (['select', 'picker', 'checkbox'].includes(meta.type)) {
+  if (['select', 'picker', 'checkbox', 'autocomplete'].includes(meta.type)) {
     props.onChange = controls[name].setValue
   }
   if (meta.hide) return <></>
