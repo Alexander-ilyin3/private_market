@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-import { checkout } from 'services/api/order.service'
 import { FormGroup } from 'components/parts/ReactiveForm'
 
 import Table from './Table'
@@ -20,7 +19,9 @@ const Preorder = (props) => {
     cart,
     user,
     deliveryMethods,
+    paymentMethods,
     getDeliveryMethods,
+    getPaymentMethods,
   } = props
   // const cartData = cart.map(item => ({
   //   ...item.product,
@@ -30,23 +31,8 @@ const Preorder = (props) => {
 
   useEffect(() => {
     getDeliveryMethods()
+    getPaymentMethods()
   }, [])
-
-  const getDataForSend = () => ({
-    // recipient_name: recipienName,
-    // recipient_email: user.customerEmail,
-    // recipient_adress: [
-    //   user.city,
-    //   user.street,
-    //   user.houseNumber,
-    //   user.officeNumber,
-    // ].filter(item => !!item).join(', '),
-    // recipient_phone: recipientPhone.replace(/\D+/g, ''),
-    // delivery,
-    // payment_delivery: payment,
-    // date_delivery: format(selectedDate, 'yyyy-MM-dd HH:mm:ss'),
-    // products: cartData.map(product => ({ id: product.id, count: product.count })),
-  })
 
 
   return (
@@ -55,7 +41,7 @@ const Preorder = (props) => {
         <Table cartData={cart} />
         <Grid style={{ marginTop: 8, marginBottom: 8 }} container spacing={1}>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth onClick={e => form.submit(e)}>Оформить</Button>
+            <Button variant='contained' color='primary' fullWidth onClick={form.submit}>Оформить</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
             <Button variant='contained' color='primary' disabled fullWidth>Зарезерваировать</Button>
@@ -90,7 +76,7 @@ const Preorder = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Payment />
+                  <Payment paymentMethods={paymentMethods} />
                 </Grid>
               </Grid>
             </form>
