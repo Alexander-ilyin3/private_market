@@ -12,20 +12,24 @@ export default React.memo((props) => {
     render = () => {},
     meta,
   } = props
+  const mappedProps = {
+    value,
+    errors,
+    touched,
+    invalid,
+    handlers: {
+      onInput,
+      onBlur,
+      onChange,
+    },
+    meta,
+  }
+  if (['select'].includes(meta.type)) {
+    mappedProps.handlers.onClose = onBlur
+  }
   return (
     <>
-      {render({
-        value,
-        errors,
-        touched,
-        invalid,
-        handlers: {
-          onInput,
-          onBlur,
-          onChange,
-        },
-        meta,
-      })}
+      {render(mappedProps)}
     </>
   )
 })
