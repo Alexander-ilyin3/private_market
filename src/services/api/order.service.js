@@ -4,10 +4,11 @@ import {
   apiDeliveryTypeList,
   apiDeliveryCitiesList,
   apiDeliveryWarehousList,
+  apiPaymentMethodList,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList } from 'storage/actions/order.actions'
-import { setDeliveryMethods } from 'storage/actions/deliveryMethods'
+import { setDeliveryMethods } from 'storage/actions/deliveryMethods.actions'
 
 import instance from './axiosProvider'
 
@@ -93,5 +94,11 @@ export const warehouseAutocomplete = async (city_ref) => {
 export const getDeliveryMethods = async (dispatch) => {
   const res = await instance.get(apiDeliveryTypeList)
   const { delivery } = res.data
+  dispatch(setDeliveryMethods(delivery))
+}
+
+export const getPaymentMethods = async (dispatch) => {
+  const res = await instance.get(apiPaymentMethodList)
+  const { payment } = res.data
   dispatch(setDeliveryMethods(delivery))
 }
