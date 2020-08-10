@@ -36,6 +36,13 @@ export class Control {
 
   validate = () => {
     let newErrors = {}
+    const { hide } = this.meta
+    if (hide) {
+      this.valid = true
+      this.invalid = false
+      this.errors = newErrors
+      return this.valid
+    }
     this.validators.forEach((validator) => {
       if (validator && (validator instanceof Function)) {
         newErrors = { ...newErrors, ...validator(this.value) }
