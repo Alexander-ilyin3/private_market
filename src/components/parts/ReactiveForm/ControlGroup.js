@@ -66,11 +66,13 @@ export class ControlGroup {
   }
 
   validateAll = () => {
-    if (Object.keys(this.controls).find(control => !this.controls[control].touch())) {
-      this.setValid(false)
-    } else {
-      this.setValid(true)
-    }
+    let valid = true
+    Object.keys(this.controls).forEach((control) => {
+      if (!this.controls[control].touch()) {
+        valid = false
+      }
+    })
+    this.setValid(valid)
     return this.valid
   }
 
