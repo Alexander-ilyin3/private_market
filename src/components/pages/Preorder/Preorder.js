@@ -88,11 +88,19 @@ class Preorder extends Component {
 Preorder.defaultProps = {
   cart: [],
   user: {},
+  deliveryMethods: [],
+  paymentMethods: [],
+  getDeliveryMethods: () => {},
+  getPaymentMethods: () => {},
 }
 
 Preorder.propTypes = {
   cart: PropTypes.array,
   user: PropTypes.object,
+  deliveryMethods: PropTypes.array,
+  paymentMethods: PropTypes.array,
+  getDeliveryMethods: PropTypes.func,
+  getPaymentMethods: PropTypes.func,
 }
 
 export default Preorder
