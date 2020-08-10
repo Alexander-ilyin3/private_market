@@ -9,6 +9,7 @@ import {
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList } from 'storage/actions/order.actions'
 import { setDeliveryMethods } from 'storage/actions/deliveryMethods.actions'
+import { setPaymentMethods } from 'storage/actions/paymentMethod.actions'
 
 import instance from './axiosProvider'
 
@@ -99,6 +100,6 @@ export const getDeliveryMethods = async (dispatch) => {
 
 export const getPaymentMethods = async (dispatch) => {
   const res = await instance.get(apiPaymentMethodList)
-  const { payment } = res.data
-  dispatch(setDeliveryMethods(delivery))
+  const { payments } = res.data
+  dispatch(setPaymentMethods(payments))
 }
