@@ -36,6 +36,13 @@ export class Control {
 
   validate = () => {
     let newErrors = {}
+    const { hide } = this.meta
+    if (hide) {
+      this.valid = true
+      this.invalid = false
+      this.errors = newErrors
+      return this.valid
+    }
     this.validators.forEach((validator) => {
       if (validator && (validator instanceof Function)) {
         newErrors = { ...newErrors, ...validator(this.value) }
@@ -49,7 +56,12 @@ export class Control {
 
   setValue = (event) => {
     let value = null
-    if (typeof event === 'string' || typeof event === 'number' || event instanceof Date) {
+    if (
+      typeof event === 'string'
+      || typeof event === 'number'
+      || event instanceof Date
+      || this.meta.type === 'autocomplete'
+    ) {
       value = event
     } else {
       const { type } = event.target

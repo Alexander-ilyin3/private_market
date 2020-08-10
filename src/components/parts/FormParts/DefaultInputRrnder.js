@@ -3,24 +3,12 @@ import PropTypes from 'prop-types'
 
 import { TextField } from '@material-ui/core'
 
+import { getHelperText } from 'components/parts/ReactiveForm/Helpers'
+
 const defaultMeta = {
   variant: 'outlined',
   fullWidth: true,
   type: 'text',
-}
-
-const getHelperText = (errors = {}, errorMessages) => {
-  if (errorMessages) {
-    const existErrors = Object.keys(errors).filter(key => errors[key])
-    return errorMessages[existErrors[0]]
-  }
-  return (
-    <>
-      {(errors.required && 'Поле обязательно к заполнению')
-      || (errors.passwordInvalid && 'Некоректный пароль')
-      || (errors.notMatched && 'Пароли не совпадают')}
-    </>
-  )
 }
 
 const PasswordInputRender = ({

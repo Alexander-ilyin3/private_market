@@ -20,10 +20,28 @@ const validateSibling = siblng => () => {
   siblng.validate()
 }
 
+const phoneValidator = (value) => {
+  const invalid = !value.match(/\(\d\d\d\)\d\d\d-\d\d-\d\d/)
+  return invalid ? { phoneInvalid: invalid } : null
+}
+
+const minValue = min => (value) => {
+  const invalid = value < min
+  return invalid ? { lessThenMin: invalid } : null
+}
+
+const onlyInteger = (value) => {
+  const invalid = String(parseInt(value, 10)) !== value
+  return invalid ? { onlyInteger: invalid } : null
+}
+
 export {
   emailValidator,
   required,
   password,
   compareWith,
   validateSibling,
+  phoneValidator,
+  minValue,
+  onlyInteger,
 }
