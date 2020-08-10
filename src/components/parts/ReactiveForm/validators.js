@@ -30,6 +30,11 @@ const minValue = min => (value) => {
   return invalid ? { lessThenMin: invalid } : null
 }
 
+const onlyInteger = (value) => {
+  const invalid = String(parseInt(value, 10)) !== value
+  return invalid ? { onlyInteger: invalid } : null
+}
+
 export {
   emailValidator,
   required,
@@ -38,4 +43,5 @@ export {
   validateSibling,
   phoneValidator,
   minValue,
+  onlyInteger,
 }
