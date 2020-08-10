@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-import { checkout, warehouseAutocomplete } from 'services/api/order.service'
-import { FormGroup, ControlGroup, validators } from 'components/parts/ReactiveForm'
+import { checkout } from 'services/api/order.service'
+import { FormGroup } from 'components/parts/ReactiveForm'
 
 import Table from './Table'
 
@@ -13,88 +13,7 @@ import Table from './Table'
 import Delivery from './Delivery'
 import Recipient from './Recipient'
 import Payment from './Payment'
-
-const { required } = validators
-
-const form = new ControlGroup({
-  // dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
-  deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
-  city: {
-    meta: {
-      label: 'Город',
-      withLabel: true,
-      hide: true,
-      type: 'autocomplete',
-    },
-    validators: [],
-  },
-  warehouse: {
-    meta: {
-      label: 'Склад',
-      withLabel: true,
-      hide: true,
-      type: 'select',
-      itemsList: [],
-    },
-    validators: [],
-  },
-  // toDoor: {
-  //   value: false,
-  //   meta: {
-  //     label: 'Адресная доставка',
-  //     align: 'left',
-  //     withLabel: true,
-  //     hide: true,
-  //     type: 'checkbox',
-  //   },
-  //   validators: [],
-  // },
-  deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
-
-  customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' } },
-  name: { meta: { label: 'Название / ФИО' } },
-  phone: { value: '0', meta: { label: 'Телефон', withLabel: true } },
-  paymentType: { meta: { label: 'Способ оплаты', type: 'select' } },
-  pymentAmount: { meta: { label: 'Сумма' } },
-  deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' } },
-  CODPayer: { meta: { label: 'Плательщик за наложку', type: 'select' } },
-  insuranceAmount: { meta: { label: 'Сумма страховки' } },
-  insurancePayment: { meta: { label: 'Способ оплаты страховки', type: 'select' } },
-})
-
-const cityFormItem = form.get('city')
-const warehouseFormItem = form.get('warehouse')
-// const toDoorFormItem = form.get('toDoor')
-const deliveryAddressFormItem = form.get('deliveryAddress')
-
-// toDoorFormItem.valueChanges((val) => {
-//   deliveryAddressFormItem.setMeta({ hide: !val })
-//   warehouseFormItem.setMeta({ hide: val })
-// })
-
-form.get('deliveryType').valueChanges((val) => {
-  cityFormItem.setMeta({ hide: val !== 2 })
-  warehouseFormItem.setMeta({ hide: val !== 2 })
-  // toDoorFormItem.setMeta({ hide: val !== 2 })
-  deliveryAddressFormItem.setMeta({ hide: val !== 2 })
-})
-
-cityFormItem.valueChanges(async (val) => {
-  warehouseFormItem.setValue('')
-  if (val && val.city_ref) {
-    const warehouseList = await warehouseAutocomplete(val.city_ref)
-    warehouseFormItem.setMeta({
-      itemsList: warehouseList.map(
-        ({ warehous_ref, name }) => ({ value: warehous_ref, label: name }),
-      ),
-    })
-  } else {
-    warehouseFormItem.setMeta({
-      itemsList: [],
-    })
-  }
-})
-
+import { form } from './formConfig'
 
 const Preorder = (props) => {
   const {
@@ -136,7 +55,7 @@ const Preorder = (props) => {
         <Table cartData={cart} />
         <Grid style={{ marginTop: 8, marginBottom: 8 }} container spacing={1}>
           <Grid item xs={12} sm={6} xl={3}>
-            <Button variant='contained' color='primary' fullWidth onClick={() => setTimeout(() => checkout(getDataForSend()))}>Оформить</Button>
+            <Button variant='contained' color='primary' fullWidth onClick={e => form.submit(e)}>Оформить</Button>
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
             <Button variant='contained' color='primary' disabled fullWidth>Зарезерваировать</Button>
