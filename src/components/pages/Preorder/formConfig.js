@@ -1,5 +1,7 @@
-import { warehouseAutocomplete } from 'services/api/order.service'
+import { warehouseAutocomplete, checkout } from 'services/api/order.service'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
+import { store } from 'storage'
+import { getCart } from 'storage/selectors/cart.selector'
 
 const {
   required,
@@ -10,7 +12,6 @@ const {
 
 export const createForm = () => {
   const form = new ControlGroup({
-    // dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
     deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
     city: {
       meta: {
@@ -31,18 +32,6 @@ export const createForm = () => {
       },
       validators: [required],
     },
-    // toDoor: {
-    //   value: false,
-    //   meta: {
-    //     label: 'Адресная доставка',
-    //     align: 'left',
-    //     withLabel: true,
-    //     hide: true,
-    //     type: 'checkbox',
-    //   },
-    //   validators: [],
-    // },
-    deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
 
     customerType: { value: 2, meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
     name: { meta: { label: 'Название / ФИО' }, validators: [required] },
@@ -83,8 +72,6 @@ export const createForm = () => {
 
   const cityFormItem = form.get('city')
   const warehouseFormItem = form.get('warehouse')
-  // const toDoorFormItem = form.get('toDoor')
-  const deliveryAddressFormItem = form.get('deliveryAddress')
   const paymentTypeFormItem = form.get('paymentType')
   const CODPayerFormItem = form.get('CODPayer')
 
@@ -92,16 +79,9 @@ export const createForm = () => {
     CODPayerFormItem.setMeta({ hide: val !== 1 })
   })
 
-  // toDoorFormItem.valueChanges((val) => {
-  //   deliveryAddressFormItem.setMeta({ hide: !val })
-  //   warehouseFormItem.setMeta({ hide: val })
-  // })
-
   form.get('deliveryType').valueChanges((val) => {
     cityFormItem.setMeta({ hide: val !== 2 })
     warehouseFormItem.setMeta({ hide: val !== 2 })
-    // toDoorFormItem.setMeta({ hide: val !== 2 })
-    deliveryAddressFormItem.setMeta({ hide: val !== 2 })
   })
 
   cityFormItem.valueChanges(async (val) => {
@@ -118,6 +98,22 @@ export const createForm = () => {
         itemsList: [],
       })
     }
+  })
+  form.onSubmit((formData) => {
+    const { values } = formData
+    const dataToSend = { ...values }
+    if (dataToSend.deliveryType === 2) {
+      dataToSend.city = dataToSend.city.city_ref
+    } else {
+      dataToSend.city = ''
+      dataToSend.warehouse = ''
+    }
+    if (dataToSend.paymentType === 2) {
+      dataToSend.CODPayer = ''
+    }
+    const products = getCart(store.getState())
+      .map(({ count, product }) => ({ count, id: product.id }))
+    checkout({ ...dataToSend, products })
   })
   return form
 }
