@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
@@ -12,7 +11,7 @@ import InputAsLabel from 'components/parts/FormParts/InputAsLabel'
 import RenderColumnItem from 'components/parts/RenderColumnItem'
 import MaskedPhone from 'components/assets/MaskedPhone'
 
-const Recipient = ({ user }) => (
+const Recipient = () => (
   <Paper style={{ padding: 16 }}>
     <Typography variant='h5'>
       Получатель
@@ -28,7 +27,7 @@ const Recipient = ({ user }) => (
                   <SelectorRender
                     {...props}
                     items={[
-                      { value: 1, label: 'Юр. илицо' },
+                      { value: 1, label: 'Юр. лицо' },
                       { value: 2, label: 'ФИО' },
                     ]}
                   />
@@ -58,12 +57,5 @@ const Recipient = ({ user }) => (
   </Paper>
 )
 
-Recipient.defaultProps = {
-  user: {},
-}
-
-Recipient.propTypes = {
-  user: PropTypes.object,
-}
 
 export default Recipient
