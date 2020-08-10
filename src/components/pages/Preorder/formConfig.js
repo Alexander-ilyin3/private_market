@@ -38,7 +38,7 @@ export const form = new ControlGroup({
   // },
   deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
 
-  customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
+  customerType: { value: 2, meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
   name: { meta: { label: 'Название / ФИО' }, validators: [required] },
   phone: {
     value: '0',
