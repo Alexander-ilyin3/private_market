@@ -2,6 +2,8 @@ import {
   apiCheckoutOrderPath,
   apiOrders,
   apiDeliveryTypeList,
+  apiDeliveryCitiesList,
+  apiDeliveryWarehousList,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList } from 'storage/actions/order.actions'
@@ -74,6 +76,18 @@ export const getOrderList = params => async (reduce) => {
       message: error,
     })
   }
+}
+
+export const cityAutocomplete = async (name) => {
+  const res = await instance.get(apiDeliveryCitiesList, { params: { name } })
+  const { cities } = res.data
+  return cities
+}
+
+export const warehouseAutocomplete = async (city_ref) => {
+  const res = await instance.get(apiDeliveryWarehousList, { params: { city_ref } })
+  const { warehouses } = res.data
+  return warehouses
 }
 
 export const getDeliveryMethods = async (dispatch) => {
