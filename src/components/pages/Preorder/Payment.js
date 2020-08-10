@@ -80,8 +80,8 @@ const Delivery = ({
               <SelectorRender
                 {...props}
                 items={[
-                  { value: 1, label: 'Расчет наличными' },
-                  { value: 2, label: 'Безналичный расчет' },
+                  { value: 1, label: 'Наличный' },
+                  { value: 2, label: 'Безналичный' },
                 ]}
               />
             </InputAsLabel>
