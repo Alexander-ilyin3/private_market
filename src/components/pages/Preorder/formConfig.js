@@ -113,6 +113,7 @@ export const createForm = () => {
     }
     const products = getCart(store.getState())
       .map(({ count, product }) => ({ count, id: product.id }))
+    dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
     checkout({ ...dataToSend, products })
   })
   return form
