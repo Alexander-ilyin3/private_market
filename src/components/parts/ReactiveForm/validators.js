@@ -25,6 +25,11 @@ const phoneValidator = (value) => {
   return invalid ? { phoneInvalid: invalid } : null
 }
 
+const minValue = min => (value) => {
+  const invalid = value < min
+  return invalid ? { lessThenMin: invalid } : null
+}
+
 export {
   emailValidator,
   required,
@@ -32,4 +37,5 @@ export {
   compareWith,
   validateSibling,
   phoneValidator,
+  minValue,
 }
