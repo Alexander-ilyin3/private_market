@@ -5,9 +5,8 @@ import Paper from '@material-ui/core/Paper'
 
 // import AppDateTimePicker from 'components/parts/FormParts/DateTimePicker'
 import { FormControl as RFormControl } from 'components/parts/ReactiveForm'
-import DefaultInputRender from 'components/parts/FormParts/DefaultInputRrnder'
-import CheckBoxRender from 'components/parts/FormParts/CheckBoxRender'
 import SelectorRender from 'components/parts/FormParts/Selector'
+import CityAutocomplete from 'components/parts/FormParts/SearchAutocomplete/CityAutocomplete'
 
 
 const Delivery = ({ deliveryMethods }) => (
@@ -42,10 +41,13 @@ const Delivery = ({ deliveryMethods }) => (
         )}
       />
     )}
-    <RFormControl name='toDoor' render={CheckBoxRender} />
-    <RFormControl name='city' render={DefaultInputRender} />
-    <RFormControl name='warehouse' render={DefaultInputRender} />
-    <RFormControl name='deliveryAddress' render={DefaultInputRender} />
+    {/* <RFormControl name='toDoor' render={CheckBoxRender} /> */}
+    <RFormControl name='city' render={CityAutocomplete} />
+    <RFormControl
+      name='warehouse'
+      render={SelectorRender}
+    />
+    {/* <RFormControl name='deliveryAddress' render={DefaultInputRender} /> */}
   </Paper>
 )
 
