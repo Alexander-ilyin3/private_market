@@ -20,10 +20,16 @@ const validateSibling = siblng => () => {
   siblng.validate()
 }
 
+const phoneValidator = (value) => {
+  const invalid = !value.match(/\(\d\d\d\)\d\d\d-\d\d-\d\d/)
+  return invalid ? { phoneInvalid: invalid } : null
+}
+
 export {
   emailValidator,
   required,
   password,
   compareWith,
   validateSibling,
+  phoneValidator,
 }
