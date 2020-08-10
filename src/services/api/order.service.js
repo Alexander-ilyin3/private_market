@@ -10,6 +10,7 @@ import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList } from 'storage/actions/order.actions'
 import { setDeliveryMethods } from 'storage/actions/deliveryMethods.actions'
 import { setPaymentMethods } from 'storage/actions/paymentMethod.actions'
+import { clearCart } from 'services/cart/cartService'
 
 import instance from './axiosProvider'
 
@@ -22,6 +23,7 @@ export const checkout = async (orderData) => {
       variant: 'success',
       message,
     })
+    clearCart()
   } else {
     showSnack({
       variant: 'error',
