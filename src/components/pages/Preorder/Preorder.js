@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-import { checkout } from 'services/api/order.service'
-import { FormGroup, ControlGroup } from 'components/parts/ReactiveForm'
+import { checkout, warehouseAutocomplete } from 'services/api/order.service'
+import { FormGroup, ControlGroup, validators } from 'components/parts/ReactiveForm'
 
 import Table from './Table'
 
@@ -14,22 +14,41 @@ import Delivery from './Delivery'
 import Recipient from './Recipient'
 import Payment from './Payment'
 
+const { required } = validators
+
 const form = new ControlGroup({
   // dateTime: { value: new Date(), meta: { label: 'Дата и время отправки:', type: 'picker', withLabel: true }, validators: [] },
-  deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [] },
-  city: { meta: { label: 'Город', withLabel: true, hide: true }, validators: [] },
-  warehouse: { meta: { label: 'Склад', withLabel: true, hide: true }, validators: [] },
-  toDoor: {
-    value: false,
+  deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
+  city: {
     meta: {
-      label: 'Адресная доставка',
-      align: 'left',
+      label: 'Город',
       withLabel: true,
       hide: true,
-      type: 'checkbox',
+      type: 'autocomplete',
     },
     validators: [],
   },
+  warehouse: {
+    meta: {
+      label: 'Склад',
+      withLabel: true,
+      hide: true,
+      type: 'select',
+      itemsList: [],
+    },
+    validators: [],
+  },
+  // toDoor: {
+  //   value: false,
+  //   meta: {
+  //     label: 'Адресная доставка',
+  //     align: 'left',
+  //     withLabel: true,
+  //     hide: true,
+  //     type: 'checkbox',
+  //   },
+  //   validators: [],
+  // },
   deliveryAddress: { meta: { label: 'Адрес доставки', withLabel: true, hide: true }, validators: [] },
 
   customerType: { meta: { label: 'Юр/Физ лицо', type: 'select' } },
@@ -45,20 +64,37 @@ const form = new ControlGroup({
 
 const cityFormItem = form.get('city')
 const warehouseFormItem = form.get('warehouse')
-const toDoorFormItem = form.get('toDoor')
+// const toDoorFormItem = form.get('toDoor')
 const deliveryAddressFormItem = form.get('deliveryAddress')
 
-toDoorFormItem.valueChanges((val) => {
-  deliveryAddressFormItem.setMeta({ hide: !val })
-  warehouseFormItem.setMeta({ hide: val })
-})
+// toDoorFormItem.valueChanges((val) => {
+//   deliveryAddressFormItem.setMeta({ hide: !val })
+//   warehouseFormItem.setMeta({ hide: val })
+// })
 
 form.get('deliveryType').valueChanges((val) => {
   cityFormItem.setMeta({ hide: val !== 2 })
-  warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
-  toDoorFormItem.setMeta({ hide: val !== 2 })
-  deliveryAddressFormItem.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
+  warehouseFormItem.setMeta({ hide: val !== 2 })
+  // toDoorFormItem.setMeta({ hide: val !== 2 })
+  deliveryAddressFormItem.setMeta({ hide: val !== 2 })
 })
+
+cityFormItem.valueChanges(async (val) => {
+  warehouseFormItem.setValue('')
+  if (val && val.city_ref) {
+    const warehouseList = await warehouseAutocomplete(val.city_ref)
+    warehouseFormItem.setMeta({
+      itemsList: warehouseList.map(
+        ({ warehous_ref, name }) => ({ value: warehous_ref, label: name }),
+      ),
+    })
+  } else {
+    warehouseFormItem.setMeta({
+      itemsList: [],
+    })
+  }
+})
+
 
 const Preorder = (props) => {
   const {
