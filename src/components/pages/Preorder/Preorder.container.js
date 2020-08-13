@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import { getDeliveryMethods, getPaymentMethods } from 'services/api/order.service'
 import { deliveryMethods } from 'storage/selectors/deliveryMethods.selector'
@@ -20,4 +21,4 @@ const mapDispatchToProps = dispatch => ({
   getPaymentMethods: () => dispatch(getPaymentMethods),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Preorder)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Preorder))

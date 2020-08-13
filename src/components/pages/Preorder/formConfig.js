@@ -1,7 +1,5 @@
-import { warehouseAutocomplete, checkout } from 'services/api/order.service'
+import { warehouseAutocomplete } from 'services/api/order.service'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
-import { store } from 'storage'
-import { getCart } from 'storage/selectors/cart.selector'
 
 const {
   required,
@@ -98,23 +96,6 @@ export const createForm = () => {
         itemsList: [],
       })
     }
-  })
-  form.onSubmit((formData) => {
-    const { values } = formData
-    const dataToSend = { ...values }
-    if (dataToSend.deliveryType === 2) {
-      dataToSend.city = dataToSend.city.city_ref
-    } else {
-      dataToSend.city = ''
-      dataToSend.warehouse = ''
-    }
-    if (dataToSend.paymentType === 2) {
-      dataToSend.CODPayer = ''
-    }
-    const products = getCart(store.getState())
-      .map(({ count, product }) => ({ count, id: product.id }))
-    dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
-    checkout({ ...dataToSend, products })
   })
   return form
 }
