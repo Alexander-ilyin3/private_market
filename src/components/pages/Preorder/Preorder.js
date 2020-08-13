@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
 import { FormGroup } from 'components/parts/ReactiveForm'
+import { checkout } from 'services/api/order.service'
+import { ordersPath } from 'config/routes'
 
 import Table from './Table'
 
@@ -32,7 +34,27 @@ class Preorder extends Component {
       deliveryMethods,
       paymentMethods,
     } = this.props
-
+    this.form.onSubmit((formData) => {
+      const { values } = formData
+      const dataToSend = { ...values }
+      if (dataToSend.deliveryType === 2) {
+        dataToSend.city = dataToSend.city.city_ref
+      } else {
+        dataToSend.city = ''
+        dataToSend.warehouse = ''
+      }
+      if (dataToSend.paymentType === 2) {
+        dataToSend.CODPayer = ''
+      }
+      const products = cart.map(({ count, product }) => ({ count, id: product.id }))
+      dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
+      checkout({ ...dataToSend, products }).then((success) => {
+        if (success) {
+          const { history } = this.props
+          history.push(ordersPath)
+        }
+      })
+    })
     return (
       <Grid container spacing={2}>
         <Grid item xs={12} lg={7}>
