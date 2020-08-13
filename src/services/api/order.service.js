@@ -24,12 +24,13 @@ export const checkout = async (orderData) => {
       message,
     })
     clearCart()
-  } else {
-    showSnack({
-      variant: 'error',
-      message,
-    })
+    return true
   }
+  showSnack({
+    variant: 'error',
+    message,
+  })
+  return false
 }
 
 export const getOrderList = params => async (reduce) => {
