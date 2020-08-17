@@ -38,7 +38,7 @@ export const createForm = () => {
       meta: {
         label: 'Телефон',
         withLabel: true,
-        errorMessages: { phoneInvalid: 'Недеййствительный номер телефона' },
+        errorMessages: { phoneInvalid: 'Недеййствительный' },
       },
       validators: [required, phoneValidator],
     },
