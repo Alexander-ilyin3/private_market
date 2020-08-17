@@ -14,8 +14,18 @@ export default function MaskedPhone(props) {
       mask={['(',  /[0]/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
       placeholderChar={'\u2000'}
       showMask
+      onInput={setCursor}
+      onFocus={setCursor}
+      onClick={setCursor}
     />
   );
+}
+
+const setCursor = (e) => {
+  const { target } = e
+  const lastDigit = target.value.search(/\d\D*?$/gm) + 1
+  target.selectionStart=lastDigit
+  target.selectionEnd=lastDigit
 }
 
 MaskedPhone.propTypes = {
