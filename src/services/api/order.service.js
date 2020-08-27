@@ -5,9 +5,10 @@ import {
   apiDeliveryCitiesList,
   apiDeliveryWarehousList,
   apiPaymentMethodList,
+  apiOrderDetails,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
-import { setOrderList } from 'storage/actions/order.actions'
+import { setOrderList, setOrderDetails } from 'storage/actions/order.actions'
 import { setDeliveryMethods } from 'storage/actions/deliveryMethods.actions'
 import { setPaymentMethods } from 'storage/actions/paymentMethod.actions'
 import { clearCart } from 'services/cart/cartService'
@@ -89,4 +90,10 @@ export const getPaymentMethods = async (dispatch) => {
   const res = await instance.get(apiPaymentMethodList)
   const { payments } = res.data
   dispatch(setPaymentMethods(payments))
+}
+
+export const getOrder = id => async (dispatch) => {
+  const res = await instance.get(apiOrderDetails.replace(':id', id))
+  const { order } = res.data
+  dispatch(setOrderDetails(order))
 }

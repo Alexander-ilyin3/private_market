@@ -11,6 +11,7 @@ export const apiProductsPath = 'products/'
 export const apiCategoriesPath = 'categories/'
 export const apiProductSearchAutocompletePath = 'product_autocomplete/'
 export const apiOrders = 'orders/'
+export const apiOrderDetails = 'orders/:id'
 export const apiDeliveryCitiesList = `${apiOrders}shipping_cities/`
 export const apiDeliveryWarehousList = `${apiOrders}shipping_warehous/`
 export const apiPaymentMethodList = `${apiOrders}payment_method/`
