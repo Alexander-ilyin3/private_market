@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import DataTable from 'mui-datatables'
 import PropTypes from 'prop-types'
 
 
 import { textLabels } from 'config/tableConfig/textLabels'
+
+import { orderDetailsPath } from 'config/routes'
 
 
 const OrderList = ({ orderListInfo, getOrderList }) => {
@@ -44,6 +47,8 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     getOrderList({ limit, page: page + 1 })
   }, [page, limit, getOrderList])
 
+  const history = useHistory()
+
   const onTableChange = (eventType, state) => {
     const { page, rowsPerPage } = state
     if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
@@ -51,26 +56,6 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
       setDisplayed(diplayed)
       setConfig({ page, limit: rowsPerPage })
     }
-  }
-
-
-  const options = {
-    download: false,
-    print: false,
-    serverSide: true,
-    count,
-    page,
-    filter: false,
-    selectableRowsHeader: false,
-    selectableRows: 'none',
-    rowsPerPage: limit,
-    rowsPerPageOptions: [5, 10, 15],
-    onTableChange,
-    textLabels,
-    search: false,
-    // serverSideFilterList,
-    // searchText,
-    // onRowClick: this.navigateToProductPage,
   }
 
   const columns = [
@@ -97,6 +82,32 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     { name: 'weight', label: 'Вес', options: { sort: false, display: displayed.weight } },
   ]
 
+  const findProductByRowMeta = row => orders
+    .find(order => order.id === row[columns.findIndex(({ name }) => name === 'id')])
+
+
+  const options = {
+    download: false,
+    print: false,
+    serverSide: true,
+    count,
+    page,
+    filter: false,
+    selectableRowsHeader: false,
+    selectableRows: 'none',
+    rowsPerPage: limit,
+    rowsPerPageOptions: [5, 10, 15],
+    onTableChange,
+    textLabels,
+    search: false,
+    onRowClick: (row) => {
+      history.push(orderDetailsPath.replace(':id', findProductByRowMeta(row).id))
+    },
+    // serverSideFilterList,
+    // searchText,
+    // onRowClick: this.navigateToProductPage,
+  }
+
   return (
     <Paper>
       <DataTable
@@ -122,8 +133,8 @@ OrderList.propTypes = {
       count: PropTypes.number,
     }),
     orders: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string,
-      customer_id: PropTypes.string,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      customer_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       created_at: PropTypes.string,
       updated_at: PropTypes.string,
       deliveryType: PropTypes.string,
