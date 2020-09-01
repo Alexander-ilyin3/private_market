@@ -8,24 +8,25 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-import { setToken } from 'services/api/token'
+import { setAllTokens } from 'services/api/token'
 
-export default function FormDialog({
+const FormDialog = ({
   open,
   token,
   close,
   userId,
   onSuccess,
-}) {
+  code,
+}) => {
   const [newToken, setNewToken] = useState(token || '')
-
+  const [newCode, setNewCode] = useState(code || '')
 
   const handleClose = () => {
     close()
   }
 
   const handleSave = async () => {
-    if (await setToken({ userId, token: newToken })) {
+    if (await setAllTokens({ userId, token: newToken, code: newCode })) {
       handleClose()
       onSuccess()
     }
@@ -48,6 +49,18 @@ export default function FormDialog({
             defaultValue={token}
             onInput={({ target }) => setNewToken(target.value)}
           />
+          <DialogContentText>
+            { code ? 'Изменить код' : 'Установить код' }
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='name'
+            label='Код'
+            fullWidth
+            defaultValue={code}
+            onInput={({ target }) => setNewCode(target.value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='primary'>
@@ -66,6 +79,7 @@ FormDialog.defaultProps = {
   open: false,
   token: '',
   userId: null,
+  code: '',
 }
 
 FormDialog.propTypes = {
@@ -74,4 +88,30 @@ FormDialog.propTypes = {
   close: PropTypes.func.isRequired,
   userId: PropTypes.number,
   onSuccess: PropTypes.func.isRequired,
+  code: PropTypes.string,
+}
+
+
+export default function wrapper(props) {
+  const {
+    open,
+    token,
+    code,
+  } = props
+  if (open && token && code) {
+    return <FormDialog {...props} />
+  }
+  return <></>
+}
+
+wrapper.defaultProps = {
+  open: false,
+  token: '',
+  code: '',
+}
+
+wrapper.propTypes = {
+  open: PropTypes.bool,
+  token: PropTypes.string,
+  code: PropTypes.string,
 }

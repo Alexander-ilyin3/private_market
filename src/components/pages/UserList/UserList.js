@@ -165,6 +165,7 @@ const UserList = ({
               disabled={!rowData[statusIndex]}
               onClick={() => openTokenDialog({
                 token: getUserById(rowData[idIndex]).token_1c,
+                code: getUserById(rowData[idIndex]).code_1c,
                 userId: rowData[idIndex],
               })}
             >

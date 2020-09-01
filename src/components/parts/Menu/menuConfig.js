@@ -69,13 +69,13 @@ const menuConfig = [
     path: ordersPath,
     allowedRoles: declineRoles([newUser]),
   },
-  {
-    idx: 4,
-    primary: 'Журнал оплат',
-    icon: () => <CreditCardIcon />,
-    path: paymentLogPath,
-    allowedRoles: declineRoles([newUser]),
-  },
+  // {
+  //   idx: 4,
+  //   primary: 'Журнал оплат',
+  //   icon: () => <CreditCardIcon />,
+  //   path: paymentLogPath,
+  //   allowedRoles: declineRoles([newUser]),
+  // },
   // {
   //   idx: 5,
   //   primary: 'Новый заказ',

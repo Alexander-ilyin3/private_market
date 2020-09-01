@@ -12,7 +12,7 @@ import { productSearchAutocomplete, productsData, productInfo } from './products
 import cart from './cart'
 import snackInfo from './snack'
 import userListInfo from './user'
-import { orderList } from './order'
+import { orderList, orderDetails } from './order'
 import userTokenDialog from './userTokenDialog'
 import deliveryMethods from './deliveryMethods'
 import paymentMethods from './paymentMethods'
@@ -33,6 +33,7 @@ const reducer = combineReducers({
   userTokenDialog,
   deliveryMethods,
   paymentMethods,
+  orderDetails,
 })
 
 const rootReducer = (state, action) => {
