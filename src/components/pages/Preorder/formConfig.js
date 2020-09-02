@@ -25,7 +25,7 @@ export const createForm = () => {
         label: 'Склад',
         withLabel: true,
         hide: true,
-        type: 'select',
+        type: 'autocomplete',
         itemsList: [],
       },
       validators: [required],

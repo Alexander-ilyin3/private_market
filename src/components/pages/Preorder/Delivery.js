@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper'
 import { FormControl as RFormControl } from 'components/parts/ReactiveForm'
 import SelectorRender from 'components/parts/FormParts/Selector'
 import CityAutocomplete from 'components/parts/FormParts/SearchAutocomplete/CityAutocomplete'
-
+import WarehouseAutocomplete from 'components/parts/FormParts/SearchAutocomplete/WarehouseAutocomplete'
 
 const Delivery = ({ deliveryMethods }) => (
   <Paper style={{ padding: 16 }}>
@@ -45,7 +45,7 @@ const Delivery = ({ deliveryMethods }) => (
     <RFormControl name='city' render={CityAutocomplete} />
     <RFormControl
       name='warehouse'
-      render={SelectorRender}
+      render={WarehouseAutocomplete}
     />
     {/* <RFormControl name='deliveryAddress' render={DefaultInputRender} /> */}
   </Paper>
