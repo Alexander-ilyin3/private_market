@@ -47,6 +47,9 @@ class Preorder extends Component {
       if (dataToSend.paymentType === 2) {
         dataToSend.CODPayer = ''
       }
+      if (dataToSend.customerType === 2) {
+        dataToSend.EDRPOU = ''
+      }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
       checkout({ ...dataToSend, products }).then((success) => {

@@ -53,7 +53,6 @@ export const createForm = () => {
       value: '0',
       meta: {
         label: 'Телефон',
-        withLabel: true,
         errorMessages: { phoneInvalid: 'Недеййствительный' },
       },
       validators: [required, phoneValidator],
@@ -82,6 +81,7 @@ export const createForm = () => {
       validators: [required, minValue(300)],
     },
     insurancePayment: { meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
+    EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
   })
 
   const cityFormItem = form.get('city')
@@ -116,9 +116,14 @@ export const createForm = () => {
 
   form.get('customerType').valueChanges((val) => {
     const customerName = form.get('name')
+    const edrpou = form.get('EDRPOU')
     if (val === 2) {
+      customerName.removeValidators()
+      customerName.addValidator(required)
       customerName.addValidator(patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/))
+      edrpou.setMeta({ hide: true })
     } else {
+      edrpou.setMeta({ hide: false })
       customerName.removeValidators()
       customerName.addValidator(required)
     }
