@@ -8,6 +8,14 @@ const {
   onlyInteger,
 } = validators
 
+
+const patternValidatorCreator = pattern => function patternValidator(value) {
+  if (value.match(pattern)) {
+    return null
+  }
+  return { notName: true }
+}
+
 export const createForm = () => {
   const form = new ControlGroup({
     deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
@@ -32,7 +40,15 @@ export const createForm = () => {
     },
 
     customerType: { value: 2, meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
-    name: { meta: { label: 'Название / ФИО' }, validators: [required] },
+    name: {
+      meta: {
+        label: 'Название / ФИО',
+        errorMessages: {
+          notName: 'Введите имя фамилию и отчество разделяя их пробелами',
+        },
+      },
+      validators: [required, patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/)],
+    },
     phone: {
       value: '0',
       meta: {
@@ -97,5 +113,16 @@ export const createForm = () => {
       })
     }
   })
+
+  form.get('customerType').valueChanges((val) => {
+    const customerName = form.get('name')
+    if (val === 2) {
+      customerName.addValidator(patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/))
+    } else {
+      customerName.removeValidators()
+      customerName.addValidator(required)
+    }
+  })
+
   return form
 }
