@@ -9,7 +9,6 @@ const InputAsLabel = ({ children, classes }) => (
 
 const styles = theme => ({
   wrapper: {
-    marginTop: 8,
     marginRight: 7,
     width: '100%',
     [theme.breakpoints.down('xs')]: {
