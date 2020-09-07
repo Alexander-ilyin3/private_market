@@ -39,6 +39,7 @@ class Preorder extends Component {
       const dataToSend = { ...values }
       if (dataToSend.deliveryType === 2) {
         dataToSend.city = dataToSend.city.city_ref
+        dataToSend.warehouse = dataToSend.warehouse.value
       } else {
         dataToSend.city = ''
         dataToSend.warehouse = ''

@@ -82,6 +82,12 @@ export class Control {
 
   addValidator = (newValidator) => {
     this.validators = [...this.validators, newValidator]
+    this.validate()
+  }
+
+  removeValidators = () => {
+    this.validators = []
+    this.validate()
   }
 
   blur = () => {
