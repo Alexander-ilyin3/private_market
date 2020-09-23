@@ -16,6 +16,7 @@ const orderLabels = {
   city: 'Город',
   warehouse: 'Склад',
   customerType: 'Тип Клиента',
+  EDRPOU: 'ЕДРПОУ',
   name: 'Имя/Название',
   phone: 'Телефон',
   CODPayer: 'Плательщик за наложку',

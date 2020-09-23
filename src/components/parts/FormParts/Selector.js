@@ -33,6 +33,7 @@ const Selector = ({
       variant={variant}
       style={style}
       error={touched && invalid}
+      margin='normal'
     >
       <InputLabel>{label}</InputLabel>
       <Select
