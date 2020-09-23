@@ -25,6 +25,13 @@ const styles = theme => ({
       cursor: 'pointer',
     },
   },
+  withImageBreak: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+  },
 })
 
 export default styles

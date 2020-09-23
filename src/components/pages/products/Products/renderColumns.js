@@ -8,7 +8,6 @@ import {
   InputLabel,
 } from '@material-ui/core'
 import ToolTip from '@material-ui/core/Tooltip'
-import { TableHeadCell } from 'mui-datatables'
 
 import { addProduct } from 'services/cart/cartService'
 import { productViewPath } from 'config/routes'
@@ -84,7 +83,8 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
         customBodyRender: (value, row) => (
           <div
             onClick={() => navigateToProductPage(row)}
-            className={classes.hover}
+            className={`${classes.hover} ${classes.withImageBreak}`}
+            // style={{ display: 'inline-block' }}
           >
             <img
               style={{ marginRight: 5 }}
@@ -189,7 +189,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       },
     },
     {
-      name: 'pr',
+      name: 'individual_price',
       label: 'Цена',
       options: {
         sort: true,

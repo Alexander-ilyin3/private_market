@@ -195,21 +195,18 @@ Products.defaultProps = {
   products: [],
   // searchAutocomleteList: [],
   config: {},
-  vendors: [],
+  // vendors: [],  // vendors: PropTypes.array,
   categories: [],
-  classes: {},
 }
 
 Products.propTypes = {
   getProductList: PropTypes.func.isRequired,
   // getSearchAutocomplete: PropTypes.func.isRequired,
   products: PropTypes.array,
-  history: PropTypes.object.isRequired,
   config: PropTypes.object,
-  vendors: PropTypes.array,
+  // vendors: PropTypes.array,
   categories: PropTypes.array,
   location: PropTypes.object.isRequired,
-  classes: PropTypes.object,
 }
 
 export default Products
