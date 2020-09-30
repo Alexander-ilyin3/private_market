@@ -55,6 +55,9 @@ class Products extends PureComponent {
       page: 1,
       limit: 10,
       category_id,
+      search_text: '',
+      max_price: null,
+      vendor: null,
     })
   }
 
