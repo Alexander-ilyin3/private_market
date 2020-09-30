@@ -32,6 +32,7 @@ export default class ProductView extends Component {
       image,
       name,
       price,
+      individual_price,
       category_id,
       status,
     } = data
@@ -48,9 +49,15 @@ export default class ProductView extends Component {
           </Grid>
           <Grid item sm={12} md={8}>
             <Grid container spacing={3} className={classes.detailItem}>
-              <Grid item xs={12} sm={7}>
-                <Typography>Цена:</Typography>
-                <Typography variant='h4'>{price}</Typography>
+              <Grid item xs={12} sm={7} className={classes.priceRow}>
+                <div>
+                  <Typography>Цена:</Typography>
+                  <Typography variant='h4'>{individual_price}</Typography>
+                </div>
+                <div>
+                  <Typography>РЦЦ:</Typography>
+                  <Typography variant='h4'>{price}</Typography>
+                </div>
               </Grid>
               <Grid item xs={12} sm={5}>
                 <Typography>Артикул:</Typography>
@@ -58,7 +65,7 @@ export default class ProductView extends Component {
               </Grid>
             </Grid>
             <Grid item xs={12} className={classes.detailItem}>
-              <Typography> Категории: </Typography>
+              <Typography> Категория: </Typography>
               <Chip
                 component={Link}
                 label={category_name}
