@@ -15,6 +15,7 @@ import Cancel from '@material-ui/icons/Cancel'
 import { productsPath } from 'config/routes'
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 import { addProduct } from 'services/cart/cartService'
+import { checkAccessByLevel } from 'config/roles'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -50,10 +51,12 @@ export default class ProductView extends Component {
           <Grid item sm={12} md={8}>
             <Grid container spacing={3} className={classes.detailItem}>
               <Grid item xs={12} sm={7} className={classes.priceRow}>
-                <div>
-                  <Typography>Цена:</Typography>
-                  <Typography variant='h4'>{individual_price}</Typography>
-                </div>
+                {checkAccessByLevel(2) && (
+                  <div>
+                    <Typography>Цена:</Typography>
+                    <Typography variant='h4'>{individual_price}</Typography>
+                  </div>
+                )}
                 <div>
                   <Typography>РЦЦ:</Typography>
                   <Typography variant='h4'>{price}</Typography>
