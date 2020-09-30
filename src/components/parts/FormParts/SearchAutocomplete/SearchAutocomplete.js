@@ -21,7 +21,7 @@ const throttledChanges = debounce((value, service, handler) => {
 }, 500)
 
 const SearchAutocomplete = ({
-  // value,
+  value,
   errors,
   touched,
   invalid,
@@ -49,16 +49,22 @@ const SearchAutocomplete = ({
 
   return (
     <Autocomplete
-      // value={value}
+      value={value}
       onChange={(event, newValue) => handlers.onChange(newValue)}
       getOptionSelected={() => true}
       options={searchList || []}
-      getOptionLabel={option => option.name}
+      openOnFocus
+      getOptionLabel={option => (option ? option.name : '')}
       renderInput={(params) => {
         params.value = params.value
         return (
           <TextField
             onChange={event => handleInput(event.target.value)}
+            onFocus={() => {
+              if (!value) {
+                handleInput('')
+              }
+            }}
             error={touched && invalid}
             disabled={disabled}
             label={label}
@@ -88,7 +94,7 @@ SearchAutocomplete.defaultProps = {
   handlers: {},
   meta: {},
   InputProps: {},
-  service: () => {},
+  service: () => { },
 }
 
 SearchAutocomplete.propTypes = {
