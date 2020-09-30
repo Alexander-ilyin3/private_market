@@ -13,11 +13,17 @@ import { addProduct } from 'services/cart/cartService'
 import { productViewPath } from 'config/routes'
 
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+import TooltipInfo from 'components/parts/TooltipInfo'
 
 import BagesMap from './Bages'
 
 
-const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
+const renderColumns = ({
+  incoming,
+  diplayed,
+  throttledChanges,
+  tooltipsOpened,
+}) => {
   const {
     products = [],
     config,
@@ -101,6 +107,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       name: 'category_name',
       label: 'Категория',
       options: {
+        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>В заказ</div></TooltipInfo>,
         sort: false,
         display: diplayed.category_name,
         filterList: [Number(category_id)],
@@ -217,6 +224,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       name: 'toOrder',
       label: 'В заказ',
       options: {
+        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Добавляйте товары в заказ'><div>В заказ</div></TooltipInfo>,
         sort: false,
         viewColumns: false,
         display: diplayed.toOrder,
