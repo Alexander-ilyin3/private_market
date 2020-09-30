@@ -133,6 +133,7 @@ class Products extends PureComponent {
       // getSearchAutocomplete,
       config,
       categories = [],
+      newOrder,
     } = this.props
 
     const {
@@ -150,6 +151,7 @@ class Products extends PureComponent {
       diplayed,
       incoming: this.props,
       throttledChanges: this.throttledChanges,
+      tooltipsOpened: newOrder,
     })
 
     const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
@@ -181,7 +183,7 @@ class Products extends PureComponent {
         <DataTable
           columns={columns}
           data={products}
-          title={<SearchInput onSearch={this.onSearch} />}
+          title={<SearchInput tooltipsOpened={newOrder} onSearch={this.onSearch} />}
           options={{
             ...options,
           }}
@@ -197,6 +199,7 @@ Products.defaultProps = {
   config: {},
   // vendors: [],  // vendors: PropTypes.array,
   categories: [],
+  newOrder: false,
 }
 
 Products.propTypes = {
@@ -207,6 +210,7 @@ Products.propTypes = {
   // vendors: PropTypes.array,
   categories: PropTypes.array,
   location: PropTypes.object.isRequired,
+  newOrder: PropTypes.bool,
 }
 
 export default Products
