@@ -22,25 +22,25 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   const { page, limit } = localConfig
 
   const [displayed, setDisplayed] = useState({
-    id: false,
+    id: true,
     customer_id: false,
     created_at: false,
     updated_at: false,
     deliveryType: true,
     paymentType: true,
-    customerType: true,
+    customerType: false,
     name: true,
     phone: true,
     total_price: true,
     city: true,
     warehouse: true,
-    CODPayer: true,
+    CODPayer: false,
     pyment_amount: true,
-    insuranceAmount: true,
-    insurancePayment: true,
-    deliveryPayer: true,
-    weight: true,
-    volume: true,
+    insuranceAmount: false,
+    insurancePayment: false,
+    deliveryPayer: false,
+    weight: false,
+    volume: false,
   })
 
   useEffect(() => {
