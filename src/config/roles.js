@@ -11,6 +11,17 @@ export const clientAccountant = 'clientAccountant'
 export const admin = 'admin'
 export const superAdmin = 'superAdmin'
 
+export const roleAccessLevel = {
+  newUser: 0,
+  user: 1,
+  client: 2,
+  сlientManager: 2,
+  purchasingManager: 2,
+  clientAccountant: 2,
+  admin: 3,
+  superAdmin: 4,
+}
+
 export const forAll = [
   user,
   superAdmin,
@@ -24,6 +35,14 @@ export const forAll = [
 
 export const declineRoles = filter => forAll.filter(role => !filter.includes(role))
 
+export const checkAccessByLevel = (level) => {
+  const userRoles = roles(store.getState())
+  const maxAccessLevelRole = userRoles.sort((next, prev) => {
+    if (roleAccessLevel[prev.name] > roleAccessLevel[next.name]) return 1
+    return -1
+  })[0].name
+  return level <= roleAccessLevel[maxAccessLevelRole]
+}
 
 export const checkAlloved = ({ allowedRoles }) => {
   const userRoles = roles(store.getState())
