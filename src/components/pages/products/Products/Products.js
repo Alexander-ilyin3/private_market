@@ -1,4 +1,3 @@
-// /* eslint-disable no-restricted-imports */
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -7,13 +6,11 @@ import {
 
 import DataTable from 'mui-datatables'
 import debounce from 'lodash/debounce'
-
 import { textLabels } from 'config/tableConfig/textLabels'
-
+import { checkAccessByLevel } from 'config/roles'
 import SearchInput from 'components/parts/SearchInput'
 
 import renderColumns from './renderColumns'
-// import SearchComponent from 'components/parts/DataTableParts/SearchComponent'
 
 
 class Products extends PureComponent {
@@ -22,15 +19,15 @@ class Products extends PureComponent {
       id: false,
       image: false,
       name: true,
-      category_name: false,
-      vendor_name: false,
-      vendor_code: false,
+      category_name: true,
+      vendor_name: true,
+      vendor_code: true,
       barcode: false,
       volume: false,
       weight: false,
       uktz: false,
       price: true,
-      pr: true,
+      individual_price: checkAccessByLevel(2),
       status: true,
       toOrder: true,
     },
