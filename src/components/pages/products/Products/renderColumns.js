@@ -107,7 +107,7 @@ const renderColumns = ({
       name: 'category_name',
       label: 'Категория',
       options: {
-        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>В заказ</div></TooltipInfo>,
+        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>Категория</div></TooltipInfo>,
         sort: false,
         display: diplayed.category_name,
         filterList: [Number(category_id)],
