@@ -194,7 +194,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       options: {
         sort: true,
         viewColumns: false,
-        display: diplayed.pr,
+        display: diplayed.individual_price,
         filter: false,
       },
     },
