@@ -27,6 +27,13 @@ const instance = axios.create({
 instance.interceptors.response.use(
   (res) => {
     dispatch(loadingStop())
+    const { success, message } = res.data
+    if (!success) {
+      showSnack({
+        variant: 'error',
+        message,
+      })
+    }
     return res
   }, (err) => {
     dispatch(loadingStop())
