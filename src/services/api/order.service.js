@@ -95,5 +95,5 @@ export const getPaymentMethods = async (dispatch) => {
 export const getOrder = id => async (dispatch) => {
   const res = await instance.get(apiOrderDetails.replace(':id', id))
   const { order } = res.data
-  dispatch(setOrderDetails(order))
+  dispatch(setOrderDetails(order || {}))
 }
