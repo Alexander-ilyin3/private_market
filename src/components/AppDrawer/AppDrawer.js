@@ -116,7 +116,7 @@ class AppDrawer extends Component {
           </Hidden>
         </nav>
         <main className={classes.content}>
-          {isLoading && <Preloader />}
+          <Preloader />
           <AuthRouter />
         </main>
       </div>

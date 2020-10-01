@@ -1,18 +1,17 @@
 import axios from 'axios'
 import querystring from 'querystring'
-import { store, actions } from 'storage'
+import { store } from 'storage'
 import {
   apiProductSearchAutocompletePath,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { logoutAction } from 'storage/actions/login.actions'
 
+import Preloader from 'components/assets/preloader'
 
 import { apiBaseURL } from '../../config/constants'
 
 const { dispatch } = store
-const { loadingActions } = actions
-const { loadingStart, loadingStop } = loadingActions
 
 const instance = axios.create({
   baseURL: apiBaseURL,
@@ -26,7 +25,7 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (res) => {
-    dispatch(loadingStop())
+    Preloader.hide()
     const { success, message } = res.data
     if (!success) {
       showSnack({
@@ -36,7 +35,7 @@ instance.interceptors.response.use(
     }
     return res
   }, (err) => {
-    dispatch(loadingStop())
+    Preloader.hide()
     const { response = {} } = err || {}
     const { data = {}, status } = response
     if (status === 401) {
@@ -55,7 +54,8 @@ instance.interceptors.request.use(
   (config) => {
     const { url } = config
     if (url.indexOf(apiProductSearchAutocompletePath) === -1) {
-      dispatch(loadingStart())
+      Preloader.show()
+      // dispatch(loadingStart())
     }
     const token = store.getState().loginData.token
     const updatedConfig = config
