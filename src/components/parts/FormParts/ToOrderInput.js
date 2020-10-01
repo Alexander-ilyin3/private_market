@@ -59,6 +59,7 @@ const ToOrderInput = (props) => {
           </Button>
         ),
       }}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
       inputProps={{
         min: 1,
         step: 1,

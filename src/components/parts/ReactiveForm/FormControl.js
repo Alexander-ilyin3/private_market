@@ -35,7 +35,6 @@ const FormControl = ({ name, render }) => {
   if (['masked'].includes(meta.type)) {
     delete props.onInput
     props.onChange = controls[name].setValue
-
   }
   if (meta.hide) return <></>
   if (meta.withLabel) {
