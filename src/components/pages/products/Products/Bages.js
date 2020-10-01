@@ -31,7 +31,7 @@ const MapStockBages = (props) => {
 
   const bages = {
     3: <Badge color='error' className={classes.inlineBage} badgeContent='Нет на складе' />,
-    2: <Badge color='warning' className={classNames(classes.warningBage, classes.inlineBage)} badgeContent='Заканчивается' />,
+    2: <Badge className={classNames(classes.warningBage, classes.inlineBage)} badgeContent='Заканчивается' />,
     1: <Badge color='secondary' className={classes.inlineBage} badgeContent='В наличии' />,
   }
   return bages[value]
