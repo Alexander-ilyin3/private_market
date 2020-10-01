@@ -38,7 +38,7 @@ class AppDrawer extends Component {
   };
 
   render() {
-    const { classes, isLoading, logout } = this.props
+    const { classes, logout } = this.props
     const { max, mobileOpen } = this.state
     return (
       <div className={classes.root}>

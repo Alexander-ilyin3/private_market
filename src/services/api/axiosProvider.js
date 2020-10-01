@@ -55,7 +55,6 @@ instance.interceptors.request.use(
     const { url } = config
     if (url.indexOf(apiProductSearchAutocompletePath) === -1) {
       Preloader.show()
-      // dispatch(loadingStart())
     }
     const token = store.getState().loginData.token
     const updatedConfig = config
