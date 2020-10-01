@@ -209,13 +209,18 @@ const renderColumns = ({
         sort: false,
         viewColumns: false,
         display: diplayed.toOrder,
-        customBodyRender: (_val, row) => (
-          <ToOrderInput
-            buttonColor='secondary'
-            buttonContent='+'
-            onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
-          />
-        ),
+        customBodyRender: (_val, row) => {
+          const { rowData } = row
+          const notInStock = Number(rowData[12]) === 3
+          return (
+            <ToOrderInput
+              disabled={notInStock}
+              buttonColor='secondary'
+              buttonContent='+'
+              onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
+            />
+          )
+        },
         filter: false,
       },
     },
