@@ -12,6 +12,13 @@ import SearchInput from 'components/parts/SearchInput'
 
 import renderColumns from './renderColumns'
 
+const MemoizedTableRender = React.memo(props => (
+  <Paper>
+    <DataTable
+      {...props}
+    />
+  </Paper>
+))
 
 class Products extends PureComponent {
   state = {
@@ -63,7 +70,7 @@ class Products extends PureComponent {
       const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
       this.setState({ diplayed })
     }
-    if (['changeRowsPerPage', 'changePage', 'filterChange'].indexOf(eventType) > -1) {
+    if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
       const { config } = this.props
       const {
         filterList,
@@ -89,26 +96,13 @@ class Products extends PureComponent {
         switch (key) {
           case 'limit':
             return state.rowsPerPage
-          case 'max_price':
-            return max_price
-          case 'vendor':
-            return vendor
-          case 'category_id':
-            return category_id
           default:
             return state[key]
         }
       }
 
-      const compareSelectedVendors = (confVendors = [], stateVendors = []) => {
-        if (confVendors.length !== stateVendors.length) return false
-        return !confVendors.find((vendor, i) => vendor !== stateVendors[i])
-      }
 
-      if (dependenciesKeys.find((key) => {
-        if (key === 'selectedVendors') return !(compareSelectedVendors(config[key], mapconfigToState(key)))
-        return config[key] !== mapconfigToState(key)
-      })) {
+      if (dependenciesKeys.find(key => config[key] !== mapconfigToState(key))) {
         this.throttledChanges({
           page: page + 1,
           limit: rowsPerPage,
@@ -120,6 +114,15 @@ class Products extends PureComponent {
     }
   }
 
+  onFilterChange = (changedColumn, filterList, type, changedColumnIndex) => {
+    const filterFieldsMap = {
+      category_name: 'category_id',
+      vendor_name: 'vendor',
+      price: 'max_price',
+    }
+    this.throttledChanges({ [filterFieldsMap[changedColumn]]: filterList[changedColumnIndex][0] })
+  }
+
   onSearch = (value) => {
     this.throttledChanges({
       search_text: value,
@@ -127,23 +130,18 @@ class Products extends PureComponent {
   }
 
   render() {
-    const { onTableChange } = this
+    const { onTableChange, onFilterChange } = this
     const {
       products = [],
-      // getSearchAutocomplete,
       config,
-      categories = [],
       newOrder,
     } = this.props
-
     const {
       page,
       limit,
       count,
-      max_price,
-      vendor,
-      category_id,
     } = config
+
 
     const { diplayed } = this.state
 
@@ -153,12 +151,6 @@ class Products extends PureComponent {
       throttledChanges: this.throttledChanges,
       tooltipsOpened: newOrder,
     })
-
-    const serverSideFilterList = [[], [], [], [], [], [], [], [], [], [], []]
-    const selectedCategory = categories.find(cat => cat.id === Number(category_id))
-    serverSideFilterList[4] = selectedCategory ? [selectedCategory] : []
-    serverSideFilterList[5] = vendor ? [vendor] : []
-    serverSideFilterList[10] = max_price ? [max_price] : []
 
 
     const options = {
@@ -172,23 +164,20 @@ class Products extends PureComponent {
       rowsPerPage: limit,
       rowsPerPageOptions: [5, 10, 15],
       onTableChange,
+      onFilterChange,
       textLabels,
-      serverSideFilterList,
       search: false,
-      // onRowClick: this.navigateToProductPage,
     }
 
     return (
-      <Paper>
-        <DataTable
-          columns={columns}
-          data={products}
-          title={<SearchInput tooltipsOpened={newOrder} onSearch={this.onSearch} />}
-          options={{
-            ...options,
-          }}
-        />
-      </Paper>
+      <MemoizedTableRender
+        columns={columns}
+        data={products}
+        title={<SearchInput tooltipsOpened={newOrder} onSearch={this.onSearch} />}
+        options={{
+          ...options,
+        }}
+      />
     )
   }
 }
@@ -198,7 +187,6 @@ Products.defaultProps = {
   // searchAutocomleteList: [],
   config: {},
   // vendors: [],  // vendors: PropTypes.array,
-  categories: [],
   newOrder: false,
 }
 
@@ -208,7 +196,6 @@ Products.propTypes = {
   products: PropTypes.array,
   config: PropTypes.object,
   // vendors: PropTypes.array,
-  categories: PropTypes.array,
   location: PropTypes.object.isRequired,
   newOrder: PropTypes.bool,
 }
