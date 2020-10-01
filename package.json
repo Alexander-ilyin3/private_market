@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.14.0",
+    "env-cmd": "^10.1.0",
     "lodash": "^4.17.11",
     "mui-datatables": "^3.4.1",
     "prop-types": "^15.6.2",
@@ -30,7 +31,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && ./deploy.sh",
+    "start:prod": "env-cmd -f .env.production react-scripts start",
+    "build": "react-scripts build && ./deploy.prod.sh",
+    "build:staging": "env-cmd -f .env.development react-scripts build && ./deploy.dev.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
