@@ -92,4 +92,17 @@ FormDialog.propTypes = {
 }
 
 
-export default FormDialog
+export default function wrapper(props) {
+  const {
+    open,
+  } = props
+  return open ? <FormDialog {...props} /> : <></>
+}
+
+wrapper.defaultProps = {
+  open: false,
+}
+
+wrapper.propTypes = {
+  open: PropTypes.bool,
+}
