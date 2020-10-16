@@ -32,6 +32,10 @@ const FormControl = ({ name, render }) => {
   if (['select', 'picker', 'checkbox', 'autocomplete'].includes(meta.type)) {
     props.onChange = controls[name].setValue
   }
+  if (['masked'].includes(meta.type)) {
+    delete props.onInput
+    props.onChange = controls[name].setValue
+  }
   if (meta.hide) return <></>
   if (meta.withLabel) {
     return <RenderColumnItem key={name} label={meta.label} value={<MemoizedControl {...props} />} />

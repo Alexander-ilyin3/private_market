@@ -4,7 +4,6 @@ import thunk from 'redux-thunk'
 
 import { LOG_OUT } from '../constants'
 import loginData from './loginData'
-import isLoading from './isLoading'
 import userData from './userData'
 import menuItem from './menu'
 import productCategories from './productCategories'
@@ -19,7 +18,6 @@ import paymentMethods from './paymentMethods'
 
 const reducer = combineReducers({
   loginData,
-  isLoading,
   userData,
   menuItem,
   productCategories,

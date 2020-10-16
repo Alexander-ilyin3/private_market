@@ -27,4 +27,5 @@ yarn-error.log*
 package-lock.json
 adminca.code-workspace
 
-deploy.sh
+deploy.*.sh
+.env*

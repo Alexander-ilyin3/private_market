@@ -71,7 +71,7 @@ export const getOrderList = params => async (reduce) => {
 export const cityAutocomplete = async (name) => {
   const res = await instance.get(apiDeliveryCitiesList, { params: { name } })
   const { cities } = res.data
-  return cities
+  return cities.slice(0, 50)
 }
 
 export const warehouseAutocomplete = async (city_ref) => {
@@ -95,5 +95,5 @@ export const getPaymentMethods = async (dispatch) => {
 export const getOrder = id => async (dispatch) => {
   const res = await instance.get(apiOrderDetails.replace(':id', id))
   const { order } = res.data
-  dispatch(setOrderDetails(order))
+  dispatch(setOrderDetails(order || {}))
 }

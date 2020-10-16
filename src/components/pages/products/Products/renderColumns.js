@@ -13,11 +13,17 @@ import { addProduct } from 'services/cart/cartService'
 import { productViewPath } from 'config/routes'
 
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
+import TooltipInfo from 'components/parts/TooltipInfo'
 
 import BagesMap from './Bages'
 
 
-const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
+const renderColumns = ({
+  incoming,
+  diplayed,
+  throttledChanges,
+  tooltipsOpened,
+}) => {
   const {
     products = [],
     config,
@@ -27,9 +33,9 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
   } = incoming
 
   const {
-    max_price,
-    vendor,
-    category_id,
+    max_price = null,
+    vendor = null,
+    category_id = null,
   } = config
 
   const navigateToProductPage = ({ rowData }) => {
@@ -43,21 +49,10 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
     { name: 'id', label: 'id', options: { viewColumns: false, display: diplayed.id, filter: false } },
     {
       name: 'image',
-      // label: 'Изображение',
       options: {
         viewColumns: false,
-        // customHeadRender: props => <TableHeadCell {...props} options={{}}> </TableHeadCell>,
         display: diplayed.image,
         filter: false,
-        // customBodyRender: (value, row) => (
-        //   <img
-        //     onClick={() => navigateToProductPage(row)}
-        //     className={classes.hover}
-        //     alt='Картинка'
-        //     height='50'
-        //     src={value}
-        //   />
-        // ),
       },
     },
     {
@@ -75,16 +70,12 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       options: {
         fixedHeader: false,
         viewColumns: false,
-        // customHeadRender: (props, p2, p3) => { console.log({ props, p2, p3 });
-        // return <div>Name</div>
-        // /*<TableHeadCell {...props} options={{ filter: true }}> sort </TableHeadCell>*/},
         display: diplayed.name,
         filter: false,
         customBodyRender: (value, row) => (
           <div
             onClick={() => navigateToProductPage(row)}
             className={`${classes.hover} ${classes.withImageBreak}`}
-            // style={{ display: 'inline-block' }}
           >
             <img
               style={{ marginRight: 5 }}
@@ -101,11 +92,12 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       name: 'category_name',
       label: 'Категория',
       options: {
+        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>Категория</div></TooltipInfo>,
         sort: false,
         display: diplayed.category_name,
-        filterList: [Number(category_id)],
+        filterList: category_id ? [category_id] : null,
         customFilterListOptions: {
-          render: v => v.name,
+          render: v => categories.find(category => category.id === Number(v)).name,
         },
         customBodyRender: (value, row) => (
           <ToolTip title={`фильтровать по категории ${value}`}>
@@ -126,13 +118,13 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
                 Категория
               </InputLabel>
               <Select
-                defaultValue={filterList[4][0] || ''}
+                value={filterList[index][0] || ''}
                 onChange={(event) => {
-                  onChange(event.target.value, index, column)
+                  onChange([event.target.value], index, column)
                 }}
               >
                 {categories.map(item => (
-                  <MenuItem key={item.category_id} value={item.id}>
+                  <MenuItem key={item.id} value={item.id}>
                     {item.name}
                   </MenuItem>
                 ))}
@@ -161,7 +153,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
           </ToolTip>
         ),
         display: diplayed.vendor_name,
-        filterList: [vendor],
+        filterList: vendor ? [vendor] : null,
         filterOptions: {
           names: vendors,
         },
@@ -178,12 +170,12 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
         sort: true,
         viewColumns: false,
         display: diplayed.price,
-        filterList: [max_price],
+        filterList: max_price ? [max_price] : null,
         filterType: 'custom',
         filterOptions: {
           logic: () => false,
           display: (list, onChange, index, column) => (
-            <TextField defaultValue={list[11][0]} label='РЦЦ (до)' onInput={e => onChange([e.target.value], index, column)} />
+            <TextField value={list[index][0] || ''} label='РЦЦ (до)' onInput={e => onChange(e.target.value ? [e.target.value] : [], index, column)} />
           ),
         },
       },
@@ -194,7 +186,7 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       options: {
         sort: true,
         viewColumns: false,
-        display: diplayed.pr,
+        display: diplayed.individual_price,
         filter: false,
       },
     },
@@ -204,10 +196,6 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       options: {
         sort: true,
         viewColumns: false,
-        // customHeadRender: props => (
-        //   <TableHeadCell {...props} options={{ ...props }}>
-        // <div style={{ minWidth: 60 }} /></TableHeadCell>
-        // ),
         display: diplayed.status,
         customBodyRender: val => <BagesMap value={val} />,
         filter: false,
@@ -217,16 +205,22 @@ const renderColumns = ({ incoming, diplayed, throttledChanges }) => {
       name: 'toOrder',
       label: 'В заказ',
       options: {
+        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Добавляйте товары в заказ'><div>В заказ</div></TooltipInfo>,
         sort: false,
         viewColumns: false,
         display: diplayed.toOrder,
-        customBodyRender: (_val, row) => (
-          <ToOrderInput
-            buttonColor='secondary'
-            buttonContent='+'
-            onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
-          />
-        ),
+        customBodyRender: (_val, row) => {
+          const { rowData } = row
+          const notInStock = Number(rowData[12]) === 3
+          return (
+            <ToOrderInput
+              disabled={notInStock}
+              buttonColor='secondary'
+              buttonContent='+'
+              onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
+            />
+          )
+        },
         filter: false,
       },
     },

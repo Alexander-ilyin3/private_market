@@ -23,7 +23,6 @@ const EmailConfirm = ({
       if (res === true) {
         setLogged(true)
         setTimeout(() => {
-          console.log(123)
           history.push('/')
         }, 3000)
       }

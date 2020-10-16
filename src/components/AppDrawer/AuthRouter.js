@@ -50,7 +50,14 @@ const AuthRouter = () => (
     <Redirect exact path={ROOT_DOMAIN} to={newOrderPath} />
     <PrivateRouter path={profilePath} component={UserView} allowedRoles={declineRoles([newUser])} />
     <PrivateRouter
+      path={newOrderPath}
+      exact
+      component={NewOrder}
+      allowedRoles={declineRoles([newUser])}
+    />
+    <PrivateRouter
       path={productsPath}
+      exact
       component={Products}
       allowedRoles={declineRoles([newUser])}
     />
@@ -67,11 +74,6 @@ const AuthRouter = () => (
     <PrivateRouter
       path={productViewPath}
       component={ProductView}
-      allowedRoles={declineRoles([newUser])}
-    />
-    <PrivateRouter
-      path={newOrderPath}
-      component={NewOrder}
       allowedRoles={declineRoles([newUser])}
     />
     <PrivateRouter

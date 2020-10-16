@@ -95,23 +95,14 @@ FormDialog.propTypes = {
 export default function wrapper(props) {
   const {
     open,
-    token,
-    code,
   } = props
-  if (open && token && code) {
-    return <FormDialog {...props} />
-  }
-  return <></>
+  return open ? <FormDialog {...props} /> : <></>
 }
 
 wrapper.defaultProps = {
   open: false,
-  token: '',
-  code: '',
 }
 
 wrapper.propTypes = {
   open: PropTypes.bool,
-  token: PropTypes.string,
-  code: PropTypes.string,
 }

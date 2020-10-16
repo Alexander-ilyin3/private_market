@@ -30,12 +30,14 @@ const ToOrderInput = (props) => {
     buttonColor,
     buttonContent,
     onAdd,
+    disabled,
   } = props
   const [count, setCount] = useState(1)
   return (
     <TextField
       variant='outlined'
       type='number'
+      disabled={disabled}
       className={
         classNames(classes.text, {
           [classes.textWithSingleCharButton]: (typeof buttonContent === 'string') && buttonContent.length < 2,
@@ -47,6 +49,7 @@ const ToOrderInput = (props) => {
       InputProps={{
         endAdornment: (
           <Button
+            disabled={disabled}
             variant='contained'
             onClick={() => onAdd(count)}
             color={buttonColor}
@@ -56,6 +59,7 @@ const ToOrderInput = (props) => {
           </Button>
         ),
       }}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
       inputProps={{
         min: 1,
         step: 1,
@@ -77,13 +81,15 @@ ToOrderInput.propTypes = {
     PropTypes.element,
   ]),
   onAdd: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 
 ToOrderInput.defaultProps = {
   classes: {},
   buttonColor: 'default',
   buttonContent: 'Add',
-  onAdd: () => {},
+  onAdd: () => { },
+  disabled: false,
 }
 
 export default withStyles(styles)(ToOrderInput)

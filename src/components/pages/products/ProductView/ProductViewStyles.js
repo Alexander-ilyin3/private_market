@@ -25,4 +25,9 @@ export const styles = _theme => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  priceRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 })

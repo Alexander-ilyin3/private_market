@@ -38,7 +38,7 @@ class AppDrawer extends Component {
   };
 
   render() {
-    const { classes, isLoading, logout } = this.props
+    const { classes, logout } = this.props
     const { max, mobileOpen } = this.state
     return (
       <div className={classes.root}>
@@ -116,7 +116,7 @@ class AppDrawer extends Component {
           </Hidden>
         </nav>
         <main className={classes.content}>
-          {isLoading && <Preloader />}
+          <Preloader />
           <AuthRouter />
         </main>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Check } from '@material-ui/icons/'
 import {
   Paper,
@@ -10,6 +10,12 @@ import { signInPath } from 'config/routes'
 
 
 function RecoverySuccess(props) {
+  useEffect(() => {
+    const { history } = props
+    setTimeout(() => {
+      history.push('/')
+    }, 5000)
+  }, [])
   const { classes } = props
   return (
     <div className={classes.root}>

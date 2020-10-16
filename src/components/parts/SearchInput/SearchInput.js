@@ -6,7 +6,10 @@ import Search from '@material-ui/icons/Search'
 import Close from '@material-ui/icons/Close'
 
 
-const SearchInput = ({ onSearch }) => {
+import TooltipInfo from 'components/parts/TooltipInfo'
+
+
+const SearchInput = ({ onSearch, tooltipsOpened }) => {
   const [text, setText] = useState('')
   const search = (value) => {
     if (value === text) return
@@ -15,34 +18,36 @@ const SearchInput = ({ onSearch }) => {
     onSearch(value)
   }
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'end',
-        maxWidth: 350,
-      }}
-    >
-      <TextField
-        value={text}
-        onInput={(e) => {
-          const { value } = e.target
-          search(value)
+    <TooltipInfo open={tooltipsOpened} title='Ищите товары в каталоге по артикулу или названию'>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'end',
+          maxWidth: 350,
         }}
-        InputProps={{
-          startAdornment: <Search />,
-          endAdornment: (
-            <Close
-              onClick={() => {
-                search('')
-              }}
-              style={{ cursor: 'pointer' }}
-            />
-          ),
-        }}
-        variant='outlined'
-      />
-    </div>
+      >
+        <TextField
+          value={text}
+          onInput={(e) => {
+            const { value } = e.target
+            search(value)
+          }}
+          InputProps={{
+            startAdornment: <Search />,
+            endAdornment: (
+              <Close
+                onClick={() => {
+                  search('')
+                }}
+                style={{ cursor: 'pointer' }}
+              />
+            ),
+          }}
+          variant='outlined'
+        />
+      </div>
+    </TooltipInfo>
   )
 }
 
