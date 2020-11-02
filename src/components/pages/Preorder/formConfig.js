@@ -9,11 +9,11 @@ const {
 } = validators
 
 
-const patternValidatorCreator = pattern => function patternValidator(value) {
+const patternValidatorCreator = (pattern, messageName) => function patternValidator(value) {
   if (value.match(pattern)) {
     return null
   }
-  return { notName: true }
+  return { [messageName]: true }
 }
 
 export const createForm = () => {
@@ -44,10 +44,11 @@ export const createForm = () => {
       meta: {
         label: 'Название / ФИО',
         errorMessages: {
-          notName: 'Введите имя фамилию и отчество разделяя их пробелами',
+          not3Name: 'Введите имя фамилию и отчество разделяя их пробелами',
+          not2Name: 'Введите имя и фамилию разделяя их пробелами (отчество - опционально)',
         },
       },
-      validators: [required, patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/)],
+      validators: [required],
     },
     phone: {
       value: '0',
@@ -93,12 +94,31 @@ export const createForm = () => {
   const CODPayerFormItem = form.get('CODPayer')
   const toDoorFormItem = form.get('toDoor')
   const deliveryAddress = form.get('deliveryAddress')
+  const nameFormItem = form.get('name')
+  const deliveryTypeFormItem = form.get('deliveryType')
+  const customerTypeFormItem = form.get('customerType')
+
+  const name3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/, 'not3Name')
+  const name2or3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+(\s+\S+)?\s*$/, 'not2Name')
+
+  nameFormItem.resetValidators([(value) => {
+    const deliveryTypeValue = deliveryTypeFormItem.value
+    const toDoorValue = toDoorFormItem.value
+    const customerTypeValue = customerTypeFormItem.value
+    if (deliveryTypeValue === 2 && toDoorValue && customerTypeValue === 2) {
+      return name3PartsValidator(value)
+    }
+    if (customerTypeValue === 2) {
+      return name2or3PartsValidator(value)
+    }
+    return required(value)
+  }])
 
   paymentTypeFormItem.valueChanges((val) => {
     CODPayerFormItem.setMeta({ hide: val !== 1 })
   })
 
-  form.get('deliveryType').valueChanges((val) => {
+  deliveryTypeFormItem.valueChanges((val) => {
     cityFormItem.setMeta({ hide: val !== 2 })
     warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
     toDoorFormItem.setMeta({ hide: val !== 2 })
@@ -127,17 +147,11 @@ export const createForm = () => {
   })
 
   form.get('customerType').valueChanges((val) => {
-    const customerName = form.get('name')
     const edrpou = form.get('EDRPOU')
     if (val === 2) {
-      customerName.removeValidators()
-      customerName.addValidator(required)
-      customerName.addValidator(patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/))
       edrpou.setMeta({ hide: true })
     } else {
       edrpou.setMeta({ hide: false })
-      customerName.removeValidators()
-      customerName.addValidator(required)
     }
   })
 
