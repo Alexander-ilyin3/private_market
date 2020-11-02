@@ -26,9 +26,7 @@ export class ControlGroup {
   submit = (e) => {
     e.preventDefault()
     this.setAsSubmited()
-    if (!this.valid) {
-      this.validateAll()
-    }
+    this.validateAll()
     this.subscriber(this)
     if (this.valid) this.submitHandler(this)
   }
