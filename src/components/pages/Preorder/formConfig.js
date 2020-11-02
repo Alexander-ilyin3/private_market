@@ -83,12 +83,16 @@ export const createForm = () => {
     },
     insurancePayment: { meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
     EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
+    toDoor: { meta: { label: 'Адресная Доставка', type: 'checkbox', hide: true } },
+    deliveryAddress: { meta: { label: 'Улица, номер дома, квартиры', withLabel: true, hide: true }, validators: [required] },
   })
 
   const cityFormItem = form.get('city')
   const warehouseFormItem = form.get('warehouse')
   const paymentTypeFormItem = form.get('paymentType')
   const CODPayerFormItem = form.get('CODPayer')
+  const toDoorFormItem = form.get('toDoor')
+  const deliveryAddress = form.get('deliveryAddress')
 
   paymentTypeFormItem.valueChanges((val) => {
     CODPayerFormItem.setMeta({ hide: val !== 1 })
@@ -96,7 +100,14 @@ export const createForm = () => {
 
   form.get('deliveryType').valueChanges((val) => {
     cityFormItem.setMeta({ hide: val !== 2 })
-    warehouseFormItem.setMeta({ hide: val !== 2 })
+    warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
+    toDoorFormItem.setMeta({ hide: val !== 2 })
+    deliveryAddress.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
+  })
+
+  toDoorFormItem.valueChanges((val) => {
+    deliveryAddress.setMeta({ hide: !val })
+    warehouseFormItem.setMeta({ hide: val })
   })
 
   cityFormItem.valueChanges(async (val) => {

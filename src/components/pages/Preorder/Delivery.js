@@ -8,6 +8,8 @@ import { FormControl as RFormControl } from 'components/parts/ReactiveForm'
 import SelectorRender from 'components/parts/FormParts/Selector'
 import CityAutocomplete from 'components/parts/FormParts/SearchAutocomplete/CityAutocomplete'
 import WarehouseAutocomplete from 'components/parts/FormParts/SearchAutocomplete/WarehouseAutocomplete'
+import CheckBoxRender from 'components/parts/FormParts/CheckBoxRender'
+import DefaultInputRender from 'components/parts/FormParts/DefaultInputRrnder'
 
 const Delivery = ({ deliveryMethods }) => (
   <Paper style={{ padding: 16 }}>
@@ -41,13 +43,10 @@ const Delivery = ({ deliveryMethods }) => (
         )}
       />
     )}
-    {/* <RFormControl name='toDoor' render={CheckBoxRender} /> */}
     <RFormControl name='city' render={CityAutocomplete} />
-    <RFormControl
-      name='warehouse'
-      render={WarehouseAutocomplete}
-    />
-    {/* <RFormControl name='deliveryAddress' render={DefaultInputRender} /> */}
+    <RFormControl name='toDoor' render={CheckBoxRender} />
+    <RFormControl name='warehouse' render={WarehouseAutocomplete} />
+    <RFormControl name='deliveryAddress' render={DefaultInputRender} />
   </Paper>
 )
 
