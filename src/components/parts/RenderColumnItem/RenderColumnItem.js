@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
 
 const RenderColumnItem = ({ label, value, labelWeight }) => (
-  <Grid key={label} container spacing={0}>
+  <Grid key={label} alignItems={typeof label === 'string' ? 'center' : 'flex-start'} container spacing={0}>
     <Grid item xs={12} sm={labelWeight || 4} style={{ display: 'flex', alignItems: 'center' }}>
       {label}
     </Grid>
