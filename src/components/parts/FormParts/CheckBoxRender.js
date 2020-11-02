@@ -34,7 +34,7 @@ const CheckboxInputRender = ({
             <Checkbox
               label={label}
               {...handlers}
-              checked={value}
+              checked={Boolean(value)}
               variant={variant || 'outlined'}
             />
           )}
