@@ -50,6 +50,11 @@ class Preorder extends Component {
       if (dataToSend.customerType === 2) {
         dataToSend.EDRPOU = ''
       }
+      if (dataToSend.toDoor) {
+        dataToSend.warehouse = ''
+      } else {
+        dataToSend.deliveryAddress = ''
+      }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
       checkout({ ...dataToSend, products }).then((success) => {
