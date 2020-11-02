@@ -66,6 +66,15 @@ export class Control {
   addValidator: (newValidator: ValidatorT) => void
 
   /**
+   * Add few validators in array
+  */
+  addValidators: (validators: ValidatorT[]) => void
+
+  /**
+   * Replace current validators by new walidators list
+  */
+  resetValidators: (validators: ValidatorT[]) => void
+  /**
     * Remove all form control validators
   */
   removeValidators: () => void

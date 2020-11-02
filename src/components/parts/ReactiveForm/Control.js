@@ -85,8 +85,19 @@ export class Control {
     this.validate()
   }
 
+  addValidators = (validators) => {
+    this.validators = [...this.validators, ...validators]
+    this.validate()
+  }
+
   removeValidators = () => {
     this.validators = []
+    this.validate()
+  }
+
+  resetValidators = (validators) => {
+    this.removeValidators()
+    this.addValidators(validators)
     this.validate()
   }
 
