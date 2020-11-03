@@ -68,7 +68,7 @@ export class Control {
       if (type === 'checkbox') {
         const { checked } = event.target
         value = checked
-      } else if (!type || ['password', 'text'].includes(type)) {
+      } else if (!type || ['password', 'text', 'textarea'].includes(type)) {
         const { target } = event
         value = target.value
       }
