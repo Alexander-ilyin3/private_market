@@ -86,6 +86,7 @@ export const createForm = () => {
     EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
     toDoor: { meta: { label: 'Адресная Доставка', type: 'checkbox', hide: true } },
     deliveryAddress: { meta: { label: 'Улица, номер дома, квартиры', withLabel: true, hide: true }, validators: [required] },
+    comment: { },
   })
 
   const cityFormItem = form.get('city')

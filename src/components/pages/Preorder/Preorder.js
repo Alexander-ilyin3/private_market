@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 
 import { Grid } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
 
-import { FormGroup } from 'components/parts/ReactiveForm'
+import { FormGroup, FormControl } from 'components/parts/ReactiveForm'
 import { checkout } from 'services/api/order.service'
 import { ordersPath } from 'config/routes'
 
@@ -108,6 +110,28 @@ class Preorder extends Component {
                   <Grid item xs={12}>
                     <Payment paymentMethods={paymentMethods} />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Paper style={{ padding: 16 }}>
+                      <Typography variant='h5'>
+                        Комментарий
+                      </Typography>
+                      <FormControl
+                        name='comment'
+                        render={({
+                          handlers,
+                          value,
+                        }) => (
+                          <TextField
+                            variant='outlined'
+                            multiline
+                            fullWidth
+                            value={value || ''}
+                            {...handlers}
+                          />
+                        )}
+                      />
+                    </Paper>
+                  </Grid>
                 </Grid>
               </form>
             )}
@@ -123,8 +147,8 @@ Preorder.defaultProps = {
   user: {},
   deliveryMethods: [],
   paymentMethods: [],
-  getDeliveryMethods: () => {},
-  getPaymentMethods: () => {},
+  getDeliveryMethods: () => { },
+  getPaymentMethods: () => { },
 }
 
 Preorder.propTypes = {
