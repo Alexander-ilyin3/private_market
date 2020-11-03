@@ -1,4 +1,27 @@
-export type InputTypes = 'select' | 'picker' | 'checkbox' | 'autocomplete' | 'masked'
+import { SFC, ReactElement } from 'react'
+
+export type InputTypes = 'select' | 'picker' | 'checkbox' | 'autocomplete' | 'masked' | 'text'
+
+interface RenderFormItemPropsT {
+  value: any,
+  errors: {},
+  touched: boolean,
+  invalid: boolean,
+  handlers: {
+    onInput: (e: Event) => void,
+    onBlur: (e: Event) => void,
+    onChange: (e: Event) => void,
+  },
+  meta: IMeta,
+}
+
+export type RenderFormItemT = (props: RenderFormItemPropsT) => ReactElement
+
+interface FormControlPropsT {
+  name: string
+  render: RenderFormItemT
+}
+export const FormControl: SFC<FormControlPropsT>
 
 export interface IMeta {
   label?: string,
