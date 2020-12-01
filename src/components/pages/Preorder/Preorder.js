@@ -52,9 +52,7 @@ class Preorder extends Component {
       if (dataToSend.customerType === 2) {
         dataToSend.EDRPOU = ''
       }
-      if (dataToSend.toDoor) {
-        dataToSend.warehouse = ''
-      } else {
+      if (!dataToSend.toDoor) {
         dataToSend.deliveryAddress = ''
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))

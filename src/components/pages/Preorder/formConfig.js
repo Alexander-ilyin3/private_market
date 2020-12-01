@@ -128,7 +128,6 @@ export const createForm = () => {
 
   toDoorFormItem.valueChanges((val) => {
     deliveryAddress.setMeta({ hide: !val })
-    warehouseFormItem.setMeta({ hide: val })
     nameFormItem.validate()
   })
 
