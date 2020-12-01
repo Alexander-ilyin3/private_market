@@ -10,6 +10,9 @@ import CityAutocomplete from 'components/parts/FormParts/SearchAutocomplete/City
 import WarehouseAutocomplete from 'components/parts/FormParts/SearchAutocomplete/WarehouseAutocomplete'
 import CheckBoxRender from 'components/parts/FormParts/CheckBoxRender'
 import DefaultInputRender from 'components/parts/FormParts/DefaultInputRrnder'
+import StreetAutocomplete from 'components/parts/FormParts/SearchAutocomplete/StreetAutocomplete'
+import RenderColumnItem from 'components/parts/RenderColumnItem'
+import InputAsLabel from 'components/parts/FormParts/InputAsLabel'
 
 const Delivery = ({ deliveryMethods }) => (
   <Paper style={{ padding: 16 }}>
@@ -46,7 +49,12 @@ const Delivery = ({ deliveryMethods }) => (
     <RFormControl name='city' render={CityAutocomplete} />
     <RFormControl name='toDoor' render={CheckBoxRender} />
     <RFormControl name='warehouse' render={WarehouseAutocomplete} />
-    <RFormControl name='deliveryAddress' render={DefaultInputRender} />
+    <RFormControl name='deliveryStreet' render={StreetAutocomplete} />
+    <RenderColumnItem
+      labelWeight={6}
+      label={<InputAsLabel><RFormControl name='deliveryHouseNumber' render={DefaultInputRender} /></InputAsLabel>}
+      value={<RFormControl name='deliveryApartamentNumber' render={DefaultInputRender} />}
+    />
   </Paper>
 )
 

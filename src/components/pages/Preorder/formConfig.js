@@ -85,7 +85,29 @@ export const createForm = () => {
     insurancePayment: { meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
     EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
     toDoor: { meta: { label: 'Адресная Доставка', type: 'checkbox', hide: true } },
-    deliveryAddress: { meta: { label: 'Улица, номер дома, квартиры', withLabel: true, hide: true }, validators: [required] },
+    deliveryStreet: {
+      meta: {
+        label: 'Улица',
+        withLabel: true,
+        hide: true,
+        type: 'autocomplete',
+      },
+      validators: [required],
+    },
+    deliveryHouseNumber: {
+      meta: {
+        label: 'Номер дома',
+        hide: true,
+      },
+      validators: [required],
+    },
+    deliveryApartamentNumber: {
+      meta: {
+        label: 'Номер квартиры',
+        hide: true,
+        type: 'autocomplete',
+      },
+    },
     comment: { },
   })
 
@@ -94,10 +116,12 @@ export const createForm = () => {
   const paymentTypeFormItem = form.get('paymentType')
   const CODPayerFormItem = form.get('CODPayer')
   const toDoorFormItem = form.get('toDoor')
-  const deliveryAddress = form.get('deliveryAddress')
+  const deliveryStreet = form.get('deliveryStreet')
   const nameFormItem = form.get('name')
   const deliveryTypeFormItem = form.get('deliveryType')
   const customerTypeFormItem = form.get('customerType')
+  const deliveryHouseNumberFormItem = form.get('deliveryHouseNumber')
+  const deliveryApartamentNumberFormItem = form.get('deliveryApartamentNumber')
 
   const name3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/, 'not3Name')
   const name2or3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+(\s+\S+)?\s*$/, 'not2Name')
@@ -123,16 +147,21 @@ export const createForm = () => {
     cityFormItem.setMeta({ hide: val !== 2 })
     warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
     toDoorFormItem.setMeta({ hide: val !== 2 })
-    deliveryAddress.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
+    deliveryStreet.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
   })
 
   toDoorFormItem.valueChanges((val) => {
-    deliveryAddress.setMeta({ hide: !val })
+    deliveryStreet.setMeta({ hide: !val })
+    deliveryHouseNumberFormItem.setMeta({ hide: !val })
+    deliveryApartamentNumberFormItem.setMeta({ hide: !val })
     nameFormItem.validate()
   })
 
   cityFormItem.valueChanges(async (val) => {
     warehouseFormItem.setValue('')
+    deliveryStreet.setValue('')
+    deliveryHouseNumberFormItem.setValue('')
+    deliveryApartamentNumberFormItem.setValue('')
     if (val && val.city_ref) {
       const warehouseList = await warehouseAutocomplete(val.city_ref)
       warehouseFormItem.setMeta({
@@ -140,10 +169,12 @@ export const createForm = () => {
           ({ warehous_ref, name }) => ({ value: warehous_ref, label: name }),
         ),
       })
+      deliveryStreet.setMeta({ city_ref: val.city_ref })
     } else {
       warehouseFormItem.setMeta({
         itemsList: [],
       })
+      deliveryStreet.setMeta({ city_ref: '' })
     }
   })
 
