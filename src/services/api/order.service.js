@@ -6,6 +6,7 @@ import {
   apiDeliveryWarehousList,
   apiPaymentMethodList,
   apiOrderDetails,
+  apiDeliveryStreetsPath,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList, setOrderDetails } from 'storage/actions/order.actions'
@@ -78,6 +79,24 @@ export const warehouseAutocomplete = async (city_ref) => {
   const res = await instance.get(apiDeliveryWarehousList, { params: { city_ref } })
   const { warehouses } = res.data
   return warehouses
+}
+
+export const streetAutocomplete = async ({ city_ref, search }) => {
+  if (!city_ref) return []
+  const res = await instance.get(apiDeliveryStreetsPath, { params: { city_ref, search } })
+  const { streets } = res.data
+
+  const streetsMock = [
+    { ref: '1', name: 'Kashirina' },
+    { ref: '2', name: 'Skilna' },
+    { ref: '3', name: 'Likarniana' },
+    { ref: '4', name: 'Bakulina' },
+    { ref: '5', name: 'Naukova' },
+    { ref: '6', name: 'Starogorodska' },
+    { ref: '7', name: 'Sadova' },
+  ]
+
+  return streetsMock
 }
 
 export const getDeliveryMethods = async (dispatch) => {
