@@ -19,6 +19,8 @@ import { registerSuccessPath, signInPath } from 'config/routes'
 import MaskedPhone from 'components/assets/MaskedPhone'
 
 
+const forbiddenDomains = ['mail.ru', 'yandex.ua', 'yandex.ru', 'inbox.ru', 'list.ru', 'bk.ru', 'mail.ua', 'rambler.ru']
+
 class SignUp extends Component {
   constructor(props) {
     super(props)
@@ -88,6 +90,10 @@ class SignUp extends Component {
       case 'email':
         valid = !!value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
         errMsg = 'Некорректный email'
+        if (forbiddenDomains.find(domain => value.includes(domain))) {
+          valid = false
+          errMsg = 'Пожалуйста, используйте другой почтовый адрес. Рекомендуем использовать Gmail, Ukr.net, Outlook.com, Bigmir.net или I.UA.'
+        }
         break
       case 'password':
         valid = !!value.match(/(?=^.{8,}$)^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
