@@ -7,6 +7,7 @@ import {
   apiPaymentMethodList,
   apiOrderDetails,
   apiDeliveryStreetsPath,
+  apiSaveOrderTemplate,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setOrderList, setOrderDetails } from 'storage/actions/order.actions'
@@ -19,6 +20,24 @@ import instance from './axiosProvider'
 
 export const checkout = async (orderData) => {
   const res = await instance.post(apiCheckoutOrderPath, orderData)
+  const { success, message } = res.data
+  if (success) {
+    showSnack({
+      variant: 'success',
+      message,
+    })
+    clearCart()
+    return true
+  }
+  showSnack({
+    variant: 'error',
+    message,
+  })
+  return false
+}
+
+export const saveTemplate = async (orderData) => {
+  const res = await instance.post(apiSaveOrderTemplate, orderData)
   const { success, message } = res.data
   if (success) {
     showSnack({
