@@ -8,9 +8,11 @@ import PropTypes from 'prop-types'
 import { textLabels } from 'config/tableConfig/textLabels'
 
 import { orderDetailsPath } from 'config/routes'
+import { checkAccessByLevel, roleAccessLevel } from 'config/roles'
 
 
 const OrderList = ({ orderListInfo, getOrderList }) => {
+  const customerNameColumnViewed = checkAccessByLevel(roleAccessLevel.admin)
   const { config, orders } = orderListInfo
   const { count } = config
 
@@ -23,7 +25,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
 
   const [displayed, setDisplayed] = useState({
     id: true,
-    customer_id: false,
+    customer_name: customerNameColumnViewed,
     created_at: false,
     updated_at: false,
     deliveryType: true,
@@ -60,7 +62,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
 
   const columns = [
     { name: 'id', label: 'ID', options: { sort: false, display: displayed.id } },
-    { name: 'customer_id', label: 'ID клиента', options: { sort: false, display: displayed.customer_id } },
+    { name: 'customer_name', label: 'Kлиент', options: { sort: false, display: displayed.customer_name, viewColumns: customerNameColumnViewed } },
     { name: 'created_at', label: 'Создан', options: { sort: false, display: displayed.created_at } },
     { name: 'updated_at', label: 'Обновлен', options: { sort: false, display: displayed.updated_at } },
     { name: 'deliveryType', label: 'Способ отправки', options: { sort: false, display: displayed.deliveryType } },
