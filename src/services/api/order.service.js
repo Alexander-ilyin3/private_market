@@ -81,22 +81,11 @@ export const warehouseAutocomplete = async (city_ref) => {
   return warehouses
 }
 
-export const streetAutocomplete = async ({ city_ref, search }) => {
+export const streetAutocomplete = async ({ city_ref, q }) => {
   if (!city_ref) return []
-  const res = await instance.get(apiDeliveryStreetsPath, { params: { city_ref, search } })
-  const { streets } = res.data
-
-  const streetsMock = [
-    { ref: '1', name: 'Kashirina' },
-    { ref: '2', name: 'Skilna' },
-    { ref: '3', name: 'Likarniana' },
-    { ref: '4', name: 'Bakulina' },
-    { ref: '5', name: 'Naukova' },
-    { ref: '6', name: 'Starogorodska' },
-    { ref: '7', name: 'Sadova' },
-  ]
-
-  return streetsMock
+  const res = await instance.get(apiDeliveryStreetsPath, { params: { city_ref, q } })
+  const { items = [] } = res.data
+  return items.map(({ ref, title, type }) => ({ ref, name: `${type} ${title}` }))
 }
 
 export const getDeliveryMethods = async (dispatch) => {

@@ -6,10 +6,10 @@ import SearchAutocomplete from './SearchAutocomplete'
 
 
 export default function (props) {
-  const getStreets = (search) => {
+  const getStreets = (q) => {
     const { meta } = props
     const { city_ref } = meta
-    return streetAutocomplete({ city_ref, search })
+    return streetAutocomplete({ city_ref, q })
   }
   return <SearchAutocomplete {...props} service={getStreets} />
 }
