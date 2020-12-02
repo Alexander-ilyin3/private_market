@@ -37,6 +37,9 @@ export const declineRoles = filter => forAll.filter(role => !filter.includes(rol
 
 export const checkAccessByLevel = (level) => {
   const userRoles = roles(store.getState())
+  if (!userRoles || userRoles.length < 1) {
+    return false
+  }
   const maxAccessLevelRole = userRoles.sort((next, prev) => {
     if (roleAccessLevel[prev.name] > roleAccessLevel[next.name]) return 1
     return -1
@@ -51,3 +54,7 @@ export const checkAlloved = ({ allowedRoles }) => {
   if (!userRoles) return false
   return userRoles.find(role => allowedRoles.includes(role.name))
 }
+
+export const onlyAdminOrGreater = () => checkAccessByLevel(roleAccessLevel.admin)
+
+export const onlyClientOrGreater = () => checkAccessByLevel(roleAccessLevel.client)
