@@ -44,13 +44,16 @@ class Preorder extends Component {
       if (dataToSend.deliveryType === 2) {
         dataToSend.city = dataToSend.city.city_ref
         dataToSend.warehouse = dataToSend.warehouse.value
-        dataToSend.deliveryStreet = dataToSend.deliveryStreet.ref
+        dataToSend.deliveryAddress = {
+          street_ref: dataToSend.deliveryStreet.ref,
+          house_num: dataToSend.deliveryHouseNumber,
+          flat_num: dataToSend.deliveryApartamentNumber,
+        }
       } else {
+        dataToSend.toDoor = ''
         dataToSend.city = ''
         dataToSend.warehouse = ''
-        dataToSend.deliveryStreet = ''
-        dataToSend.deliveryHouseNumber = ''
-        dataToSend.deliveryApartamentNumber = ''
+        dataToSend.deliveryAddress = null
       }
       if (dataToSend.paymentType === 2) {
         dataToSend.CODPayer = ''
@@ -59,10 +62,8 @@ class Preorder extends Component {
         dataToSend.EDRPOU = ''
       }
       if (!dataToSend.toDoor) {
-        dataToSend.deliveryAddress = ''
-        dataToSend.deliveryStreet = ''
-        dataToSend.deliveryHouseNumber = ''
-        dataToSend.deliveryApartamentNumber = ''
+        dataToSend.deliveryAddress = null
+        dataToSend.toDoor = ''
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
