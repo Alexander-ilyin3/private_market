@@ -111,6 +111,8 @@ export class Control {
    * Trigger touch event on native form control
   */
   touch: () => void
+
+  public setError: (error: string, message: string) => void
 }
 
 type ValuesT = { [controlName: string]: any }

@@ -80,6 +80,15 @@ export class Control {
     this.onValueChanged(value)
   }
 
+  setError = (error, message) => {
+    this.errors = { [error]: true }
+    this.touched = true
+    this.invalid = true
+    this.valid = false
+    this.setMeta({ errorMessages: { [error]: message } })
+    this.onUpdated(this.name, this.value)
+  }
+
   addValidator = (newValidator) => {
     this.validators = [...this.validators, newValidator]
     this.validate()
