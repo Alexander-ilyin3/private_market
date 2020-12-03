@@ -23,12 +23,11 @@ export class ControlGroup {
     this.validChangedHandler = () => {}
   }
 
-  submit = (e) => {
-    e.preventDefault()
+  submit = (apiMethod) => {
     this.setAsSubmited()
     this.validateAll()
     this.subscriber(this)
-    if (this.valid) this.submitHandler(this)
+    if (this.valid) this.submitHandler(this, apiMethod)
   }
 
   configUpdate = () => {

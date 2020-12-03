@@ -114,8 +114,10 @@ export class Control {
 }
 
 type ValuesT = { [controlName: string]: any }
-type submitHandlerT = (form: ControlGroup) => void
+type ApiMethodT = (data: any) => Promise<any>
+type submitHandlerT = (form: ControlGroup, apiMethod: ApiMethodT) => void
 type SubscriberT = (form: ControlGroup) => void
+
 
 export class ControlGroup<C> {
   constructor(config: IFormConfig)
@@ -130,7 +132,7 @@ export class ControlGroup<C> {
   public submited: boolean
   public valid: boolean
   public values: ValuesT
-  public submit: (e: any) => void
+  public submit: (apiMethod: ApiMethodT) => void
   public cofigUbpdate: () => void
   public onUpdated: (name: string, value: any) => void
   public get: (name: string) => Control
