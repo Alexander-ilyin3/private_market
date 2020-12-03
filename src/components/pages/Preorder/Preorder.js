@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 
 import { FormGroup, FormControl } from 'components/parts/ReactiveForm'
-import { checkout } from 'services/api/order.service'
+import { checkout, saveTemplate } from 'services/api/order.service'
 import { ordersPath } from 'config/routes'
 import { onlyClientOrGreater } from 'config/roles'
 
@@ -38,7 +38,7 @@ class Preorder extends Component {
       deliveryMethods,
       paymentMethods,
     } = this.props
-    this.form.onSubmit((formData) => {
+    this.form.onSubmit((formData, apiMethod) => {
       const { values } = formData
       const dataToSend = { ...values }
       if (dataToSend.deliveryType === 2) {
@@ -66,12 +66,12 @@ class Preorder extends Component {
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
-      checkout({ ...dataToSend, products }).then((success) => {
+      apiMethod({ ...dataToSend, products }).then((success) => {
         if (success) {
           const { history } = this.props
           history.push(ordersPath)
         }
-      })
+      }).catch()
     })
     return (
       <Grid container spacing={2}>
@@ -79,7 +79,7 @@ class Preorder extends Component {
           <Table cartData={cart} />
           <Grid style={{ marginTop: 8, marginBottom: 8 }} container spacing={1}>
             <Grid item xs={12} sm={6} xl={3}>
-              <Button variant='contained' color='primary' disabled={!this.isClientOrGreater} fullWidth onClick={this.form.submit}>Оформить</Button>
+              <Button variant='contained' color='primary' disabled={!this.isClientOrGreater} fullWidth onClick={() => this.form.submit(checkout)}>Оформить</Button>
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
               <Button variant='contained' color='primary' disabled fullWidth>Зарезерваировать</Button>
@@ -88,7 +88,7 @@ class Preorder extends Component {
               <Button variant='contained' color='primary' disabled fullWidth>Выписать Счет</Button>
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <Button variant='contained' color='primary' disabled={this.isClientOrGreater} fullWidth>Сохранить Шаблон</Button>
+              <Button variant='contained' color='primary' disabled={this.isClientOrGreater} fullWidth onClick={() => this.form.submit(saveTemplate)}>Сохранить Шаблон</Button>
             </Grid>
             <Grid item xs={false} md={3} xl={4} />
             <Grid item xs={12} md={6} xl={4}>
