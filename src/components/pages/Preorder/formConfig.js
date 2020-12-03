@@ -105,7 +105,6 @@ export const createForm = () => {
       meta: {
         label: 'Номер квартиры',
         hide: true,
-        type: 'autocomplete',
       },
     },
     comment: { },
