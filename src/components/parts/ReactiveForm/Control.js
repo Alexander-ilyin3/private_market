@@ -85,7 +85,8 @@ export class Control {
     this.touched = true
     this.invalid = true
     this.valid = false
-    this.setMeta({ errorMessages: { [error]: message } })
+    const prevMessages = this.meta.errorMessages || {}
+    this.setMeta({ errorMessages: { ...prevMessages, [error]: message } })
     this.onUpdated(this.name, this.value)
   }
 
