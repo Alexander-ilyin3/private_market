@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import axios from 'axios'
 import querystring from 'querystring'
 import { store } from 'storage'
@@ -27,7 +28,7 @@ instance.interceptors.response.use(
   (res) => {
     Preloader.hide()
     const { success, message } = res.data
-    if (!success) {
+    if (res.data.hasOwnProperty('success') && !success) {
       showSnack({
         variant: 'error',
         message,
@@ -41,11 +42,21 @@ instance.interceptors.response.use(
     if (status === 401) {
       dispatch(logoutAction())
     }
-    const { message } = data
-    showSnack({
-      variant: 'error',
-      message,
-    })
+    const { message, errors } = data
+    if (message) {
+      showSnack({
+        variant: 'error',
+        message,
+      })
+    }
+    if (errors) {
+      Object.keys(errors).forEach((key) => {
+        showSnack({
+          variant: 'error',
+          message: errors[key].join(' '),
+        })
+      })
+    }
     return Promise.reject(err)
   },
 )
