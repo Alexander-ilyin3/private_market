@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 
 import { sliceStack } from 'storage/actions/snack.actions'
+import { store } from 'storage'
+import { snackInfo } from 'storage/selectors/snack.selector'
 
 const Alert = props => <MuiAlert elevation={6} variant='filled' {...props} />
 
@@ -36,44 +38,73 @@ Snack.propTypes = {
   message: PropTypes.string,
 }
 
-const ShowSnack = ({ snackPack }) => {
-  const [open, setOpen] = React.useState(false)
-  const [messageInfo, setMessageInfo] = React.useState(undefined)
+class ShowSnack extends Component {
+  processing = false
 
-  useEffect(() => {
-    if (snackPack.length && !messageInfo) {
-      setMessageInfo({ ...snackPack[0] })
-      sliceStack()
-      setOpen(true)
-    } else if (snackPack.length && messageInfo && open) {
-      setOpen(false)
-    }
-  }, [snackPack, messageInfo, open])
-
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
+  state = {
+    snacks: [],
   }
 
-  const handleExited = () => {
-    setMessageInfo(undefined)
+  setMessageInfo = (info) => {
+    const { snacks } = this.state
+    this.setState({ snacks: [...snacks, info] })
   }
 
-  return (
-    <Snackbar
-      key={messageInfo ? messageInfo.key : undefined}
-      open={open}
-      autoHideDuration={6000}
-      onClose={handleClose}
-      onExited={handleExited}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-    >
-      <Snack {...messageInfo} />
-    </Snackbar>
-  )
+  componentDidUpdate = () => {
+    const { snackPack } = this.props
+    if (snackPack.length > 0) {
+      const addToQue = () => {
+        if (!this.processing) {
+          this.processing = true
+          const snackPack = snackInfo(store.getState())
+          this.setMessageInfo({
+            ...snackPack[0],
+            id: parseInt(Math.random() * 10000000000000000, 10),
+          })
+          sliceStack()
+          setTimeout(() => {
+            this.processing = false
+            if (snackInfo(store.getState()).length > 0) {
+              addToQue()
+            }
+          }, 200)
+        }
+      }
+      addToQue()
+    }
+  }
+
+  handleClose = (reason, id) => {
+    if (reason === 'timeout') {
+      const { snacks } = this.state
+      this.setState({ snacks: snacks.filter(snack => snack.id !== id) })
+    } else {
+      this.setState({ snacks: [] })
+    }
+  }
+
+  exitedHandler = (id) => {
+    const { snacks } = this.state
+    this.setState({ snacks: snacks.filter(snack => snack.id !== id) })
+  }
+
+  render() {
+    const { snacks } = this.state
+    return snacks.map((snack, i) => (
+      <Snackbar
+        style={{ top: (snacks.length - i - 1) * 60 }}
+        key={snack.id}
+        open
+        autoHideDuration={6000}
+        onClose={(event, reason) => this.handleClose(reason, snack.id)}
+        onExited={() => this.exitedHandler(snack.id)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        // TransitionProps={{  }}
+      >
+        <Snack {...snack} />
+      </Snackbar>
+    ))
+  }
 }
 
 ShowSnack.propTypes = {
