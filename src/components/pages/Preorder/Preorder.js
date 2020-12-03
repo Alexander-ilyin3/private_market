@@ -67,12 +67,24 @@ class Preorder extends Component {
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
+      delete dataToSend.phone
       apiMethod({ ...dataToSend, products }).then((success) => {
+
         if (success) {
           const { history } = this.props
           history.push(ordersPath)
         }
-      }).catch()
+      }).catch((err) => {
+        const { response } = err
+        const { data } = response
+        const { errors } = data
+        Object.keys(errors).forEach((errorName) => {
+          const control = this.form.get(errorName)
+          if (control) {
+            control.setError(errorName, errors[errorName].join(' '))
+          }
+        })
+      })
     })
     return (
       <Grid container spacing={2}>
