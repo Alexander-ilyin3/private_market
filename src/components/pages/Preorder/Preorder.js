@@ -67,7 +67,6 @@ class Preorder extends Component {
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
-      delete dataToSend.phone
       apiMethod({ ...dataToSend, products }).then((success) => {
 
         if (success) {
