@@ -50,6 +50,7 @@ class ShowSnack extends Component {
     this.setState({ snacks: [...snacks, info] })
   }
 
+
   componentDidUpdate = () => {
     const { snackPack } = this.props
     if (snackPack.length > 0) {
@@ -57,9 +58,11 @@ class ShowSnack extends Component {
         if (!this.processing) {
           this.processing = true
           const snackPack = snackInfo(store.getState())
+          const id = parseInt(Math.random() * 10000000000000000, 10)
           this.setMessageInfo({
             ...snackPack[0],
-            id: parseInt(Math.random() * 10000000000000000, 10),
+            id,
+            show: true,
           })
           sliceStack()
           setTimeout(() => {
@@ -74,12 +77,27 @@ class ShowSnack extends Component {
     }
   }
 
+  remove = (id) => {
+    const { snacks } = this.state
+    this.setState({ snacks: snacks.filter(snack => snack.id !== id) })
+  }
+
   handleClose = (reason, id) => {
     if (reason === 'timeout') {
       const { snacks } = this.state
-      this.setState({ snacks: snacks.filter(snack => snack.id !== id) })
+      this.setState({
+        snacks: snacks.map((snack) => {
+          if (snack.id === id) {
+            snack.show = false
+          }
+          return snack
+        }),
+      })
+      setTimeout(() => this.remove(id), 1000)
     } else {
-      this.setState({ snacks: [] })
+      const { snacks } = this.state
+      this.setState({ snacks: snacks.map(snack => ({ ...snack, show: false })) })
+      setTimeout(() => this.setState({ snacks: [] }), 1000)
     }
   }
 
@@ -94,12 +112,12 @@ class ShowSnack extends Component {
       <Snackbar
         style={{ top: (snacks.length - i - 1) * 60 }}
         key={snack.id}
-        open
+        open={snack.show}
         autoHideDuration={6000}
         onClose={(event, reason) => this.handleClose(reason, snack.id)}
         onExited={() => this.exitedHandler(snack.id)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        // TransitionProps={{  }}
+        transitionDuration={1000}
       >
         <Snack {...snack} />
       </Snackbar>
