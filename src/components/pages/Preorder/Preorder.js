@@ -64,11 +64,11 @@ class Preorder extends Component {
       if (!dataToSend.toDoor) {
         dataToSend.deliveryAddress = null
         dataToSend.toDoor = ''
+        dataToSend.warehouse = ''
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
       apiMethod({ ...dataToSend, products }).then((success) => {
-
         if (success) {
           const { history } = this.props
           history.push(ordersPath)
@@ -76,13 +76,24 @@ class Preorder extends Component {
       }).catch((err) => {
         const { response } = err
         const { data } = response
-        const { errors } = data
-        Object.keys(errors).forEach((errorName) => {
-          const control = this.form.get(errorName)
-          if (control) {
-            control.setError(errorName, errors[errorName].join(' '))
+        if (data && data.errors) {
+          const { errors } = data
+          if (errors['deliveryAddress.flat_num']) {
+            this.form.get('deliveryApartamentNumber').setError('deliveryAddress.flat_num', errors['deliveryAddress.flat_num'].join(' '))
           }
-        })
+          if (errors['deliveryAddress.house_num']) {
+            this.form.get('deliveryHouseNumber').setError('deliveryAddress.house_num', errors['deliveryAddress.house_num'].join(' '))
+          }
+          if (errors['deliveryAddress.street_ref']) {
+            this.form.get('deliveryStreet').setError('deliveryAddress.street_ref', errors['deliveryAddress.street_ref'].join(' '))
+          }
+          Object.keys(errors).forEach((errorName) => {
+            const control = this.form.get(errorName)
+            if (control) {
+              control.setError(errorName, errors[errorName].join(' '))
+            }
+          })
+        }
       })
     })
     return (
