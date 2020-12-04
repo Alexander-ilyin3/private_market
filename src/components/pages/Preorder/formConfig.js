@@ -153,6 +153,7 @@ export const createForm = () => {
     deliveryStreet.setMeta({ hide: !val })
     deliveryHouseNumberFormItem.setMeta({ hide: !val })
     deliveryApartamentNumberFormItem.setMeta({ hide: !val })
+    warehouseFormItem.setMeta({ hide: val })
     nameFormItem.validate()
   })
 
