@@ -173,7 +173,7 @@ class Products extends PureComponent {
       <MemoizedTableRender
         columns={columns}
         data={products}
-        title={<SearchInput tooltipsOpened={newOrder} onSearch={this.onSearch} />}
+        title={<SearchInput tooltipsOpened={newOrder} tooltipTitle='Ищите товары в каталоге по артикулу или названию' onSearch={this.onSearch} />}
         options={{
           ...options,
         }}
