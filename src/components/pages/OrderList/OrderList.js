@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import DataTable from 'mui-datatables'
 import PropTypes from 'prop-types'
+import SearchInput from 'components/parts/SearchInput'
 
 
 import { textLabels } from 'config/tableConfig/textLabels'
 
 import { orderDetailsPath } from 'config/routes'
-import { checkAccessByLevel, roleAccessLevel } from 'config/roles'
+import { checkAccessByLevel, roleAccessLevel, onlyAdminOrGreater } from 'config/roles'
 
 
 const OrderList = ({ orderListInfo, getOrderList }) => {
@@ -19,9 +20,10 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   const [localConfig, setConfig] = useState({
     page: 0,
     limit: 10,
+    search_query: '',
   })
 
-  const { page, limit } = localConfig
+  const { page, limit, search_query } = localConfig
 
   const [displayed, setDisplayed] = useState({
     id: true,
@@ -46,8 +48,10 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   })
 
   useEffect(() => {
-    getOrderList({ limit, page: page + 1 })
-  }, [page, limit, getOrderList])
+    const query = { limit, page: page + 1 }
+    if (onlyAdminOrGreater()) query.search_query = search_query
+    getOrderList(query)
+  }, [page, limit, search_query, getOrderList])
 
   const history = useHistory()
 
@@ -58,6 +62,10 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
       setDisplayed(diplayed)
       setConfig({ page, limit: rowsPerPage })
     }
+  }
+
+  const onSearch = (search_query) => {
+    setConfig({ ...localConfig, search_query })
   }
 
   const columns = [
@@ -116,6 +124,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
         data={orders}
         options={options}
         columns={columns}
+        title={onlyAdminOrGreater() && <SearchInput tooltipsOpened={false} onSearch={onSearch} position='start' />}
       />
     </Paper>
   )
