@@ -26,7 +26,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   const { page, limit, search_query } = localConfig
 
   const [displayed, setDisplayed] = useState({
-    id: true,
+    id_1c: true,
     customer_name: customerNameColumnViewed,
     created_at: false,
     updated_at: false,
@@ -60,16 +60,16 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     if (['changeRowsPerPage', 'changePage'].indexOf(eventType) > -1) {
       const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
       setDisplayed(diplayed)
-      setConfig({ page, limit: rowsPerPage })
+      setConfig({ page, limit: rowsPerPage, search_query })
     }
   }
 
   const onSearch = (search_query) => {
-    setConfig({ ...localConfig, search_query })
+    setConfig({ ...localConfig, search_query, page: 0 })
   }
 
   const columns = [
-    { name: 'id', label: 'ID', options: { sort: false, display: displayed.id } },
+    { name: 'id_1c', label: 'ID 1C', options: { sort: false, display: displayed.id_1c } },
     { name: 'customer_name', label: 'Kлиент', options: { sort: false, display: displayed.customer_name, viewColumns: customerNameColumnViewed } },
     { name: 'created_at', label: 'Создан', options: { sort: false, display: displayed.created_at } },
     { name: 'updated_at', label: 'Обновлен', options: { sort: false, display: displayed.updated_at } },
