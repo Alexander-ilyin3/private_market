@@ -42,11 +42,17 @@ instance.interceptors.response.use(
     if (status === 401) {
       dispatch(logoutAction())
     }
-    const { message, errors } = data
+    const { message, errors, error } = data
     if (message) {
       showSnack({
         variant: 'error',
         message,
+      })
+    }
+    if (error && typeof error === 'string') {
+      showSnack({
+        variant: 'error',
+        message: error,
       })
     }
     if (errors) {

@@ -20,20 +20,13 @@ import instance from './axiosProvider'
 
 export const checkout = async (orderData) => {
   const res = await instance.post(apiCheckoutOrderPath, orderData)
-  const { success, message } = res.data
-  if (success) {
-    showSnack({
-      variant: 'success',
-      message,
-    })
-    clearCart()
-    return true
-  }
+  const { message } = res.data
   showSnack({
-    variant: 'error',
+    variant: 'success',
     message,
   })
-  return false
+  clearCart()
+  return true
 }
 
 export const saveTemplate = async (orderData) => {
