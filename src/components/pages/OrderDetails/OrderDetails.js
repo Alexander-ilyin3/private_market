@@ -42,12 +42,19 @@ const OrderDetails = ({
   const {
     products,
   } = order
-  const renderDetail = (name, i) => (
-    <div key={name} className={classNames({ [classes.odd]: !(i % 2) }, classes.detail)}>
-      <Typography style={{ whiteSpace: 'nowrap' }} variant='h6'>{orderLabels[name]} :</Typography>
-      <Typography style={{ whiteSpace: 'break-spaces' }} align='right'>{order[name]}</Typography>
-    </div>
-  )
+  const isDate = element => element && element.date
+  const renderDetail = (name, i) => {
+    let value = order[name]
+    if (isDate(order[name])) {
+      value = order[name].date.slice(0, order[name].date.length - 7)
+    }
+    return (
+      <div key={name} className={classNames({ [classes.odd]: !(i % 2) }, classes.detail)}>
+        <Typography style={{ whiteSpace: 'nowrap' }} variant='h6'>{orderLabels[name]} :</Typography>
+        <Typography style={{ whiteSpace: 'break-spaces' }} align='right'>{value}</Typography>
+      </div>
+    )
+}
   return (
     <Paper>
       <Typography align='center' variant='h4'>
