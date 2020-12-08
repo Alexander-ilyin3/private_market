@@ -45,6 +45,8 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     deliveryPayer: false,
     weight: false,
     volume: false,
+    status: true,
+    ttn: true,
   })
 
   useEffect(() => {
@@ -74,6 +76,16 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     { name: 'customer_name', label: 'Kлиент', options: { sort: false, display: displayed.customer_name, viewColumns: customerNameColumnViewed } },
     { name: 'created_at', label: 'Создан', options: { sort: false, display: displayed.created_at } },
     { name: 'updated_at', label: 'Обновлен', options: { sort: false, display: displayed.updated_at } },
+    {
+      name: 'status',
+      label: 'Статус',
+      options: {
+        customBodyRender: status => (status ? status.comment : 'Не установлен'),
+        sort: false,
+        display: displayed.status,
+      },
+    },
+    { name: 'ttn', label: 'ТТН', options: { sort: false, display: displayed.ttn } },
     { name: 'deliveryType', label: 'Способ отправки', options: { sort: false, display: displayed.deliveryType } },
     { name: 'paymentType', label: 'Способ оплаты', options: { sort: false, display: displayed.paymentType } },
     { name: 'customerType', label: 'Тип пользователя', options: { sort: false, display: displayed.customerType } },
