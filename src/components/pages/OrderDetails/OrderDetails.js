@@ -28,6 +28,8 @@ const orderLabels = {
   total_price: 'Общая сумма',
   volume: 'Объем',
   weight: 'Вес',
+  status: 'Статус',
+  ttn: 'ТТН',
 }
 
 const OrderDetails = ({
@@ -47,6 +49,9 @@ const OrderDetails = ({
     let value = order[name]
     if (isDate(order[name])) {
       value = order[name].date.slice(0, order[name].date.length - 7)
+    }
+    if (name === 'status') {
+      value = order[name].comment || 'Не установлен'
     }
     return (
       <div key={name} className={classNames({ [classes.odd]: !(i % 2) }, classes.detail)}>
