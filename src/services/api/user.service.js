@@ -17,24 +17,15 @@ export const getUser = params => async (dispatch) => {
   try {
     const res = await instance.get(apiUserListPath, { params })
     const {
-      success,
-      message,
       config,
       customers,
       roles,
     } = res.data
-    if (success) {
-      dispatch(setUserList({
-        config,
-        customers,
-        roles,
-      }))
-    } else {
-      showSnack({
-        variant: 'error',
-        message,
-      })
-    }
+    dispatch(setUserList({
+      config,
+      customers,
+      roles,
+    }))
   } catch (err) {
     const { response = {} } = err || {}
     const { data = {} } = response
