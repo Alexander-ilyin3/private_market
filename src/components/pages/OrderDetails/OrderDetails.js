@@ -59,7 +59,7 @@ const OrderDetails = ({
         <Typography style={{ whiteSpace: 'break-spaces' }} align='right'>{value}</Typography>
       </div>
     )
-}
+  }
   return (
     <Paper>
       <Typography align='center' variant='h4'>
