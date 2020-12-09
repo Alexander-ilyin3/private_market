@@ -111,7 +111,7 @@ class Preorder extends Component {
               <Button variant='contained' color='primary' disabled fullWidth>Выписать Счет</Button>
             </Grid>
             <Grid item xs={12} sm={6} xl={3}>
-              <Button variant='contained' color='primary' disabled={this.isClientOrGreater} fullWidth onClick={() => this.form.submit(saveTemplate)}>Сохранить Шаблон</Button>
+              <Button variant='contained' color='primary' disabled={this.isClientOrGreater} fullWidth onClick={() => this.form.submit(checkout)}>Сохранить Шаблон</Button>
             </Grid>
             <Grid item xs={false} md={3} xl={4} />
             <Grid item xs={12} md={6} xl={4}>
