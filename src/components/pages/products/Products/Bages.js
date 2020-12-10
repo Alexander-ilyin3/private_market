@@ -5,14 +5,11 @@ import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
-const styles = ({ palette, breakpoints }) => ({
+const styles = ({ palette }) => ({
   inlineBage: {
     whiteSpace: 'nowrap',
     '& span': {
       transform: 'scale(1) translate(95%, -50%)',
-      [breakpoints.down('sm')]: {
-        transform: 'translate(0,-50%)',
-      },
     },
   },
   warningBage: {
