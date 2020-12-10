@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import withWidth from '@material-ui/core/withWidth'
 
 import { getCart } from 'storage/selectors/cart.selector'
 
@@ -8,4 +9,4 @@ const mapStateToProps = state => ({
   cart: getCart(state),
 })
 
-export default connect(mapStateToProps)(CartIndicator)
+export default withWidth()(connect(mapStateToProps)(CartIndicator))

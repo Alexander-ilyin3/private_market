@@ -9,12 +9,12 @@ import { preorderPath } from 'config/routes'
 import { calculateCartTotal } from 'services/cart/cartHelpers'
 
 const CartIndicator = (props) => {
-  const { cart } = props
+  const { cart, width } = props
   const totalPrice = calculateCartTotal(cart)
   return totalPrice ? (
     <>
-      <Button variant='contained' color='primary' component={Link} to={preorderPath}>Оформить заказ</Button>
-      <Typograhy variant='h6' style={{ margin: '0 8px' }}>Общая сумма: {totalPrice.toLocaleString()}</Typograhy>
+      <Button variant='contained' color='primary' component={Link} to={preorderPath}>Корзина</Button>
+      <Typograhy variant={width === 'xs' ? 'subtitle2' : 'h6'} align='center' style={{ margin: '0 8px' }}>сумма: {totalPrice.toLocaleString()}</Typograhy>
     </>
   ) : null
 }
