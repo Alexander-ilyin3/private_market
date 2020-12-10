@@ -15,7 +15,7 @@
     "date-fns": "^2.14.0",
     "env-cmd": "^10.1.0",
     "lodash": "^4.17.11",
-    "mui-datatables": "^3.4.1",
+    "mui-datatables": "^3.7.2",
     "prop-types": "^15.6.2",
     "proptypes": "^1.1.0",
     "querystring": "^0.2.0",
