@@ -116,17 +116,6 @@ export const overrides = appTheme => ({
       color: 'inherit',
     },
   },
-  MUIDataTableHeadCell: {
-    root: {
-      backgroundColor: '#ebedee',
-      color: '#495057',
-      fontSize: '14px',
-      fontWeight: 700,
-    },
-    fixedHeaderCommon: {
-      backgroundColor: '#ebedee',
-    },
-  },
   MUIDataTableBodyCell: {
     // cellStacked: {
     //   [theme.breakpoints.down('sm')]: {
@@ -163,7 +152,7 @@ export const overrides = appTheme => ({
     stackedCommon: {
       [theme.breakpoints.down('sm')]: {
         width: '50%',
-        textAlign: 'end',
+        textAlign: 'start',
         height: 'auto',
         borderBottom: 'none',
         wordWrap: 'break-word',
