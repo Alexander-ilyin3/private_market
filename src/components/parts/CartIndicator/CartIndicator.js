@@ -25,6 +25,7 @@ CartIndicator.defaultProps = {
 
 CartIndicator.propTypes = {
   cart: PropTypes.array,
+  width: PropTypes.string.isRequired,
 }
 
 export default CartIndicator
