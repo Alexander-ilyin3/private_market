@@ -8,6 +8,7 @@ import {
 } from 'storage/selectors/products.selector'
 import { getProductList, getSearchAutocomplete } from 'services/api/products.service'
 import { withStyles } from '@material-ui/styles'
+import withWidth from '@material-ui/core/withWidth'
 
 import Products from './Products'
 import styles from './Products.styles'
@@ -25,4 +26,6 @@ const mapDispatchToProps = dispatch => ({
   getSearchAutocomplete: searchText => dispatch(getSearchAutocomplete(searchText)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products))
+export default withWidth()(
+  connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products)),
+)

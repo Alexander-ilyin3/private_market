@@ -135,6 +135,7 @@ class Products extends PureComponent {
       products = [],
       config,
       newOrder,
+      width,
     } = this.props
     const {
       page,
@@ -150,6 +151,7 @@ class Products extends PureComponent {
       incoming: this.props,
       throttledChanges: this.throttledChanges,
       tooltipsOpened: newOrder,
+      width,
     })
 
 
@@ -188,6 +190,7 @@ Products.defaultProps = {
   config: {},
   // vendors: [],  // vendors: PropTypes.array,
   newOrder: false,
+  width: '',
 }
 
 Products.propTypes = {
@@ -198,6 +201,7 @@ Products.propTypes = {
   // vendors: PropTypes.array,
   location: PropTypes.object.isRequired,
   newOrder: PropTypes.bool,
+  width: PropTypes.string,
 }
 
 export default Products

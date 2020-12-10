@@ -23,6 +23,7 @@ const renderColumns = ({
   diplayed,
   throttledChanges,
   tooltipsOpened,
+  width,
 }) => {
   const {
     products = [],
@@ -112,6 +113,7 @@ const renderColumns = ({
           </ToolTip>
         ),
         filterOptions: {
+          fullWidth: width === 'xs',
           display: (filterList, onChange, index, column) => (
             <FormControl>
               <InputLabel htmlFor='select-multiple-chip'>
@@ -156,6 +158,7 @@ const renderColumns = ({
         filterList: vendor ? [vendor] : null,
         filterOptions: {
           names: vendors,
+          fullWidth: width === 'xs',
         },
       },
     },
@@ -177,6 +180,7 @@ const renderColumns = ({
           display: (list, onChange, index, column) => (
             <TextField value={list[index][0] || ''} label='РЦЦ (до)' onInput={e => onChange(e.target.value ? [e.target.value] : [], index, column)} />
           ),
+          fullWidth: width === 'xs',
         },
       },
     },
