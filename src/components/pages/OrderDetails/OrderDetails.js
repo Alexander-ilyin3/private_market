@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import Table from './Table'
 
 const orderLabels = {
-  id_ic: 'ID 1C',
+  id_ic: 'Номер заказа',
   created_at: 'Создан',
   updated_at: 'Обновлен',
   deliveryType: 'Способ доставки',

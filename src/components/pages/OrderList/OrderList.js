@@ -71,7 +71,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
   }
 
   const columns = [
-    { name: 'id_1c', label: 'ID 1C', options: { sort: false, display: displayed.id_1c } },
+    { name: 'id_1c', label: 'Номер заказа', options: { sort: false, display: displayed.id_1c } },
     { name: 'id', label: 'ID', options: { sort: false, display: false, viewColumns: false } },
     { name: 'customer_name', label: 'Kлиент', options: { sort: false, display: displayed.customer_name, viewColumns: customerNameColumnViewed } },
     { name: 'created_at', label: 'Создан', options: { sort: false, display: displayed.created_at } },
