@@ -17,7 +17,6 @@ import TooltipInfo from 'components/parts/TooltipInfo'
 
 import BagesMap from './Bages'
 
-
 const renderColumns = ({
   incoming,
   diplayed,
@@ -38,6 +37,31 @@ const renderColumns = ({
     vendor = null,
     category_id = null,
   } = config
+
+  const bodyWithTooltip = ({
+    value,
+    row,
+    tooltipLabel,
+    render,
+    placement,
+  }) => {
+    const { rowIndex } = row
+    if (rowIndex === 0) {
+      return (
+        <>
+          <TooltipInfo placement={placement} open={tooltipsOpened} title={tooltipLabel}>
+            <div style={{
+              height: 50,
+              width: 100,
+              position: 'absolute',
+            }}/>
+          </TooltipInfo>
+          {render(value, row)}
+        </>
+      )
+    }
+    return render(value, row)
+  }
 
   const navigateToProductPage = ({ rowData }) => {
     const { history } = incoming
@@ -93,25 +117,30 @@ const renderColumns = ({
       name: 'category_name',
       label: 'Категория',
       options: {
-        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>Категория</div></TooltipInfo>,
+        // customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>Категория</div></TooltipInfo>,
         sort: false,
         display: diplayed.category_name,
         filterList: category_id ? [category_id] : null,
         customFilterListOptions: {
           render: v => categories.find(category => category.id === Number(v)).name,
         },
-        customBodyRender: (value, row) => (
-          <ToolTip title={`фильтровать по категории ${value}`}>
-            <div
-              className={classes.hover}
-              onClick={() => throttledChanges({
-                category_id: getProductByRow(row.rowIndex).category_id,
-              })}
-            >
-              {value}
-            </div>
-          </ToolTip>
-        ),
+        customBodyRender: (value, row) => bodyWithTooltip({
+          value,
+          row,
+          tooltipLabel: 'Фильтруйте каталог по бренду или группе товаров',
+          render: () => (
+            <ToolTip title={`фильтровать по категории ${value}`}>
+              <div
+                className={classes.hover}
+                onClick={() => throttledChanges({
+                  category_id: getProductByRow(row.rowIndex).category_id,
+                })}
+              >
+                {value}
+              </div>
+            </ToolTip>
+          ),
+        }),
         filterOptions: {
           fullWidth: width === 'xs',
           display: (filterList, onChange, index, column) => (
@@ -209,22 +238,27 @@ const renderColumns = ({
       name: 'toOrder',
       label: 'В заказ',
       options: {
-        customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Добавляйте товары в заказ'><div>В заказ</div></TooltipInfo>,
+        // customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Добавляйте товары в заказ'><div>В заказ</div></TooltipInfo>,
         sort: false,
         viewColumns: false,
         display: diplayed.toOrder,
-        customBodyRender: (_val, row) => {
-          const { rowData } = row
-          const notInStock = Number(rowData[12]) === 3
-          return (
-            <ToOrderInput
-              disabled={notInStock}
-              buttonColor='secondary'
-              buttonContent='+'
-              onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
-            />
-          )
-        },
+        customBodyRender: (value, row) => bodyWithTooltip({
+          value,
+          row,
+          tooltipLabel: 'Добавляйте товары в заказ',
+          render: () => {
+            const { rowData } = row
+            const notInStock = Number(rowData[12]) === 3
+            return (
+              <ToOrderInput
+                disabled={notInStock}
+                buttonColor='secondary'
+                buttonContent='+'
+                onAdd={count => addProduct({ count, product: getProductByRow(row.rowIndex) })}
+              />
+            )
+          },
+        }),
         filter: false,
       },
     },
