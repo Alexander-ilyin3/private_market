@@ -18,7 +18,7 @@ const patternValidatorCreator = (pattern, messageName) => function patternValida
 
 export const createForm = () => {
   const form = new ControlGroup({
-    deliveryType: { value: 1, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
+    deliveryType: { value: 2, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
     city: {
       meta: {
         label: 'Город',
@@ -59,7 +59,7 @@ export const createForm = () => {
       },
       validators: [required, phoneValidator],
     },
-    paymentType: { meta: { label: 'Способ оплаты', type: 'select' }, validators: [required] },
+    paymentType: { value: 1, meta: { label: 'Способ оплаты', type: 'select' }, validators: [required] },
     pymentAmount: {
       meta: {
         label: 'Сумма',
@@ -70,8 +70,8 @@ export const createForm = () => {
       },
       validators: [required, minValue(0), onlyInteger],
     },
-    deliveryPayer: { meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
-    CODPayer: { meta: { label: 'Платит за наложку', type: 'select', hide: true }, validators: [required] },
+    deliveryPayer: { value: 2, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
+    CODPayer: { value: 2, meta: { label: 'Платит за наложку', type: 'select', hide: true }, validators: [required] },
     insuranceAmount: {
       value: 300,
       meta: {
@@ -82,7 +82,7 @@ export const createForm = () => {
       },
       validators: [required, minValue(300)],
     },
-    insurancePayment: { meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
+    insurancePayment: { value: 2, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
     EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
     toDoor: { meta: { label: 'Адресная Доставка', type: 'checkbox', hide: true } },
     deliveryStreet: {
