@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
 import { makeStyles } from '@material-ui/styles'
@@ -13,6 +13,10 @@ export default function BootstrapTooltip(props) {
   const { open } = props
   const [isOpen, setOpen] = useState(open)
   const classes = useStylesBootstrap()
+
+  useEffect(() => {
+    setTimeout(() => setOpen(false), 7000)
+  }, [])
 
   return (
     <Tooltip
@@ -30,8 +34,10 @@ export default function BootstrapTooltip(props) {
 
 BootstrapTooltip.defaultProps = {
   open: false,
+  placement: 'bottom',
 }
 
 BootstrapTooltip.propTypes = {
   open: PropTypes.bool,
+  placement: PropTypes.string,
 }
