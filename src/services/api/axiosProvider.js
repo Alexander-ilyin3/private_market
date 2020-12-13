@@ -67,22 +67,44 @@ instance.interceptors.response.use(
   },
 )
 
-instance.interceptors.request.use(
-  (config) => {
-    const { url } = config
-    if (url.indexOf(apiProductSearchAutocompletePath) === -1) {
-      Preloader.show()
-    }
-    const token = store.getState().loginData.token
-    const updatedConfig = config
-    if (token) {
-      updatedConfig.headers.Authorization = token
-    }
+const requestInterceptor = (config) => {
+  const { url } = config
+  if (url.indexOf(apiProductSearchAutocompletePath) === -1) {
+    Preloader.show()
+  }
+  const token = store.getState().loginData.token
+  const updatedConfig = config
+  if (token) {
+    updatedConfig.headers.Authorization = token
+  }
 
-    return {
-      ...updatedConfig,
-    }
+  return {
+    ...updatedConfig,
+  }
+}
+
+instance.interceptors.request.use(requestInterceptor)
+
+const instanceWithotSnack = axios.create({
+  baseURL: apiBaseURL,
+  paramsSerializer(params) {
+    return querystring.stringify(params)
+  },
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+instanceWithotSnack.interceptors.request.use(requestInterceptor)
+instanceWithotSnack.interceptors.response.use(
+  (res) => {
+    Preloader.hide()
+    return res
+  }, (err) => {
+    Preloader.hide()
+    return Promise.reject(err)
   },
 )
 
 export default instance
+export { instanceWithotSnack }
