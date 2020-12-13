@@ -68,6 +68,7 @@ class Preorder extends Component {
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
+      dataToSend.name = dataToSend.name.replace(/\s+/g, ' ').trim()
       apiMethod({ ...dataToSend, products }).then((success) => {
         if (success) {
           const { history } = this.props
