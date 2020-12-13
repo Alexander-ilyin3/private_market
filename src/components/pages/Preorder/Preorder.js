@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 
 import { FormGroup, FormControl } from 'components/parts/ReactiveForm'
-import { checkout, saveTemplate } from 'services/api/order.service'
+import { checkout } from 'services/api/order.service'
 import { ordersPath } from 'config/routes'
 import { onlyClientOrGreater } from 'config/roles'
 
@@ -64,6 +64,7 @@ class Preorder extends Component {
       if (!dataToSend.toDoor) {
         dataToSend.deliveryAddress = null
         dataToSend.toDoor = ''
+      } else {
         dataToSend.warehouse = ''
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
