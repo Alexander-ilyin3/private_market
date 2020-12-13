@@ -15,11 +15,11 @@ import { setDeliveryMethods } from 'storage/actions/deliveryMethods.actions'
 import { setPaymentMethods } from 'storage/actions/paymentMethod.actions'
 import { clearCart } from 'services/cart/cartService'
 
-import instance from './axiosProvider'
+import instance, { instanceWithotSnack } from './axiosProvider'
 
 
 export const checkout = async (orderData) => {
-  const res = await instance.post(apiCheckoutOrderPath, orderData)
+  const res = await instanceWithotSnack.post(apiCheckoutOrderPath, orderData)
   const { message } = res.data
   showSnack({
     variant: 'success',
