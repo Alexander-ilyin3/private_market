@@ -8,8 +8,7 @@ export default function isLoading(state = initialState, { type, payload }) {
       ...state,
       {
         open: true,
-        message: payload.message,
-        variant: payload.variant,
+        ...payload,
         key: new Date().getTime(),
       },
     ]
