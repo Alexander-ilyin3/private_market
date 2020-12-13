@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import Button from '@material-ui/core/Button'
 
 import { sliceStack } from 'storage/actions/snack.actions'
 import { store } from 'storage'
@@ -17,12 +18,20 @@ const defaultMessages = {
 }
 
 
-const Snack = ({ variant, message }) => {
+const Snack = ({ variant, message, onClose }) => {
   const snackVariant = variant || 'warning'
   let snackMessage = defaultMessages[variant]
   if (message) snackMessage = message
   return (
-    <Alert severity={snackVariant}>
+    <Alert
+      onClose={onClose}
+      severity={snackVariant}
+      action={onClose && (
+        <Button color='inherit' size='small' onClick={onClose}>
+          ПОНЯТНО
+        </Button>
+      )}
+    >
       {snackMessage}
     </Alert>
   )
@@ -31,11 +40,13 @@ const Snack = ({ variant, message }) => {
 Snack.defaultProps = {
   variant: '',
   message: '',
+  onClose: null,
 }
 
 Snack.propTypes = {
   variant: PropTypes.string,
   message: PropTypes.string,
+  onClose: PropTypes.func,
 }
 
 class ShowSnack extends Component {
@@ -113,13 +124,13 @@ class ShowSnack extends Component {
         style={{ top: (snacks.length - i - 1) * 60 }}
         key={snack.id}
         open={snack.show}
-        autoHideDuration={6000}
-        onClose={(event, reason) => this.handleClose(reason, snack.id)}
-        onExited={() => this.exitedHandler(snack.id)}
+        autoHideDuration={snack.noAutohide ? 0 : 6000}
+        onClose={(event, reason) => !snack.noAutohide && this.handleClose(reason, snack.id)}
+        // onExited={() => this.exitedHandler(snack.id)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         transitionDuration={1000}
       >
-        <Snack {...snack} />
+        <Snack {...snack} onClose={snack.noAutohide ? () => { this.handleClose('timeout', snack.id) } : null} />
       </Snackbar>
     ))
   }
