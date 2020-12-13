@@ -54,7 +54,8 @@ const renderColumns = ({
               height: 50,
               width: 100,
               position: 'absolute',
-            }}/>
+            }}
+            />
           </TooltipInfo>
           {render(value, row)}
         </>
