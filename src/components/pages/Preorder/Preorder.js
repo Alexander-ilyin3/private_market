@@ -11,6 +11,7 @@ import { FormGroup, FormControl } from 'components/parts/ReactiveForm'
 import { checkout } from 'services/api/order.service'
 import { ordersPath } from 'config/routes'
 import { onlyClientOrGreater } from 'config/roles'
+import { showSnack } from 'storage/actions/snack.actions'
 
 import Table from './Table'
 
@@ -80,6 +81,13 @@ class Preorder extends Component {
         const { data } = response
         if (data && data.errors) {
           const { errors } = data
+          Object.keys(errors).forEach((key) => {
+            showSnack({
+              variant: 'error',
+              message: errors[key].join(' '),
+              noAutohide: true,
+            })
+          })
           if (errors['deliveryAddress.flat_num']) {
             this.form.get('deliveryApartamentNumber').setError('deliveryAddress.flat_num', errors['deliveryAddress.flat_num'].join(' '))
           }
