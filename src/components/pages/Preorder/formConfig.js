@@ -60,7 +60,7 @@ export const createForm = () => {
       validators: [required, phoneValidator],
     },
     paymentType: { value: 1, meta: { label: 'Способ оплаты', type: 'select' }, validators: [required] },
-    pymentAmount: {
+    paymentAmount: {
       meta: {
         label: 'Сумма',
         errorMessages: {
@@ -71,7 +71,7 @@ export const createForm = () => {
       validators: [required, minValue(0), onlyInteger],
     },
     deliveryPayer: { value: 2, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
-    CODPayer: { value: 2, meta: { label: 'Платит за наложку', type: 'select', hide: true }, validators: [required] },
+    CODPayer: { value: 2, meta: { label: 'Платит за наложку', type: 'select' }, validators: [required] },
     insuranceAmount: {
       value: 300,
       meta: {

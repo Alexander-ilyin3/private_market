@@ -33,7 +33,7 @@ const Delivery = ({
           )}
         />
       )}
-      value={<RFormControl name='pymentAmount' render={DefaultInputRender} />}
+      value={<RFormControl name='paymentAmount' render={DefaultInputRender} />}
     />
     <RenderColumnItem
       labelWeight={6}
