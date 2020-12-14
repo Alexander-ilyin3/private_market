@@ -13,7 +13,9 @@ export class Control {
       render,
       value = '',
       meta = {},
+      hide,
     } = configs
+    this.hideCheck = hide
     this.name = controlName
     this.render = render
     this.validators = validators
@@ -36,7 +38,7 @@ export class Control {
 
   validate = () => {
     let newErrors = {}
-    const { hide } = this.meta
+    const { hide } = this
     if (hide) {
       this.valid = true
       this.invalid = false
@@ -123,5 +125,15 @@ export class Control {
 
   recalculate() {
     this.setValue(this.value)
+  }
+
+  formUpdated(form) {
+    if (this.hideCheck) {
+      this.hide = this.hideCheck(form)
+    }
+  }
+
+  setHide(hide) {
+    this.hide = hide
   }
 }
