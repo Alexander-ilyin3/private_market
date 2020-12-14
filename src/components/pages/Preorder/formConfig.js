@@ -20,23 +20,19 @@ export const createForm = () => {
   const form = new ControlGroup({
     deliveryType: { value: 2, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
     city: {
-      meta: {
-        label: 'Город',
-        withLabel: true,
-        hide: true,
-        type: 'autocomplete',
-      },
+      meta: { label: 'Город', withLabel: true, type: 'autocomplete' },
+      hide: ({ deliveryType }) => deliveryType !== 2,
       validators: [required],
     },
     warehouse: {
       meta: {
         label: 'Склад',
         withLabel: true,
-        hide: true,
         type: 'autocomplete',
         itemsList: [],
       },
       validators: [required],
+      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || toDoor,
     },
 
     customerType: { value: 2, meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
@@ -71,7 +67,12 @@ export const createForm = () => {
       validators: [required, minValue(0), onlyInteger],
     },
     deliveryPayer: { value: 2, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
-    CODPayer: { value: 2, meta: { label: 'Платит за наложку', type: 'select' }, validators: [required] },
+    CODPayer: {
+      value: 2,
+      meta: { label: 'Платит за наложку', type: 'select' },
+      hide: ({ paymentType }) => paymentType !== 1,
+      validators: [required],
+    },
     insuranceAmount: {
       value: 300,
       meta: {
@@ -83,37 +84,38 @@ export const createForm = () => {
       validators: [required, minValue(300)],
     },
     insurancePayment: { value: 2, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
-    EDRPOU: { meta: { label: 'ЕДРПОУ', hide: true }, validators: [required] },
-    toDoor: { meta: { label: 'Адресная Доставка', type: 'checkbox', hide: true } },
+    EDRPOU: { meta: { label: 'ЕДРПОУ' }, validators: [required], hide: ({ customerType }) => customerType === 2 },
+    toDoor: {
+      meta: { label: 'Адресная Доставка', type: 'checkbox' },
+      hide: ({ deliveryType }) => deliveryType !== 2,
+    },
     deliveryStreet: {
       meta: {
         label: 'Улица',
         withLabel: true,
-        hide: true,
         type: 'autocomplete',
       },
       validators: [required],
+      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
     },
     deliveryHouseNumber: {
       meta: {
         label: 'Номер дома',
-        hide: true,
       },
       validators: [required],
+      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
     },
     deliveryApartamentNumber: {
       meta: {
         label: 'Номер квартиры',
-        hide: true,
       },
+      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
     },
     comment: { },
   })
 
   const cityFormItem = form.get('city')
   const warehouseFormItem = form.get('warehouse')
-  const paymentTypeFormItem = form.get('paymentType')
-  const CODPayerFormItem = form.get('CODPayer')
   const toDoorFormItem = form.get('toDoor')
   const deliveryStreet = form.get('deliveryStreet')
   const nameFormItem = form.get('name')
@@ -138,22 +140,10 @@ export const createForm = () => {
     return required(value)
   }])
 
-  paymentTypeFormItem.valueChanges((val) => {
-    CODPayerFormItem.setMeta({ hide: val !== 1 })
+  customerTypeFormItem.valueChanges(() => {
+    nameFormItem.validate()
   })
-
-  deliveryTypeFormItem.valueChanges((val) => {
-    cityFormItem.setMeta({ hide: val !== 2 })
-    warehouseFormItem.setMeta({ hide: val !== 2 || toDoorFormItem.value })
-    toDoorFormItem.setMeta({ hide: val !== 2 })
-    deliveryStreet.setMeta({ hide: val !== 2 || !toDoorFormItem.value })
-  })
-
-  toDoorFormItem.valueChanges((val) => {
-    deliveryStreet.setMeta({ hide: !val })
-    deliveryHouseNumberFormItem.setMeta({ hide: !val })
-    deliveryApartamentNumberFormItem.setMeta({ hide: !val })
-    warehouseFormItem.setMeta({ hide: val })
+  toDoorFormItem.valueChanges(() => {
     nameFormItem.validate()
   })
 
@@ -178,14 +168,6 @@ export const createForm = () => {
     }
   })
 
-  form.get('customerType').valueChanges((val) => {
-    const edrpou = form.get('EDRPOU')
-    if (val === 2) {
-      edrpou.setMeta({ hide: true })
-    } else {
-      edrpou.setMeta({ hide: false })
-    }
-  })
-
+  form.recalculate()
   return form
 }
