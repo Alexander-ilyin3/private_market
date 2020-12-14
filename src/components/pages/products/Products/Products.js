@@ -66,7 +66,7 @@ class Products extends PureComponent {
   }
 
   onTableChange = (eventType, state) => {
-    if (eventType === 'columnViewChange') {
+    if (eventType === 'viewColumnsChange') {
       const diplayed = Object.fromEntries(state.columns.map(col => [col.name, col.display]))
       this.setState({ diplayed })
     }
