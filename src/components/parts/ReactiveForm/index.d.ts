@@ -1,4 +1,4 @@
-import { SFC, ReactElement } from 'react'
+import { FunctionComponent, ReactElement } from 'react'
 
 export type InputTypes = 'select' | 'picker' | 'checkbox' | 'autocomplete' | 'masked' | 'text'
 
@@ -21,7 +21,7 @@ interface FormControlPropsT {
   name: string
   render: RenderFormItemT
 }
-export const FormControl: SFC<FormControlPropsT>
+export const FormControl: FunctionComponent<FormControlPropsT>
 
 export interface IMeta {
   label?: string,
@@ -34,9 +34,12 @@ export interface IMeta {
 }
 
 export interface IControlConfig {
+
+
   meta?: IMeta,
   value?: any,
   validators?: ValidatorT[]
+  hide: (values: {[key: string]: any}) => void
 }
 
 export interface IFormConfig {
@@ -45,6 +48,7 @@ export interface IFormConfig {
 
 type ValidatorT = (value: any) => ({ [key: string]: string })
 type OnValueChangedT = (value: any) => void
+type ValuesT = { [controlName: string]: any }
 
 export class Control {
   constructor(config: IControlConfig)
@@ -54,12 +58,39 @@ export class Control {
   private render: () => {}
   private validators: ValidatorT[]
 
+  /**
+    * Name of form item
+  */
   public name: string
+
+  /**
+    * True if item is touched by user
+  */
   public touched: boolean
-  public vaid: boolean
+
+  /**
+    * False, if some of validators retuned error
+  */
+  public vlaid: boolean
+
+  /**
+    * List of available errors
+  */
   public errors: { [key: string]: string }
+
+  /**
+    * Current item value
+  */
   public value: any
+
+  /**
+    * True, if some of validators retuned error
+  */
   public invalid: boolean
+
+  /**
+    * Metadata. Passes to the render method
+  */
   public meta: IMeta
 
   /**
@@ -113,9 +144,18 @@ export class Control {
   touch: () => void
 
   public setError: (error: string, message: string) => void
+
+  /**
+   * Function called by parent form if form is updated
+  */ 
+  public formUpdated: (form: ValuesT) => void
+
+  /**
+   * Immediately set visibility of element
+  */  
+  public setHide: (hide: boolean) => void
 }
 
-type ValuesT = { [controlName: string]: any }
 type ApiMethodT = (data: any) => Promise<any>
 type submitHandlerT = (form: ControlGroup, apiMethod: ApiMethodT) => void
 type SubscriberT = (form: ControlGroup) => void
@@ -127,23 +167,69 @@ export class ControlGroup<C> {
   private subscriber: SubscriberT
   private submitHandler: submitHandlerT
   private validChangedHandler: () => void
+  private configUpdate: () => void
+  private onUpdated: (name: string, value: any) => void
+  private setAsSubmited: () => void
+  private setAsInvalid: () => void
+  private setValid: (valid: boolean) => void
+  private validateAll: () => boolean
 
-  public controls: Control[]
-  public keys: string[]
-  public touched: boolean
-  public submited: boolean
-  public valid: boolean
-  public values: ValuesT
-  public submit: (apiMethod: ApiMethodT) => void
-  public cofigUbpdate: () => void
-  public onUpdated: (name: string, value: any) => void
-  public get: (name: string) => Control
-  public getValuesForced: () => ValuesT
-  public setValid: (valid: boolean) => void
-  public onValidChanged: (handler: () => void) => void
-  public validateAll: () => boolean
-  public onSubmit: (handler: submitHandlerT) => void
-  public setAsSubmited: () => void
-  public setAsInvalid: () => void
   public registerUpdateSubscriber: (subscriber: SubscriberT) => void
+
+  /**
+   * List of controls objects
+  */ 
+  public controls: { [key: name]: Control }
+
+  /**
+   * List of form items names
+  */ 
+  public keys: string[]
+
+  /**
+   * True if some one form item is touched
+  */ 
+  public touched: boolean
+
+  /**
+   * True if submit function called
+  */ 
+  public submited: boolean
+  
+  /**
+   * True if all of items is true
+  */ 
+  public valid: boolean
+
+  /**
+   * Object (key: val) names of controls with value
+  */ 
+  public values: ValuesT
+
+  /**
+   * Initiate form submiting (Called submit handler passed to the onSubmit function)
+  */ 
+  public submit: (apiMethod: ApiMethodT) => void
+
+  /**
+   * Return form item by name
+  */ 
+  public get: (name: string) => Control
+  
+  /**
+   * Forced return bject (key: val) names of controls with value
+  */ 
+  public getValuesForced: () => ValuesT
+
+  /**
+   * Forced recalculate form with it curent values
+  */ 
+  public recalculate: () => void
+
+  /**
+   * Attach submit handler
+  */ 
+  public onSubmit: (handler: submitHandlerT) => void
+  public onValidChanged: (handler: () => void) => void
+
 }
