@@ -16,6 +16,7 @@ const FormControl = ({ name, render }) => {
     valid,
     invalid,
     meta,
+    hide,
   } = control
   const props = {
     key: name,
@@ -36,7 +37,7 @@ const FormControl = ({ name, render }) => {
     delete props.onInput
     props.onChange = controls[name].setValue
   }
-  if (meta.hide) return <></>
+  if (hide) return <></>
   if (meta.withLabel) {
     return <RenderColumnItem key={name} label={meta.label} value={<MemoizedControl {...props} />} />
   }
