@@ -80,7 +80,15 @@ class Preorder extends Component {
         const { response } = err
         const { data } = response
         if (data && data.errors) {
-          const { errors } = data
+          const { errors, error } = data
+          if (error) {
+            if (typeof error === 'string') {
+              showSnack({
+                variant: 'error',
+                message: error,
+              })
+            }
+          }
           Object.keys(errors).forEach((key) => {
             showSnack({
               variant: 'error',
