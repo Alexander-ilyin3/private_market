@@ -120,4 +120,8 @@ export class Control {
     this.touched = true
     return this.validate()
   }
+
+  recalculate() {
+    this.setValue(this.value)
+  }
 }

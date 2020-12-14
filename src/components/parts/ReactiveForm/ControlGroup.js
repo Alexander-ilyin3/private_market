@@ -90,4 +90,10 @@ export class ControlGroup {
   registerUpdateSubscriber(subscriber) {
     this.subscriber = subscriber
   }
+
+  recalculate() {
+    Object.keys(this.controls).forEach((key) => {
+      this.controls[key].recalculate()
+    })
+  }
 }
