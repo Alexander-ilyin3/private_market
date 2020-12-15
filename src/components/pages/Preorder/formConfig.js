@@ -1,4 +1,7 @@
 import { warehouseAutocomplete } from 'services/api/order.service'
+import { calculateCartTotal } from 'services/cart/cartHelpers'
+import { store } from 'storage'
+import { getCart } from 'storage/selectors/cart.selector'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
 
 const {
@@ -8,6 +11,11 @@ const {
   onlyInteger,
 } = validators
 
+const notLessThenCartTotalValidator = value => (
+  minValue(calculateCartTotal(getCart(store.getState())))(value)
+    ? { lessThenCartTotal: true }
+    : null
+)
 
 const patternValidatorCreator = (pattern, messageName) => function patternValidator(value) {
   if (value.match(pattern)) {
@@ -62,9 +70,10 @@ export const createForm = () => {
         errorMessages: {
           lessThenMin: 'Не может быть меньше 0',
           onlyInteger: 'Только целые числа',
+          lessThenCartTotal: 'Сумма наложенного платежа не может быть меньше суммы заказа',
         },
       },
-      validators: [required, minValue(0), onlyInteger],
+      validators: [required, notLessThenCartTotalValidator, onlyInteger],
     },
     deliveryPayer: { value: 2, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
     CODPayer: {
