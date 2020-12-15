@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 import Button from '@material-ui/core/Button'
+import Slide from '@material-ui/core/Slide'
+import Fade from '@material-ui/core/Fade'
+import Grow from '@material-ui/core/Grow'
 
 import { sliceStack } from 'storage/actions/snack.actions'
 import { store } from 'storage'
@@ -18,37 +21,74 @@ const defaultMessages = {
 }
 
 
-const Snack = ({ variant, message, onClose }) => {
+const Snack = forwardRef(({
+  variant,
+  message,
+  onClose,
+  noAutohide,
+  duration,
+}, ref) => {
   const snackVariant = variant || 'warning'
+
+  useEffect(() => {
+    if (noAutohide) return
+    setTimeout(() => {
+      onClose()
+    }, duration)
+  }, [duration, noAutohide, onClose])
   let snackMessage = defaultMessages[variant]
   if (message) snackMessage = message
   return (
-    <Alert
-      onClose={onClose}
-      severity={snackVariant}
-      action={onClose && (
-        <Button color='inherit' size='small' onClick={onClose}>
-          ПОНЯТНО
-        </Button>
-      )}
-    >
-      {snackMessage}
-    </Alert>
+    <div ref={ref} style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>
+      <Alert
+        onClose={onClose}
+        severity={snackVariant}
+        action={noAutohide && (
+          <Button color='inherit' size='small' onClick={onClose}>
+            ПОНЯТНО
+          </Button>
+        )}
+      >
+        {snackMessage}
+      </Alert>
+    </div>
   )
-}
+})
 
 Snack.defaultProps = {
   variant: '',
   message: '',
   onClose: null,
+  noAutohide: false,
+  duration: 6000,
 }
 
 Snack.propTypes = {
   variant: PropTypes.string,
   message: PropTypes.string,
   onClose: PropTypes.func,
+  noAutohide: PropTypes.bool,
+  duration: PropTypes.number,
 }
 
+const animationMethodMap = {
+  slide: Slide,
+  fade: Fade,
+  grow: Grow,
+}
+
+const animatedAlert = (snack, onClose) => {
+  const { animationType = 'slide' } = snack
+  const Animate = animationMethodMap[animationType]
+  return (
+    <Animate key={snack.id} direction='up' in={snack.show} mountOnEnter unmountOnExit>
+      <Snack
+        {...snack}
+        onClose={() => onClose('timeout', snack.id)}
+      />
+    </Animate>
+  )
+}
 class ShowSnack extends Component {
   processing = false
 
@@ -81,7 +121,7 @@ class ShowSnack extends Component {
             if (snackInfo(store.getState()).length > 0) {
               addToQue()
             }
-          }, 200)
+          }, 500)
         }
       }
       addToQue()
@@ -107,8 +147,15 @@ class ShowSnack extends Component {
       setTimeout(() => this.remove(id), 1000)
     } else {
       const { snacks } = this.state
-      this.setState({ snacks: snacks.map(snack => ({ ...snack, show: false })) })
-      setTimeout(() => this.setState({ snacks: [] }), 1000)
+      this.setState({
+        snacks: snacks.map((snack) => {
+          const show = snack.noAutohide ? snack.show : false
+          return ({ ...snack, show })
+        }),
+      })
+      setTimeout(() => this.setState(
+        currentState => ({ snacks: currentState.snacks.filter(snack => snack.show) }),
+      ), 1000)
     }
   }
 
@@ -119,20 +166,20 @@ class ShowSnack extends Component {
 
   render() {
     const { snacks } = this.state
-    return snacks.map((snack, i) => (
+    return (
       <Snackbar
-        style={{ top: (snacks.length - i - 1) * 60 }}
-        key={snack.id}
-        open={snack.show}
-        autoHideDuration={snack.noAutohide ? 0 : 6000}
-        onClose={(event, reason) => !snack.noAutohide && this.handleClose(reason, snack.id)}
-        // onExited={() => this.exitedHandler(snack.id)}
+        open
+        autoHideDuration={0}
+        onClose={(event, reason) => this.handleClose(reason, null)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        transitionDuration={1000}
+        transitionDuration={1}
       >
-        <Snack {...snack} onClose={snack.noAutohide ? () => { this.handleClose('timeout', snack.id) } : null} />
+        <div>
+          {snacks.map(snack => animatedAlert(snack, this.handleClose))}
+        </div>
+
       </Snackbar>
-    ))
+    )
   }
 }
 
