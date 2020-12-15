@@ -1,9 +1,11 @@
 import {
   apiUserListPath,
   apiSetUserStatusPath,
+  apiDebtPath,
 } from 'config/apiPath'
 import { showSnack } from 'storage/actions/snack.actions'
 import { setUserList } from 'storage/actions/user.actions'
+import { setUserdebt } from 'storage/actions/userDebth.actions'
 import { store } from 'storage'
 import { userListInfo } from 'storage/selectors/user.selector'
 
@@ -59,6 +61,20 @@ export const setStatus = status => async (dispatch) => {
     showSnack({
       variant: 'error',
       message,
+    })
+  }
+}
+
+export const getDebt = () => async (dispatch) => {
+  const res = await instance.get(apiDebtPath)
+  const { data } = res
+  dispatch(setUserdebt(data))
+  if (data && data.length) {
+    data.forEach(({ debt, message }) => {
+      showSnack({
+        message,
+        variant: (debt && debt > 0) ? 'warning' : 'info',
+      })
     })
   }
 }
