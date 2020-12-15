@@ -3,6 +3,7 @@ import { calculateCartTotal } from 'services/cart/cartHelpers'
 import { store } from 'storage'
 import { getCart } from 'storage/selectors/cart.selector'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
+import { showSnack } from 'storage/actions/snack.actions'
 
 const {
   required,
@@ -135,6 +136,15 @@ export const createForm = () => {
 
   const name3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/, 'not3Name')
   const name2or3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+(\s+\S+)?\s*$/, 'not2Name')
+
+  form.get('paymentAmount').validChanges((valid, { touched }) => {
+    if (!valid && touched) {
+      showSnack({
+        message: 'Рекомендуем брать с клиента предоплату в размере вашей прибыли от заказа',
+        variant: 'info',
+      })
+    }
+  })
 
   nameFormItem.resetValidators([(value) => {
     const deliveryTypeValue = deliveryTypeFormItem.value
