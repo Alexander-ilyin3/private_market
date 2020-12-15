@@ -31,8 +31,8 @@ const minValue = min => (value) => {
 }
 
 const onlyInteger = (value) => {
-  const invalid = String(parseInt(value, 10)) !== value
-  return invalid ? { onlyInteger: invalid } : null
+  const valid = value.match(/^\d+?$/)
+  return valid ? null : { onlyInteger: !valid }
 }
 
 export {
