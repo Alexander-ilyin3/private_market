@@ -48,6 +48,7 @@ export interface IFormConfig {
 
 type ValidatorT = (value: any) => ({ [key: string]: string })
 type OnValueChangedT = (value: any) => void
+type OnValidChangedT = (valid: boolean, item: Control) => void
 type ValuesT = { [controlName: string]: any }
 
 export class Control {
@@ -55,6 +56,7 @@ export class Control {
   private configUpdate: () => void
   private onUpdated: (name: string, value: any) => void
   private onValueChanged: OnValueChangedT
+  private onValidChanged: OnValidChangedT
   private render: () => {}
   private validators: ValidatorT[]
 
@@ -154,6 +156,11 @@ export class Control {
    * Immediately set visibility of element
   */  
   public setHide: (hide: boolean) => void
+
+  /**
+   * Register valid changes handler
+  */  
+  public validChanges: (cb: OnValidChangedT) => void
 }
 
 type ApiMethodT = (data: any) => Promise<any>

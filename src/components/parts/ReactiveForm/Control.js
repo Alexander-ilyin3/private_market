@@ -8,6 +8,7 @@ export class Control {
     this.configUpdate = configUpdate
     this.onUpdated = onUpdated
     this.onValueChanged = () => {}
+    this.onValidChanged = () => {}
     const {
       validators = [],
       render,
@@ -31,6 +32,10 @@ export class Control {
     this.onValueChanged = cb
   }
 
+  validChanges = (cb) => {
+    this.onValidChanged = cb
+  }
+
   setMeta = (meta) => {
     this.meta = { ...this.meta, ...meta }
     this.configUpdate()
@@ -50,9 +55,13 @@ export class Control {
         newErrors = { ...newErrors, ...validator(this.value) }
       }
     })
+    const prevValid = this.valid
     this.valid = !Object.keys(newErrors).find(errorName => newErrors[errorName])
     this.invalid = !this.valid
     this.errors = newErrors
+    if (prevValid !== this.valid) {
+      this.onValidChanged(this.valid, this)
+    }
     return this.valid
   }
 
