@@ -114,11 +114,7 @@ export class RestorePassword extends Component {
                         {formError}
                       </Typography>
                     )}
-                    <form onSubmit={(e) => {
-                      e.preventDefault()
-                      submit()
-                    }}
-                    >
+                    <form onSubmit={submit}>
                       <CardHeader
                         classes={{ title: classes.title }}
                         title='Установить Новый Пароль'

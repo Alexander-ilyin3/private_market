@@ -24,6 +24,9 @@ export class ControlGroup {
   }
 
   submit = (apiMethod) => {
+    if (apiMethod && apiMethod.preventDefault) {
+      apiMethod.preventDefault()
+    }
     this.setAsSubmited()
     this.validateAll()
     this.subscriber(this)
