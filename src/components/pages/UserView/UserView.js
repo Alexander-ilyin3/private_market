@@ -92,7 +92,12 @@ const TabManagers = () => (
   </Paper>
 )
 
-const UserView = ({ classes, customer, getProfile }) => {
+const UserView = ({
+  classes,
+  customer,
+  getProfile,
+  logout,
+}) => {
   useEffect(() => {
     getProfile()
   }, [getProfile])
@@ -124,18 +129,30 @@ const UserView = ({ classes, customer, getProfile }) => {
           user={customer}
         />
       )}
-      <div className={classes.avatarBlock}>
-        <Avatar src={avatar} className={classes.avatar} />
-        <div>
-          <Typography variant='h5'>{customerName} {customerLastname}</Typography>
-          <div className={classes.statusRow}>
-            <span className={classes.statusWithIcon}><RoomOutlined />{city}</span>
-            <span className={classes.statusWithIcon}><DateRangeOutlinedIcon />12.04.2018</span>
+      <div className={classes.header}>
+        <div className={classes.avatarBlock}>
+          <Avatar src={avatar} className={classes.avatar} />
+          <div>
+            <Typography variant='h5'>{customerName} {customerLastname}</Typography>
+            <div className={classes.statusRow}>
+              <span className={classes.statusWithIcon}><RoomOutlined />{city}</span>
+              <span className={classes.statusWithIcon}><DateRangeOutlinedIcon />12.04.2018</span>
+            </div>
+            <div className={classes.statusRow}>
+              <span className={classes.statusWithIcon}><CardTravelOutlinedIcon />Партнер</span>
+              <span className={classes.statusWithIcon}><GradeOutlinedIcon />Статус Vip</span>
+            </div>
           </div>
-          <div className={classes.statusRow}>
-            <span className={classes.statusWithIcon}><CardTravelOutlinedIcon />Партнер</span>
-            <span className={classes.statusWithIcon}><GradeOutlinedIcon />Статус Vip</span>
-          </div>
+        </div>
+        <div className={classes.logoutContainer} >
+          <Button
+            size='small'
+            color='inherit'
+            variant='text'
+            onClick={() => logout()}
+          >
+            Выйти из профиля
+          </Button>
         </div>
       </div>
       <div>
@@ -213,6 +230,7 @@ UserView.propTypes = {
   classes: object.isRequired,
   customer: object,
   getProfile: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 }
 
 export default UserView

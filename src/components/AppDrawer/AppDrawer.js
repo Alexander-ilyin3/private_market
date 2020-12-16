@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography'
 import Hidden from '@material-ui/core/Hidden'
 import Drawer from '@material-ui/core/Drawer'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import Button from '@material-ui/core/Button'
 
 import Menu from 'components/parts/Menu'
 import Preloader from 'components/assets/preloader'
@@ -38,7 +37,7 @@ class AppDrawer extends Component {
   };
 
   render() {
-    const { classes, logout } = this.props
+    const { classes } = this.props
     const { max, mobileOpen } = this.state
     return (
       <div className={classes.root}>
@@ -68,14 +67,6 @@ class AppDrawer extends Component {
             </IconButton>
             <div className={classes.grow} />
             <CartIndicator />
-            <Button
-              size='small'
-              color='inherit'
-              variant='text'
-              onClick={() => logout()}
-            >
-              Выход
-            </Button>
             <Typography variant='h6' color='inherit' noWrap />
           </Toolbar>
         </AppBar>

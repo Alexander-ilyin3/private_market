@@ -32,6 +32,18 @@ const styles = theme => ({
   headreWuthBtn: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+  },
+  logoutContainer: {
+    padding: 15,
   },
 })
 
