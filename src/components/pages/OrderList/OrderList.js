@@ -119,7 +119,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     selectableRowsHeader: false,
     selectableRows: 'none',
     rowsPerPage: limit,
-    rowsPerPageOptions: [5, 10, 15],
+    rowsPerPageOptions: [10, 50, 100],
     onTableChange,
     textLabels,
     search: false,
