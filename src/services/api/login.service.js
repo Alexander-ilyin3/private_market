@@ -9,6 +9,7 @@ import {
 import { loginAaction, logoutAction } from 'storage/actions/login.actions'
 import { showSnack } from 'storage/actions/snack.actions'
 import instance from './axiosProvider'
+import { getDebt } from './user.service'
 
 
 export const signup = async (signUpData) => {
@@ -43,6 +44,8 @@ export const signin = loginData => async (dispatch) => {
     const res = await instance.post(apiLoginPath, loginDataSend)
     const { data = {} } = res || {}
     const { token_type, access_token } = data
+
+    dispatch(getDebt())
 
     if (data.success) {
       dispatch(loginAaction({
