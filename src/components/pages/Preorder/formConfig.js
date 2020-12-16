@@ -5,6 +5,7 @@ import { getCart } from 'storage/selectors/cart.selector'
 import { ControlGroup, validators } from 'components/parts/ReactiveForm'
 import { showSnack } from 'storage/actions/snack.actions'
 
+
 const {
   required,
   phoneValidator,
@@ -133,6 +134,9 @@ export const createForm = () => {
   const customerTypeFormItem = form.get('customerType')
   const deliveryHouseNumberFormItem = form.get('deliveryHouseNumber')
   const deliveryApartamentNumberFormItem = form.get('deliveryApartamentNumber')
+  const insurancePaymentFormItem = form.get('insurancePayment')
+  const paymentTypeFormItem = form.get('paymentType')
+  const deliveryPayerFormItem = form.get('deliveryPayer')
 
   const name3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+\s+\S+\s*$/, 'not3Name')
   const name2or3PartsValidator = patternValidatorCreator(/^\s*\S+\s+\S+(\s+\S+)?\s*$/, 'not2Name')
@@ -143,6 +147,33 @@ export const createForm = () => {
         message: 'Рекомендуем брать с клиента предоплату в размере вашей прибыли от заказа',
         variant: 'info',
       })
+    }
+  })
+
+  const COD = 1
+  const sender = 1
+  const cashless = 1
+  insurancePaymentFormItem.valueChanges((val) => {
+    if (
+      paymentTypeFormItem.value === COD
+      && deliveryPayerFormItem.value === sender
+      && val !== cashless
+    ) {
+      setTimeout(() => showSnack({
+        message: 'Oтправитель оплачивает услуги новой почты только по безналичному расчету',
+        variant: 'warning',
+      }), 10)
+      insurancePaymentFormItem.setValue(cashless)
+    }
+  })
+  paymentTypeFormItem.valueChanges((val) => {
+    if (val === COD && deliveryPayerFormItem.value === sender) {
+      insurancePaymentFormItem.setValue(cashless)
+    }
+  })
+  deliveryPayerFormItem.valueChanges((val) => {
+    if (val === sender && paymentTypeFormItem.value === COD) {
+      insurancePaymentFormItem.setValue(cashless)
     }
   })
 
