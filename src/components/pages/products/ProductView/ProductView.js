@@ -25,7 +25,9 @@ export default class ProductView extends Component {
   }
 
   render() {
-    const { classes, product = {} } = this.props
+    const { classes, product = {}, location } = this.props
+    const { state = {} } = location
+    const { status } = state
     const { data = {} } = product
     const {
       vendor_code,
@@ -35,7 +37,6 @@ export default class ProductView extends Component {
       price,
       individual_price,
       category_id,
-      status,
     } = data
     return (
       <Paper className={classes.ProductPage}>
@@ -106,6 +107,7 @@ ProductView.propTypes = {
   getData: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   product: PropTypes.object,
+  location: PropTypes.object.isRequired,
 }
 
 ProductView.defaultProps = {

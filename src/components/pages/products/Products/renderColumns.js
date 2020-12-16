@@ -66,7 +66,7 @@ const renderColumns = ({
 
   const navigateToProductPage = ({ rowData }) => {
     const { history } = incoming
-    history.push(productViewPath.replace(':id', rowData[0]))
+    history.push(productViewPath.replace(':id', rowData[0]), { status: rowData[12] })
   }
 
   const getProductByRow = rowIndex => products[rowIndex]
