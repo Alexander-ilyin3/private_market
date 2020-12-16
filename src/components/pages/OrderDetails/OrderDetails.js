@@ -64,7 +64,7 @@ const OrderDetails = ({
   return (
     <Paper>
       <Typography align='center' variant='h4'>
-        Заказ № {order.id_ic}
+        Заказ № {order.id_1c}
       </Typography>
       <div className={classes.detailsList}>
         {Object.keys(orderLabels).filter(key => !!order[key]).map(renderDetail)}
