@@ -89,7 +89,7 @@ const UserList = ({
       ) return
       const diplayed = Object.fromEntries(columns.map(col => [col.name, col.display]))
       setDisplayed(diplayed)
-      setconfig({ page: page + 1, limit: rowsPerPage, searchText: newSearchText })
+      setconfig({ page, limit: rowsPerPage, searchText: newSearchText })
     }
   }
 
