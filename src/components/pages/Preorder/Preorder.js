@@ -206,6 +206,7 @@ Preorder.propTypes = {
   paymentMethods: PropTypes.array,
   getDeliveryMethods: PropTypes.func,
   getPaymentMethods: PropTypes.func,
+  history: PropTypes.object.isRequired,
 }
 
 export default Preorder
