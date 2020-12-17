@@ -36,6 +36,7 @@ class NovaPoshtaForm extends PureComponent {
       user,
       paymentMethods,
       cart,
+      deliveryType,
     } = this.props
 
     this.form.onSubmit((formData, apiMethod) => {
@@ -63,8 +64,8 @@ class NovaPoshtaForm extends PureComponent {
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
       dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
       dataToSend.name = dataToSend.name.replace(/\s+/g, ' ').trim()
-      console.log({ dataToSend })
-      apiMethod({ ...dataToSend, products }).then((success) => {
+
+      apiMethod({ ...dataToSend, products, deliveryType }).then((success) => {
         if (success) {
           const { history } = this.props
           history.push(ordersPath)
@@ -168,6 +169,7 @@ NovaPoshtaForm.propTypes = {
   getPaymentMethods: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   setForm: PropTypes.func.isRequired,
+  deliveryType: PropTypes.number.isRequired,
 }
 
 export default NovaPoshtaForm
