@@ -11,6 +11,7 @@ const {
   phoneValidator,
   minValue,
   onlyInteger,
+  fixedLength,
 } = validators
 
 const notLessThenCartTotalValidator = value => (
@@ -26,12 +27,16 @@ const patternValidatorCreator = (pattern, messageName) => function patternValida
   return { [messageName]: true }
 }
 
+const COD = 1
+const RECEIVER = 1
+const SENDER = 2
+const CASH = 1
+const CASHLESS = 2
+
 export const createForm = () => {
   const form = new ControlGroup({
-    deliveryType: { value: 2, meta: { label: 'Способ доставки', type: 'select', withLabel: true }, validators: [required] },
     city: {
       meta: { label: 'Город', withLabel: true, type: 'autocomplete' },
-      hide: ({ deliveryType }) => deliveryType !== 2,
       validators: [required],
     },
     warehouse: {
@@ -42,7 +47,7 @@ export const createForm = () => {
         itemsList: [],
       },
       validators: [required],
-      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || toDoor,
+      hide: ({ toDoor }) => toDoor,
     },
 
     customerType: { value: 2, meta: { label: 'Юр/Физ лицо', type: 'select' }, validators: [required] },
@@ -76,8 +81,9 @@ export const createForm = () => {
         },
       },
       validators: [required, notLessThenCartTotalValidator, onlyInteger],
+      hide: ({ paymentType }) => paymentType !== 1,
     },
-    deliveryPayer: { value: 2, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
+    deliveryPayer: { value: RECEIVER, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
     CODPayer: {
       value: 2,
       meta: { label: 'Платит за наложку', type: 'select' },
@@ -92,13 +98,19 @@ export const createForm = () => {
           lessThenMin: 'Не может быть меньше чем 300',
         },
       },
-      validators: [required, minValue(300)],
+      validators: [required, minValue(300), onlyInteger],
     },
-    insurancePayment: { value: 2, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
-    EDRPOU: { meta: { label: 'ЕДРПОУ' }, validators: [required], hide: ({ customerType }) => customerType === 2 },
+    insurancePayment: { value: CASH, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
+    EDRPOU: {
+      meta: {
+        label: 'ЕДРПОУ',
+        errorMessages: { onlyInteger: 'Только числа', invalidLength: 'Должно быть 12 знаков' },
+      },
+      validators: [required, onlyInteger, fixedLength(12)],
+      hide: ({ customerType }) => customerType === 2,
+    },
     toDoor: {
       meta: { label: 'Адресная Доставка', type: 'checkbox' },
-      hide: ({ deliveryType }) => deliveryType !== 2,
     },
     deliveryStreet: {
       meta: {
@@ -107,20 +119,21 @@ export const createForm = () => {
         type: 'autocomplete',
       },
       validators: [required],
-      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
+      hide: ({ toDoor }) => !toDoor,
     },
     deliveryHouseNumber: {
       meta: {
         label: 'Номер дома',
       },
       validators: [required],
-      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
+      hide: ({ toDoor }) => !toDoor,
     },
     deliveryApartamentNumber: {
       meta: {
         label: 'Номер квартиры',
       },
-      hide: ({ deliveryType, toDoor }) => deliveryType !== 2 || !toDoor,
+      validators: [required],
+      hide: ({ toDoor }) => !toDoor,
     },
     comment: { },
   })
@@ -130,7 +143,6 @@ export const createForm = () => {
   const toDoorFormItem = form.get('toDoor')
   const deliveryStreet = form.get('deliveryStreet')
   const nameFormItem = form.get('name')
-  const deliveryTypeFormItem = form.get('deliveryType')
   const customerTypeFormItem = form.get('customerType')
   const deliveryHouseNumberFormItem = form.get('deliveryHouseNumber')
   const deliveryApartamentNumberFormItem = form.get('deliveryApartamentNumber')
@@ -150,38 +162,35 @@ export const createForm = () => {
     }
   })
 
-  const COD = 1
-  const sender = 1
-  const cashless = 1
+
   insurancePaymentFormItem.valueChanges((val) => {
     if (
       paymentTypeFormItem.value === COD
-      && deliveryPayerFormItem.value === sender
-      && val !== cashless
+      && deliveryPayerFormItem.value === SENDER
+      && val !== CASHLESS
     ) {
       setTimeout(() => showSnack({
         message: 'Oтправитель оплачивает услуги новой почты только по безналичному расчету',
         variant: 'warning',
       }), 10)
-      insurancePaymentFormItem.setValue(cashless)
+      insurancePaymentFormItem.setValue(CASHLESS)
     }
   })
   paymentTypeFormItem.valueChanges((val) => {
-    if (val === COD && deliveryPayerFormItem.value === sender) {
-      insurancePaymentFormItem.setValue(cashless)
+    if (val === COD && deliveryPayerFormItem.value === SENDER) {
+      insurancePaymentFormItem.setValue(CASHLESS)
     }
   })
   deliveryPayerFormItem.valueChanges((val) => {
-    if (val === sender && paymentTypeFormItem.value === COD) {
-      insurancePaymentFormItem.setValue(cashless)
+    if (val === SENDER && paymentTypeFormItem.value === COD) {
+      insurancePaymentFormItem.setValue(CASHLESS)
     }
   })
 
   nameFormItem.resetValidators([(value) => {
-    const deliveryTypeValue = deliveryTypeFormItem.value
     const toDoorValue = toDoorFormItem.value
     const customerTypeValue = customerTypeFormItem.value
-    if (deliveryTypeValue === 2 && toDoorValue && customerTypeValue === 2) {
+    if (toDoorValue && customerTypeValue === 2) {
       return name3PartsValidator(value)
     }
     if (customerTypeValue === 2) {

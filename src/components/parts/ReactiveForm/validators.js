@@ -30,7 +30,13 @@ const minValue = min => (value) => {
   return invalid ? { lessThenMin: invalid } : null
 }
 
+const fixedLength = length => (value) => {
+  const invalid = value && value.length !== length
+  return invalid ? { invalidLength: invalid } : null
+}
+
 const onlyInteger = (value) => {
+  if (typeof value !== 'string') value = String(value)
   const valid = value.match(/^\d+?$/)
   return valid ? null : { onlyInteger: !valid }
 }
@@ -44,4 +50,5 @@ export {
   phoneValidator,
   minValue,
   onlyInteger,
+  fixedLength,
 }

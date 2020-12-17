@@ -36,6 +36,7 @@ const Selector = ({
       margin='normal'
     >
       <InputLabel>{label}</InputLabel>
+      {items && items.length > 0 && (
       <Select
         label={label}
         value={value}
@@ -44,6 +45,7 @@ const Selector = ({
         {items && items.length > 0 && items.map(renderItem)}
         {itemsList && itemsList.length > 0 && itemsList.map(renderItem)}
       </Select>
+)}
       {touched && invalid && <Typography variant='caption' color='error'>{getHelperText(errors, errorMessages)}</Typography>}
     </FormControl>
   )

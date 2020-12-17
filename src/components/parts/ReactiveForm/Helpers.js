@@ -1,5 +1,6 @@
 const defaultMessages = {
   required: 'Поле обязательно к заполнению',
+  onlyInteger: 'Только целые числа',
 }
 
 export const getHelperText = (errors = {}, errorMessages) => {

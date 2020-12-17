@@ -121,7 +121,7 @@ class ShowSnack extends Component {
             if (snackInfo(store.getState()).length > 0) {
               addToQue()
             }
-          }, 500)
+          }, 200)
         }
       }
       addToQue()
