@@ -9,6 +9,10 @@ import MemoizedControl from './MemoizedControl'
 const FormControl = ({ name, render }) => {
   const { controls } = useContext(FormContext)
   const control = controls[name]
+  if (!control) {
+    console.error(`Control config for the "${name}" field is not found. Please check your form config`)
+    return ''
+  }
   const {
     value,
     errors,
