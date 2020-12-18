@@ -54,15 +54,29 @@ const Delivery = ({
         />
       )}
       value={(
+        // <RFormControl
+        //   name='CODPayer'
+        //   render={props => (
+        //     <InputAsLabel>
+        //       <SelectorRender
+        //         {...props}
+        //         items={[
+        //           { value: 1, label: 'Отправитель' },
+        //           { value: 2, label: 'Получатель' },
+        //         ]}
+        //       />
+        //     </InputAsLabel>
+        //   )}
+        // />
         <RFormControl
-          name='CODPayer'
+          name='paymentForm'
           render={props => (
             <InputAsLabel>
               <SelectorRender
                 {...props}
                 items={[
-                  { value: 1, label: 'Отправитель' },
-                  { value: 2, label: 'Получатель' },
+                  { value: 1, label: 'Безналичный' },
+                  { value: 2, label: 'Наличный' },
                 ]}
               />
             </InputAsLabel>
@@ -70,7 +84,7 @@ const Delivery = ({
         />
       )}
     />
-    <RenderColumnItem
+    {/* <RenderColumnItem
       labelWeight={6}
       label={(
         <RFormControl
@@ -88,10 +102,10 @@ const Delivery = ({
           )}
         />
       )}
-      value={(
-        <RFormControl name='insuranceAmount' render={DefaultInputRender} />
-      )}
-    />
+      value={( */}
+    <RFormControl name='insuranceAmount' render={DefaultInputRender} />
+    {/* )}
+    /> */}
   </Paper>
 )
 
