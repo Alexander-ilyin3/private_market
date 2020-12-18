@@ -46,6 +46,12 @@ class Preorder extends Component {
       cart,
       deliveryMethods,
     } = this.props
+    const deliveryMethodsWithDisabledPickup = deliveryMethods.map((method) => {
+      if (method.id === 1) {
+        return { ...method, disabled: true }
+      }
+      return method
+    })
     const { deliveryType } = this.state
     const CurrentOrderForm = deliveryMethodsRenderMap[deliveryType]
     return (
@@ -88,7 +94,7 @@ class Preorder extends Component {
                         onChange: ({ target }) => { this.setState({ deliveryType: target.value }) },
                       }}
                       value={deliveryType}
-                      items={deliveryMethods.map(({ id, name }) => ({ value: id, label: name }))}
+                      items={deliveryMethodsWithDisabledPickup.map(({ id, name, disabled }) => ({ value: id, label: name, disabled }))}
                     />
                   </Grid>
                 </Grid>
