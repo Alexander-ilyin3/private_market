@@ -9,7 +9,9 @@ import { Typography } from '@material-ui/core'
 
 import { getHelperText } from 'components/parts/ReactiveForm/Helpers'
 
-const renderItem = item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+const RenderItem = ({ label, value, disabled }) => (
+  <MenuItem disabled={disabled} key={value} value={value}>{label}</MenuItem>
+)
 
 const Selector = ({
   value,
@@ -42,10 +44,10 @@ const Selector = ({
         value={value}
         {...handlers}
       >
-        {items && items.length > 0 && items.map(renderItem)}
-        {itemsList && itemsList.length > 0 && itemsList.map(renderItem)}
+        {items && items.length > 0 && items.map(RenderItem)}
+        {itemsList && itemsList.length > 0 && itemsList.map(RenderItem)}
       </Select>
-)}
+      )}
       {touched && invalid && <Typography variant='caption' color='error'>{getHelperText(errors, errorMessages)}</Typography>}
     </FormControl>
   )
