@@ -28,10 +28,10 @@ const patternValidatorCreator = (pattern, messageName) => function patternValida
 }
 
 const COD = 1
-const RECEIVER = 1
-const SENDER = 2
-const CASH = 1
-const CASHLESS = 2
+const RECEIVER = 2
+const SENDER = 1
+const CASH = 2
+const CASHLESS = 1
 
 export const createForm = () => {
   const form = new ControlGroup({
@@ -85,7 +85,7 @@ export const createForm = () => {
     },
     deliveryPayer: { value: RECEIVER, meta: { label: 'Плательщик доставки', type: 'select' }, validators: [required] },
     CODPayer: {
-      value: 2,
+      value: RECEIVER,
       meta: { label: 'Платит за наложку', type: 'select' },
       hide: ({ paymentType }) => paymentType !== 1,
       validators: [required],
@@ -100,7 +100,7 @@ export const createForm = () => {
       },
       validators: [required, minValue(300), onlyInteger],
     },
-    insurancePayment: { value: CASH, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
+    paymentForm: { value: CASH, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
     EDRPOU: {
       meta: {
         label: 'ЕДРПОУ',
@@ -146,7 +146,7 @@ export const createForm = () => {
   const customerTypeFormItem = form.get('customerType')
   const deliveryHouseNumberFormItem = form.get('deliveryHouseNumber')
   const deliveryApartamentNumberFormItem = form.get('deliveryApartamentNumber')
-  const insurancePaymentFormItem = form.get('insurancePayment')
+  const paymentFormFormItem = form.get('paymentForm')
   const paymentTypeFormItem = form.get('paymentType')
   const deliveryPayerFormItem = form.get('deliveryPayer')
 
@@ -163,7 +163,7 @@ export const createForm = () => {
   })
 
 
-  insurancePaymentFormItem.valueChanges((val) => {
+  paymentFormFormItem.valueChanges((val) => {
     if (
       paymentTypeFormItem.value === COD
       && deliveryPayerFormItem.value === SENDER
@@ -173,17 +173,17 @@ export const createForm = () => {
         message: 'Oтправитель оплачивает услуги новой почты только по безналичному расчету',
         variant: 'warning',
       }), 10)
-      insurancePaymentFormItem.setValue(CASHLESS)
+      paymentFormFormItem.setValue(CASHLESS)
     }
   })
   paymentTypeFormItem.valueChanges((val) => {
     if (val === COD && deliveryPayerFormItem.value === SENDER) {
-      insurancePaymentFormItem.setValue(CASHLESS)
+      paymentFormFormItem.setValue(CASHLESS)
     }
   })
   deliveryPayerFormItem.valueChanges((val) => {
     if (val === SENDER && paymentTypeFormItem.value === COD) {
-      insurancePaymentFormItem.setValue(CASHLESS)
+      paymentFormFormItem.setValue(CASHLESS)
     }
   })
 
