@@ -45,8 +45,8 @@ const Delivery = ({
               <SelectorRender
                 {...props}
                 items={[
-                  { value: 1, label: 'Получатель' },
-                  { value: 2, label: 'Отправитель' },
+                  { value: 1, label: 'Отправитель' },
+                  { value: 2, label: 'Получатель' },
                 ]}
               />
             </InputAsLabel>
@@ -74,14 +74,14 @@ const Delivery = ({
       labelWeight={6}
       label={(
         <RFormControl
-          name='insurancePayment'
+          name='paymentForm'
           render={props => (
             <InputAsLabel>
               <SelectorRender
                 {...props}
                 items={[
-                  { value: 1, label: 'Наличный' },
-                  { value: 2, label: 'Безналичный' },
+                  { value: 1, label: 'Безналичный' },
+                  { value: 2, label: 'Наличный' },
                 ]}
               />
             </InputAsLabel>
