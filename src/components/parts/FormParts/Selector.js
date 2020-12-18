@@ -13,6 +13,16 @@ const RenderItem = ({ label, value, disabled }) => (
   <MenuItem disabled={disabled} key={value} value={value}>{label}</MenuItem>
 )
 
+RenderItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  value: PropTypes.any.isRequired,
+}
+
+RenderItem.defaultProps = {
+  disabled: false,
+}
+
 const Selector = ({
   value,
   handlers,
