@@ -41,7 +41,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     CODPayer: false,
     pyment_amount: true,
     insuranceAmount: false,
-    insurancePayment: false,
+    paymentForm: false,
     deliveryPayer: false,
     weight: false,
     volume: false,
@@ -97,7 +97,7 @@ const OrderList = ({ orderListInfo, getOrderList }) => {
     { name: 'CODPayer', label: 'Платит за наложку', options: { sort: false, display: displayed.CODPayer } },
     { name: 'pyment_amount', label: 'Сумма платежа', options: { sort: false, display: displayed.pyment_amount } },
     { name: 'insuranceAmount', label: 'Страховка', options: { sort: false, display: displayed.insuranceAmount } },
-    { name: 'insurancePayment', label: 'Форма оплаты', options: { sort: false, display: displayed.insurancePayment } },
+    { name: 'paymentForm', label: 'Форма оплаты', options: { sort: false, display: displayed.paymentForm } },
     { name: 'deliveryPayer', label: 'Плательщик доставки', options: { sort: false, display: displayed.deliveryPayer } },
 
 

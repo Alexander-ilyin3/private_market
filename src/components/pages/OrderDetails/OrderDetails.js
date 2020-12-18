@@ -25,7 +25,7 @@ const orderLabels = {
   paymentType: 'Способ оплаты',
   pyment_amount: 'Сумма',
   insuranceAmount: 'Страховка',
-  insurancePayment: 'Форма оплаты',
+  paymentForm: 'Форма оплаты',
   total_price: 'Общая сумма',
   volume: 'Объем',
   weight: 'Вес',
