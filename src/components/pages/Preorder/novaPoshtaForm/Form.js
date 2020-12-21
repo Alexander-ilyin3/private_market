@@ -62,7 +62,7 @@ class NovaPoshtaForm extends PureComponent {
         dataToSend.warehouse = ''
       }
       const products = cart.map(({ count, product }) => ({ count, id: product.id }))
-      dataToSend.phone = dataToSend.phone.replace(/\D+/g, '')
+      dataToSend.phone = `38${dataToSend.phone.replace(/\D+/g, '')}`
       dataToSend.name = dataToSend.name.replace(/\s+/g, ' ').trim()
 
       apiMethod({ ...dataToSend, products, deliveryType }).then((success) => {
