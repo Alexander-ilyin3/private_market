@@ -29,6 +29,7 @@ const SearchAutocomplete = ({
   meta = defaultMeta,
   InputProps,
   service,
+  disabled,
 }) => {
   const [searchList, setSearchList] = useState([])
 
@@ -43,7 +44,6 @@ const SearchAutocomplete = ({
     variant,
     fullWidth,
     type,
-    disabled,
     errorMessages,
   } = meta
 
@@ -55,6 +55,7 @@ const SearchAutocomplete = ({
       options={searchList || []}
       openOnFocus
       getOptionLabel={option => (option ? option.name : '')}
+      disabled={disabled}
       renderInput={(params) => {
         params.value = params.value
         return (
@@ -66,7 +67,6 @@ const SearchAutocomplete = ({
               }
             }}
             error={touched && invalid}
-            disabled={disabled}
             label={label}
             variant={variant || 'outlined'}
             fullWidth={fullWidth}
@@ -95,6 +95,7 @@ SearchAutocomplete.defaultProps = {
   meta: {},
   InputProps: {},
   service: () => { },
+  disabled: false,
 }
 
 SearchAutocomplete.propTypes = {
@@ -106,6 +107,7 @@ SearchAutocomplete.propTypes = {
   meta: PropTypes.object,
   InputProps: PropTypes.object,
   service: PropTypes.func,
+  disabled: PropTypes.bool,
 }
 
 export default SearchAutocomplete

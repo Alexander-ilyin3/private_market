@@ -11,6 +11,7 @@ export default React.memo((props) => {
     onChange,
     render = () => {},
     meta,
+    disabled,
   } = props
   const mappedProps = {
     value,
@@ -23,6 +24,7 @@ export default React.memo((props) => {
       onChange,
     },
     meta,
+    disabled,
   }
   if (['select'].includes(meta.type)) {
     mappedProps.handlers.onClose = onBlur

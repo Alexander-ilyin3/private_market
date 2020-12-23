@@ -32,6 +32,7 @@ const Selector = ({
   errors,
   touched,
   invalid,
+  disabled,
 }) => {
   const {
     label,
@@ -46,6 +47,7 @@ const Selector = ({
       style={style}
       error={touched && invalid}
       margin='normal'
+      disabled={disabled}
     >
       <InputLabel>{label}</InputLabel>
       {items && items.length > 0 && (
@@ -71,6 +73,7 @@ Selector.defaultProps = {
   errors: {},
   touched: false,
   invalid: false,
+  disabled: false,
 }
 
 Selector.propTypes = {
@@ -82,6 +85,7 @@ Selector.propTypes = {
   errors: PropTypes.object,
   touched: PropTypes.bool,
   invalid: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 export default Selector

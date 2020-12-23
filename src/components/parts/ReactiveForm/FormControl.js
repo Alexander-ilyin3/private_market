@@ -21,6 +21,7 @@ const FormControl = ({ name, render }) => {
     invalid,
     meta,
     hide,
+    disabled,
   } = control
   const props = {
     key: name,
@@ -33,6 +34,7 @@ const FormControl = ({ name, render }) => {
     onInput: controls[name].setValue,
     onBlur: controls[name].blur,
     meta,
+    disabled,
   }
   if (['select', 'picker', 'checkbox', 'autocomplete'].includes(meta.type)) {
     props.onChange = controls[name].setValue
