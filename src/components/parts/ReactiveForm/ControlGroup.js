@@ -42,7 +42,7 @@ export class ControlGroup {
     this.values[name] = value
     this.setValid(!this.keys.find(key => this.controls[key].invalid))
     Object.keys(this.controls).forEach((key) => {
-      this.controls[key].formUpdated(this.values)
+      this.controls[key].formUpdated(this)
     })
     this.subscriber(this)
   }

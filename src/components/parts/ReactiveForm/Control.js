@@ -15,7 +15,9 @@ export class Control {
       value = '',
       meta = {},
       hide,
+      disabled,
     } = configs
+    this.checkDisabled = disabled
     this.hideCheck = hide
     this.name = controlName
     this.render = render
@@ -26,6 +28,9 @@ export class Control {
     this.value = value
     this.invalid = this.validators.length > 0
     this.meta = meta
+    if (typeof disabled === 'boolean') {
+      this.disabled = disabled
+    }
   }
 
   valueChanges = (cb) => {
@@ -136,9 +141,12 @@ export class Control {
     this.setValue(this.value)
   }
 
-  formUpdated(form) {
+  formUpdated({ values }) {
     if (this.hideCheck) {
-      this.hide = this.hideCheck(form)
+      this.hide = this.hideCheck(values)
+    }
+    if (this.checkDisabled && typeof this.checkDisabled === 'function') {
+      this.disabled = this.checkDisabled(values)
     }
   }
 

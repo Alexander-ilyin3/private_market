@@ -26,7 +26,6 @@ export const FormControl: FunctionComponent<FormControlPropsT>
 export interface IMeta {
   label?: string,
   withLabel?: boolean,
-  hide?: boolean,
   type?: InputTypes,
   itemsList?: [],
   errorMessages?: { [messageName: string]: string }
@@ -50,6 +49,15 @@ type ValidatorT = (value: any) => ({ [key: string]: string })
 type OnValueChangedT = (value: any) => void
 type OnValidChangedT = (valid: boolean, item: Control) => void
 type ValuesT = { [controlName: string]: any }
+
+export interface IControlConfig {
+
+  disabled: ((values: ValuesT) => boolean) | boolean;
+  meta?: IMeta;
+  value?: any;
+  validators?: ValidatorT[];
+  hide: (values: {[key: string]: any}) => void;
+}
 
 export class Control {
   constructor(config: IControlConfig)
@@ -150,7 +158,7 @@ export class Control {
   /**
    * Function called by parent form if form is updated
   */ 
-  public formUpdated: (form: ValuesT) => void
+  public formUpdated: (form: ControlGroup) => void
 
   /**
    * Immediately set visibility of element
@@ -168,7 +176,7 @@ type submitHandlerT = (form: ControlGroup, apiMethod: ApiMethodT) => void
 type SubscriberT = (form: ControlGroup) => void
 
 
-export class ControlGroup<C> {
+export class ControlGroup {
   constructor(config: IFormConfig)
 
   private subscriber: SubscriberT
