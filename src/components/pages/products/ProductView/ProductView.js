@@ -15,7 +15,7 @@ import Cancel from '@material-ui/icons/Cancel'
 import { productsPath } from 'config/routes'
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 import { addProduct } from 'services/cart/cartService'
-import { checkAccessByLevel } from 'config/roles'
+import { onlyClientOrGreater } from 'config/roles'
 
 export default class ProductView extends Component {
   componentDidMount() {
@@ -25,6 +25,7 @@ export default class ProductView extends Component {
   }
 
   render() {
+    const isClientOrGreater = onlyClientOrGreater()
     const { classes, product = {}, location } = this.props
     const { state = {} } = location
     const { status } = state
@@ -52,7 +53,7 @@ export default class ProductView extends Component {
           <Grid item sm={12} md={8}>
             <Grid container spacing={3} className={classes.detailItem}>
               <Grid item xs={12} sm={7} className={classes.priceRow}>
-                {checkAccessByLevel(2) && (
+                {isClientOrGreater && (
                   <div>
                     <Typography>Цена:</Typography>
                     <Typography variant='h4'>{individual_price}</Typography>
@@ -82,13 +83,15 @@ export default class ProductView extends Component {
               <Typography>Здесь когда ни будь будет описание</Typography>
             </Grid>
             <Grid container className={classes.detailItem}>
-              <Grid item sm={8} xs={12}>
-                <Typography className={classes.inStock}>
-                  {status === 1 && <><CheckCircle fontSize='large' color='secondary' /> В наличии</>}
-                  {status === 2 && <><Error fontSize='large' className='warning' /> Заканчивается</>}
-                  {status === 3 && <><Cancel fontSize='large' color='error' /> Нет в наличии</>}
-                </Typography>
-              </Grid>
+              {isClientOrGreater && (
+                <Grid item sm={8} xs={12}>
+                  <Typography className={classes.inStock}>
+                    {status === 1 && <><CheckCircle fontSize='large' color='secondary' /> В наличии</>}
+                    {status === 2 && <><Error fontSize='large' className='warning' /> Заканчивается</>}
+                    {status === 3 && <><Cancel fontSize='large' color='error' /> Нет в наличии</>}
+                  </Typography>
+                </Grid>
+              )}
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
                   <ToOrderInput buttonColor='primary' buttonContent='В заказ' onAdd={(count) => { addProduct({ count, product: data }) }} />

@@ -11,6 +11,7 @@ import ToolTip from '@material-ui/core/Tooltip'
 
 import { addProduct } from 'services/cart/cartService'
 import { productViewPath } from 'config/routes'
+import { onlyClientOrGreater } from 'config/roles'
 
 import ToOrderInput from 'components/parts/FormParts/ToOrderInput'
 import TooltipInfo from 'components/parts/TooltipInfo'
@@ -31,7 +32,7 @@ const renderColumns = ({
     categories = [],
     classes,
   } = incoming
-
+  const isClientOrGreater = onlyClientOrGreater()
   const {
     max_price = null,
     vendor = null,
@@ -71,7 +72,7 @@ const renderColumns = ({
 
   const getProductByRow = rowIndex => products[rowIndex]
 
-  return [
+  const columns = [
     { name: 'id', label: 'id', options: { viewColumns: false, display: diplayed.id, filter: false } },
     {
       name: 'image',
@@ -118,7 +119,6 @@ const renderColumns = ({
       name: 'category_name',
       label: 'Категория',
       options: {
-        // customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Фильтруйте каталог по бренду или группе товаров'><div>Категория</div></TooltipInfo>,
         sort: false,
         display: diplayed.category_name,
         filterList: category_id ? [category_id] : null,
@@ -239,7 +239,6 @@ const renderColumns = ({
       name: 'toOrder',
       label: 'В заказ',
       options: {
-        // customHeadLabelRender: () => <TooltipInfo open={tooltipsOpened} title='Добавляйте товары в заказ'><div>В заказ</div></TooltipInfo>,
         sort: false,
         viewColumns: false,
         display: diplayed.toOrder,
@@ -249,7 +248,7 @@ const renderColumns = ({
           tooltipLabel: 'Добавляйте товары в заказ',
           render: () => {
             const { rowData } = row
-            const notInStock = Number(rowData[12]) === 3
+            const notInStock = isClientOrGreater && Number(rowData[12]) === 3
             return (
               <ToOrderInput
                 disabled={notInStock}
@@ -264,6 +263,10 @@ const renderColumns = ({
       },
     },
   ]
+  if (isClientOrGreater) {
+    return columns
+  }
+  return columns.filter(({ name }) => name !== 'status')
 }
 
 
