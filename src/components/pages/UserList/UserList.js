@@ -58,7 +58,7 @@ const UserList = ({
     throttledChanges({
       page: page + 1,
       limit,
-      search_text: searchText,
+      search_query: searchText,
     }, getUserList)
   }
 
