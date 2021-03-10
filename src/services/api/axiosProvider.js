@@ -43,6 +43,9 @@ instance.interceptors.response.use(
       dispatch(logoutAction())
     }
     const { message, errors, error } = data
+    if (error === 'Unauthenticated.') {
+      dispatch(logoutAction())
+    }
     if (message) {
       showSnack({
         variant: 'error',
