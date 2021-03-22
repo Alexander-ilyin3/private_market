@@ -49,7 +49,12 @@ const Table = memo(({
   const cartData = cart.map(item => ({
     ...item.product,
     count: item.count,
-    total: (Number(item.product.price.replace(',', '')) * item.count).toLocaleString(),
+    total: (
+      typeof item.product.individual_price === 'string'
+        ? Number(item.product.individual_price.replace(',', ''))
+        : item.product.individual_price
+        * item.count
+    ).toLocaleString(),
   }))
   const getProductByRowMeta = (meta) => {
     const { rowData } = meta
@@ -89,7 +94,7 @@ const Table = memo(({
         ),
       },
     },
-    { name: 'price', label: 'Цена' },
+    { name: 'individual_price', label: 'Цена' },
     { name: 'total', label: 'Сумма' },
     {
       name: 'delete',
