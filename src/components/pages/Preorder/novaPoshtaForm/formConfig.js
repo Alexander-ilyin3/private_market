@@ -91,14 +91,14 @@ export const createForm = () => {
       validators: [required],
     },
     insuranceAmount: {
-      value: 300,
+      value: 1,
       meta: {
         label: 'Страховка',
         errorMessages: {
-          lessThenMin: 'Не может быть меньше чем 300',
+          lessThenMin: 'Не может быть меньше чем 1',
         },
       },
-      validators: [required, minValue(300), onlyInteger],
+      validators: [required, minValue(1), onlyInteger],
     },
     paymentForm: { value: CASH, meta: { label: 'Форма оплаты', type: 'select' }, validators: [required] },
     EDRPOU: {
