@@ -98,7 +98,9 @@ class ShowSnack extends Component {
 
   setMessageInfo = (info) => {
     const { snacks } = this.state
-    this.setState({ snacks: [...snacks, info] })
+    setTimeout(() => {
+      this.setState({ snacks: [...snacks, info] })
+    })
   }
 
 
