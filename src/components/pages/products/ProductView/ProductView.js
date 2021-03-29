@@ -28,7 +28,7 @@ export default class ProductView extends Component {
     const isClientOrGreater = onlyClientOrGreater()
     const { classes, product = {}, location } = this.props
     const { state = {} } = location
-    const { status } = state
+    const { status, individualPrice } = state
     const { data = {} } = product
     const {
       vendor_code,
@@ -36,7 +36,6 @@ export default class ProductView extends Component {
       image,
       name,
       price,
-      individual_price,
       category_id,
     } = data
     return (
@@ -56,7 +55,7 @@ export default class ProductView extends Component {
                 {isClientOrGreater && (
                   <div>
                     <Typography>Цена:</Typography>
-                    <Typography variant='h4'>{individual_price}</Typography>
+                    <Typography variant='h4'>{individualPrice}</Typography>
                   </div>
                 )}
                 <div>
@@ -94,7 +93,13 @@ export default class ProductView extends Component {
               )}
               <Grid item sm={4} xs={12}>
                 <div className={classes.countContainer}>
-                  <ToOrderInput buttonColor='primary' buttonContent='В заказ' onAdd={(count) => { addProduct({ count, product: data }) }} />
+                  <ToOrderInput
+                    buttonColor='primary'
+                    buttonContent='В заказ'
+                    onAdd={(count) => {
+                      addProduct({ count, product: { ...data, individual_price: individualPrice } })
+                    }}
+                  />
                 </div>
               </Grid>
             </Grid>
