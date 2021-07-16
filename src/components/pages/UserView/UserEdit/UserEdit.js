@@ -70,7 +70,6 @@ class UserEdit extends Component {
       customerLastname = '',
       customerName = '',
     } = this.state
-    console.log(customerPhone)
     return (
       <Dialog
         onClose={this.handleClose}

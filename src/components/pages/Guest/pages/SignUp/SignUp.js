@@ -142,8 +142,7 @@ class SignUp extends Component {
     e.preventDefault()
     this.setState({ isChecked: true })
     this.validateForm()
-    if (isValid) {  // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
-      console.log(phone)
+    if (isValid) { // u can't declare "isValid" in top of this function, because function "validateForm" updating "isValid" async and at the moment of spreading state in top of function, it's value can ba different
       signup({
         name: name.value,
         phone: phone.value.replace(/\D+/g, ''),
@@ -153,7 +152,6 @@ class SignUp extends Component {
         repeatPassword: repeatPassword.value,
       }).then((success) => {
         if (success) {
-          console.log('Sended success: ', success)
           history.push(registerSuccessPath)
         }
       }).catch((err) => {

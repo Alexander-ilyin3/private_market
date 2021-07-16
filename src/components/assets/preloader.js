@@ -39,7 +39,6 @@ export default class PreloaderSingletone extends Component {
     this.state = {
       display: false,
     }
-    console.log(this)
   }
 
   __show() {
